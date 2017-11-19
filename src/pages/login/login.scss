@@ -1,0 +1,42 @@
+page-login {
+
+  .scroll-content{
+
+    background: url("../../assets/imgs/background-1.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+
+  }
+
+
+  /*.col{
+
+     border:  solid black;
+   }
+  .row{
+    border: solid red;
+  }
+  div{
+    border:  solid blue;
+  }*/
+
+  .inputBox{
+    background-color:  rgba(209, 209, 224,0.1);
+    border-radius: 64px;
+    margin-top: 5px;
+    color: white;
+
+  }
+
+  .rememberMe{
+    background-color: transparent;
+    color: #e8e8e8;
+    font-size: x-small;
+    font-weight: bold;
+
+  }
+
+
+
+}

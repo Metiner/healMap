@@ -1,0 +1,94 @@
+
+<ion-header>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col offset-3 col-6>
+        <img src="../../assets/imgs/login_logo.png">
+      </ion-col>
+    </ion-row>
+    <form #f="ngForm" (submit)="onLogin(f)">
+      <ion-item no-lines class="inputBox">
+        <ion-input type="text" placeholder="username or e-mail"></ion-input>
+      </ion-item>
+      <ion-item no-lines class="inputBox">
+        <ion-input type="password" placeholder="password"></ion-input>
+      </ion-item>
+      <ion-row>
+        <ion-col col-7>
+          <ion-item no-lines class="rememberMe">
+            <ion-label>Remember Username</ion-label>
+            <ion-checkbox style="margin-right: 8px" [ngModel] name="rememberMe"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col col-5>
+          <button ion-button
+                  clear
+                  (click)="onForgotPassword()"
+                  type="button"
+                  style="font-size: x-small;
+                  color: lightgray"
+          >Forgot Password</button>
+        </ion-col>
+      </ion-row>
+      <button ion-button
+              type="submit"
+              outline
+              color="light"
+              [disabled]="!f.valid"
+              block
+              round
+      >Login</button>
+    </form>
+    <ion-row>
+      <ion-col text-center>
+        <ion-label style="font-style: italic;color: whitesmoke;">or</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <button ion-button
+              block
+              round
+              small
+              style="background-color: #0077b5"
+      >LinkedIn</button>
+    </ion-row>
+    <ion-row>
+      <button ion-button
+              block
+              round
+              small
+              style="background-color: #3b5998"
+      >Facebook</button>
+    </ion-row>
+    <ion-row>
+      <button ion-button
+              small
+              block
+              round
+              style="background-color: #d34836"
+      >Google Plus</button>
+    </ion-row>
+    <ion-row>
+      <button ion-button
+              small
+              block
+              round
+              style="background-color: whitesmoke;color: darkred"
+      >Create a free account</button>
+    </ion-row>
+    <ion-row>
+      <button ion-button
+              small
+              block
+              round
+              clear
+              style="background-color: whitesmoke"
+      >Continue as a guest</button>
+    </ion-row>
+  </ion-grid>
+</ion-content>
