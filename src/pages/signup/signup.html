@@ -1,0 +1,54 @@
+<ion-header>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #f="ngForm" (submit)="onSignUp(f)">
+    <ion-item no-lines class="inputBox" style="margin-top: 30%">
+      <ion-input
+        type="email"
+        name="email"
+        ngModel
+        required
+        placeholder="E-mail"
+      ></ion-input>
+    </ion-item>
+    <ion-item no-lines class="inputBox">
+      <ion-input
+        type="password"
+        name="password"
+        ngModel
+        placeholder="Password"
+        required
+        [minlength]="6"
+      ></ion-input>
+    </ion-item>
+    <ion-item no-lines class="inputBox">
+      <ion-input
+        type="password"
+        name="passwordTwo"
+        ngModel
+        placeholder="Re-password"
+        required
+        [minlength]="6"
+      ></ion-input>
+    </ion-item>
+    <button ion-button
+            type="submit"
+            outline
+            style="font-size: large;border: 2px white solid;color: white;margin-top: 10%"
+            [disabled]="!f.valid"
+            block
+            round>Create Account</button>
+
+    <button ion-button
+            type="button"
+            outline
+            style="font-size: large;border: 2px white solid;color: white"
+            block
+            (click) = "toTabsPage()"
+            round>Continue as a guest</button>
+  </form>
+
+

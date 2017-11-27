@@ -1,17 +1,95 @@
 <ion-header>
   <ion-navbar>
-    <ion-buttons start>
-      <button
-        ion-button
-        icon-only
-        clear
-        menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
+    <div style="float: left">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-auto>
+            <button
+              ion-button
+              icon-only
+              clear
+              small
+              menuToggle>
+              <div class="profilePictureWrapper">
+                <img style="height: 100%;width: 100%;border-radius: 50%" src="assets/imgs/pp.png">
+              </div>
+            </button>
+          </ion-col>
+          <ion-col col-auto>
+            <div class="dashBoardLogoWrapper">
+              <img style="height: 100%;width: 100%" src="assets/imgs/dashboard_logo.png">
+            </div>
+          </ion-col>
+          <ion-col col-auto>
+            <div>
+              <button
+                ion-button
+                icon-only
+                clear
+                small
+                right
+                menuToggle>
+                <ion-icon style="color:lightgray" name="notifications"></ion-icon>
+              </button>
+              <button
+                right
+                ion-button
+                icon-only
+                clear
+                small
+                menuToggle>
+                <ion-icon style="color:lightgray" name="search"></ion-icon>
+              </button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <div class="locationDiv">
+    <div no-margin style="color:whitesmoke">Ankara,Turkey</div>
+  </div>
+  <div style="text-align: center">
+    <button style="font-weight:bolder;font-size:x-small;color:#5f5f5f;border: 1px solid gray;margin-top: 10px"
+            ion-button
+            round
+            small
+            clear
+            outline>
+            <ion-icon style="color:cornflowerblue" name="navigate"></ion-icon>&nbsp;&nbsp;RETURN TO CURRENT LOCATION</button>
+  </div>
+  <div style="margin-top: 10px;margin-left: 20px;">
+    <ion-icon style="color:darkred" name="ribbon"></ion-icon>
+    <span style="font-weight: 1000  ">&nbsp;&nbsp;Featured Providers</span>
+    <button style="float:right;margin:0 40px 0 0;padding:5px;color:#4f4f4f;border: 1px solid gray;font-weight: bold;font-size: x-small;order: 3"
+            ion-button
+            clear
+            outline
+            small
+            >VIEW ALL</button>
+  </div>
+  <ion-scroll scrollX="true" direction="x">
+    <div class="providerCard" *ngFor="let image of images">
+      <div id="divForImg">
+        <img src="{{image}}">
+      </div>
+      <div id="divForInfo">
+        <span style="padding: 2px 0 0 2px;font-size: x-small;font-weight:bolder;color:dimgray">Metiner Koçak</span>
+        <span style="padding: 2px 0 0 2px;font-size: xx-small;font-weight:bolder;color:dimgray">13.2km</span>
+        <div id="stars">
+          <ion-icon style="margin-left: 6px;color:#6d0000" name="star"></ion-icon>
+          <ion-icon style="margin-left: 6px;color:#6d0000" name="star"></ion-icon>
+          <ion-icon style="margin-left: 6px;color:#6d0000" name="star"></ion-icon>
+          <ion-icon style="margin-left: 6px;color:#6d0000" name="star"></ion-icon>
+        </div>
+
+      </div>
+
+    </div>
+
+  </ion-scroll>
 
 </ion-content>

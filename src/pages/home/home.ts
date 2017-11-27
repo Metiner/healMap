@@ -7,6 +7,7 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
+  images = ["assets/imgs/doctor.jpg","assets/imgs/doctor2.jpg","assets/imgs/doctor3.jpg"]
   constructor(public navCtrl: NavController) {
 
   }
