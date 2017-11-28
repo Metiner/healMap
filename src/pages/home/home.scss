@@ -21,15 +21,19 @@ page-home {
     width: 150px;
     display: inline-block;
 
-    #divForImg{
+    .divForImg{
       height: 150px;
       width: 150px;
 
     }
-    #divForInfo{
+    .divForInfo{
       border-top: 1px solid lightgray;
       height: 20px;
       background-color: whitesmoke;
+    }
+
+    .divForInfoPatient{
+        height: 30%;
     }
 
 

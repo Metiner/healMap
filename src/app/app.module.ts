@@ -9,13 +9,17 @@ import { HomePage } from '../pages/home/home';
 import {HealMapLib} from "../services/healMapLib";
 import {LoginPage} from "../pages/login/login";
 import {SignupPage} from "../pages/signup/signup";
+import {ProviderPage} from "../pages/provider/provider";
+import {HeaderComponent} from "../components/header";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     LoginPage,
-    SignupPage
+    SignupPage,
+    ProviderPage,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,8 @@ import {SignupPage} from "../pages/signup/signup";
     MyApp,
     HomePage,
     LoginPage,
-    SignupPage
+    SignupPage,
+    ProviderPage
   ],
   providers: [
     StatusBar,
