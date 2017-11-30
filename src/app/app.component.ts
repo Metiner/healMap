@@ -5,11 +5,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import {LoginPage} from "../pages/login/login";
 import {ProviderPage} from "../pages/provider/provider";
+import {ProfilePage} from "../pages/profile/profile";
+import {PhotosPage} from "../pages/photos/photos";
+import {ChatListPage} from "../pages/chat-list/chat-list";
+import {NotificationsPage} from "../pages/notifications/notifications";
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = ProviderPage;
+  rootPage:any = NotificationsPage;
   @ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,

@@ -1,11 +1,11 @@
 page-provider {
-
-  .col{
-    border: 1px solid black;
-  }
-  .row{
-    border: 1px solid black;
-  }
+  //
+  //.col{
+  //  border: 1px solid black;
+  //}
+  //.row{
+  //  border: 1px solid black;
+  //}
 
   .mapRowProvider{
     height: 150px;
@@ -62,5 +62,9 @@ page-provider {
   ion-card{
     margin: 10px 1px 10px 1px !important;
 
+  }
+
+  ion-label{
+    margin : 0px !important;
   }
 }
