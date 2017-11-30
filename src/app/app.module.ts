@@ -15,6 +15,7 @@ import {ProfilePage} from "../pages/profile/profile";
 import {PhotosPage} from "../pages/photos/photos";
 import {ChatListPage} from "../pages/chat-list/chat-list";
 import {NotificationsPage} from "../pages/notifications/notifications";
+import {GoogleMaps} from "@ionic-native/google-maps";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {NotificationsPage} from "../pages/notifications/notifications";
   providers: [
     StatusBar,
     SplashScreen,
+    GoogleMaps,
     HealMapLib,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

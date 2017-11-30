@@ -13,7 +13,7 @@ import {NotificationsPage} from "../pages/notifications/notifications";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = NotificationsPage;
+  rootPage:any = ProviderPage;
   @ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,
