@@ -1,0 +1,33 @@
+
+<ion-header>
+  <header-component></header-component>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-list>
+    <ion-list-header style="background-color: #000000;border-bottom: 0.55px solid #646464;margin-bottom:0px !important;">
+      <ion-icon style="color:#4b0a14" name="navigate"></ion-icon>
+      <span style="font-size: small;color: #c5c5c5;font-weight: bolder">Locations</span>
+    </ion-list-header>
+
+    <ion-item *ngFor="let item of locations" no-lines>
+      <span style="color:#c5c5c5;font-size: small">{{ item }}</span>
+    </ion-item>
+
+    <ion-list-header style="background-color: #000000;margin-bottom:0px !important;margin-top: 0px !important;border-bottom: 0.55px solid #646464;border-top: 0px solid #646464 !important;">
+      <ion-icon style="color:#4b0a14" name="people"></ion-icon>
+      <span style="font-size: small;color: #c5c5c5;font-weight: bolder">Providers</span>
+    </ion-list-header>
+
+
+    <ion-item *ngFor="let item of providers" no-lines>
+      <span style="color:#c5c5c5;font-size: small">{{ item }}</span>
+    </ion-item>
+
+
+  </ion-list>
+  <ion-list>
+
+  </ion-list>
+</ion-content>

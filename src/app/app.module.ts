@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -16,6 +16,7 @@ import {PhotosPage} from "../pages/photos/photos";
 import {ChatListPage} from "../pages/chat-list/chat-list";
 import {NotificationsPage} from "../pages/notifications/notifications";
 import {GoogleMaps} from "@ionic-native/google-maps";
+import {SearchPage} from "../pages/search/search";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {GoogleMaps} from "@ionic-native/google-maps";
     ProfilePage,
     PhotosPage,
     ChatListPage,
-    NotificationsPage
+    NotificationsPage,
+    SearchPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ import {GoogleMaps} from "@ionic-native/google-maps";
     ProfilePage,
     PhotosPage,
     ChatListPage,
-    NotificationsPage
+    NotificationsPage,
+    SearchPage
   ],
   providers: [
     StatusBar,

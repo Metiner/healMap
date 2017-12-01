@@ -9,11 +9,12 @@ import {ProfilePage} from "../pages/profile/profile";
 import {PhotosPage} from "../pages/photos/photos";
 import {ChatListPage} from "../pages/chat-list/chat-list";
 import {NotificationsPage} from "../pages/notifications/notifications";
+import {SearchPage} from "../pages/search/search";
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = ProviderPage;
+  rootPage:any = SearchPage;
   @ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,

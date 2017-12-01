@@ -4,30 +4,113 @@
       <ion-title>Menü</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
-    <ion-item *ngIf="!isAuthenticated">
+  <ion-content style="background-color: #f0ecec">
+    <ion-item class="menuItem">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-30 offset-7 style="border-radius: 50%;max-height: max-content;border:1px solid darkred">
+            <img style="height: 100%;width: 100%" src="assets/imgs/pp.png">
+          </ion-col>
+          <ion-col offset-6 style="margin-top: 20px">
+            <span class="menuSpan">John Doe</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item class="menuItem" *ngIf="!isAuthenticated">
       <button ion-button
               clear
               (click)="onSignin()"
-              icon-left>
-        <ion-icon name="log-in"></ion-icon>Giriş Yap
+              icon-left
+              class="menuSpan">
+        <ion-icon class="menuSpan" name="log-in"></ion-icon>
+        <span class="menuSpan">Log in</span>
       </button>
     </ion-item>
-    <ion-item *ngIf="isAuthenticated">
+    <ion-item class="menuItem" *ngIf="!isAuthenticated">
       <button ion-button
               clear
-              (click)="onLogout()"
+              (click)="onChats()"
               icon-left>
-        <ion-icon name="log-out"></ion-icon>Çıkış
+        <ion-icon class="menuSpan" name="chatbubbles"></ion-icon>
+        <span class="menuSpan">Chats</span>
       </button>
     </ion-item>
-    <ion-item *ngIf="isAuthenticated">
+    <ion-item class="menuItem" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onEmergencyNumbers()"
+              icon-left>
+        <ion-icon class="menuSpan" name="medkit"></ion-icon>
+        <span class="menuSpan">Emergency Numbers</span>
+      </button>
+    </ion-item>
+    <ion-item class="menuItem" *ngIf="!isAuthenticated">
       <button ion-button
               clear
               (click) = "onSettings()"
               icon-left>
-        <ion-icon name="settings"></ion-icon>Ayarlar
+        <ion-icon class="menuSpan" name="settings"></ion-icon>
+        <span class="menuSpan">Settings</span>
       </button>
+    </ion-item>
+    <ion-item class="menuItem" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onLogout()"
+              icon-left>
+        <ion-icon class="menuSpan" name="log-out"></ion-icon>
+        <span class="menuSpan">Log out</span>
+      </button>
+    </ion-item>
+    <ion-item style="background-color: #FFFFFF" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onLogout()"
+              icon-left>
+        <span class="menuSpan">Review on Appstore</span>
+      </button>
+    </ion-item>
+    <ion-item style="background-color: #FFFFFF" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onLogout()"
+              icon-left>
+        <span class="menuSpan">Leave Feedback</span>
+      </button>
+    </ion-item>
+    <ion-item style="background-color: #FFFFFF" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onLogout()"
+              icon-left>
+        <span class="menuSpan">Report Bug</span>
+      </button>
+    </ion-item>
+    <ion-item style="background-color: #FFFFFF;margin-top: 10px" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onLogout()"
+              icon-left>
+        <span class="menuSpan">Privacy Policy</span>
+      </button>
+    </ion-item><ion-item style="background-color: #FFFFFF" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onLogout()"
+              icon-left>
+        <span class="menuSpan">Terms of Use</span>
+      </button>
+    </ion-item><ion-item style="background-color: #FFFFFF" *ngIf="!isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onLogout()"
+              icon-left>
+        <span class="menuSpan">App version <span style="color:darkred"> 1.0.0</span></span>
+      </button>
+    </ion-item>
+    <ion-item class="menuItem">
+      <span style="padding-top:15px;font-weight:bolder;font-size: small;color: darkred">Copyright ©  Healmap.com</span>
     </ion-item>
   </ion-content>
 </ion-menu>
