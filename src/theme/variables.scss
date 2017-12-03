@@ -41,7 +41,8 @@ $colors: (
   danger:     #f53d3d,
   light: #cecece,
   dark:       #222,
-  redButton: #a0051c
+  redButton: #a0051c,
+  white: #ffffff
 );
 
 
@@ -57,6 +58,7 @@ $colors: (
 // Material Design only Sass variables can go here
 
 $text-input-md-show-focus-highlight : false;
+$label-md-text-color-focused : #a0051c;
 
 
 // App Windows Variables

@@ -1,0 +1,67 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title><span style="font-weight: 900;font-size: x-large">John Doe</span></ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+<ion-grid>
+  <ion-row>
+    <ion-col col-70 offset-25 style="text-align: center;margin-top: 10px">
+      <button ion-button
+              small
+              round
+              color="white"><span style="color: #1A1A1A;font-weight: bolder;font-size: 10px">LOAD OLD MESSAGES</span></button>
+    </ion-col>
+  </ion-row>
+  <ion-row style="margin-top: 5px">
+    <ion-col col-15 offset-2>
+      <ion-avatar>
+        <img src="assets/imgs/pp.png">
+      </ion-avatar>
+    </ion-col>
+    <ion-col col-85 offset-2>
+      <div class="chatBubbleFrom">
+        <span>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </span>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row style="margin-top: 5px">
+    <ion-col col-85 offset-30>
+      <div class="chatBubbleTo">
+        <span>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </span>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-15 style="text-align: center" align-self-center>
+        <button>
+          <ion-icon style="font-size: xx-large;font-weight: 900;color:darkred" name="add"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-90>
+        <ion-item>
+          <ion-input style="padding:5px 0 5px 10px;font-size:15px;background-color: #f0ecec;border-radius: 64px" type="text" placeholder="Write a message..."></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col col-15 text-center align-self-center>
+        <button>
+          <ion-icon style="font-size: xx-large;font-weight: 900;color:darkred" name="send"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

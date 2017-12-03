@@ -16,6 +16,10 @@ import {PhotosPage} from "../pages/photos/photos";
 import {ChatListPage} from "../pages/chat-list/chat-list";
 import {NotificationsPage} from "../pages/notifications/notifications";
 import {GoogleMaps} from "@ionic-native/google-maps";
+import {ChatPage} from "../pages/chat/chat";
+import {ExpertsPage} from "../pages/experts/experts";
+import {ReviewsPage} from "../pages/reviews/reviews";
+import {WriteReviewPage} from "../pages/write-review/write-review";
 
 @NgModule({
   declarations: [
@@ -28,7 +32,11 @@ import {GoogleMaps} from "@ionic-native/google-maps";
     ProfilePage,
     PhotosPage,
     ChatListPage,
-    NotificationsPage
+    NotificationsPage,
+    ChatPage,
+    ExpertsPage,
+    ReviewsPage,
+    WriteReviewPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +52,11 @@ import {GoogleMaps} from "@ionic-native/google-maps";
     ProfilePage,
     PhotosPage,
     ChatListPage,
-    NotificationsPage
+    NotificationsPage,
+    ChatPage,
+    ExpertsPage,
+    ReviewsPage,
+    WriteReviewPage
   ],
   providers: [
     StatusBar,

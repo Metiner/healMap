@@ -1,0 +1,39 @@
+
+<ion-header>
+  <header-component></header-component>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label floating>Title</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label floating>Write a review</ion-label>
+          <ion-textarea style="height: 400px" type="text"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row style="background-color: #F0ECEC">
+      <ion-col col-100 offset-10>
+        <button ion-button
+                color="redButton"
+                block
+                (click)="onReviewSubmit()"
+          >Post</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

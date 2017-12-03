@@ -1,0 +1,46 @@
+page-chat {
+
+  background-color: #f0ecec;
+
+  .toolbar-background{
+    background-color: #f0ecec !important;
+
+  }
+
+  .col{
+    border: 1px solid black;
+  }
+  .row{
+    border: 1px solid black;
+  }
+  .text-input::-moz-placeholder {
+    color: #5c5c5c;
+  }
+
+  .text-input:-ms-input-placeholder {
+    color: #777777;
+  }
+
+  .text-input::-webkit-input-placeholder {
+    text-indent: 0;
+    color: #747474;
+  }
+
+  .text-input{
+    margin: 2px;
+  }
+
+  .chatBubbleFrom{
+    background-color: #FFFFFF;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0 20px 0 0;
+  }
+  .chatBubbleTo{
+    background-color: #960000;
+    padding: 10px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    margin: 0 20px 0 0;
+  }
+}
