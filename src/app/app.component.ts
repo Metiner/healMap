@@ -17,7 +17,7 @@ import {WriteReviewPage} from "../pages/write-review/write-review";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = WriteReviewPage;
+  rootPage:any = ProviderPage;
   @ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,

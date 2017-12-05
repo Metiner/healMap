@@ -20,6 +20,7 @@ import {ChatPage} from "../pages/chat/chat";
 import {ExpertsPage} from "../pages/experts/experts";
 import {ReviewsPage} from "../pages/reviews/reviews";
 import {WriteReviewPage} from "../pages/write-review/write-review";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {WriteReviewPage} from "../pages/write-review/write-review";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
