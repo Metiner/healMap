@@ -15,12 +15,17 @@ import {ProfilePage} from "../pages/profile/profile";
 import {PhotosPage} from "../pages/photos/photos";
 import {ChatListPage} from "../pages/chat-list/chat-list";
 import {NotificationsPage} from "../pages/notifications/notifications";
-import {GoogleMaps} from "@ionic-native/google-maps";
 import {ChatPage} from "../pages/chat/chat";
 import {ExpertsPage} from "../pages/experts/experts";
 import {ReviewsPage} from "../pages/reviews/reviews";
 import {WriteReviewPage} from "../pages/write-review/write-review";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {Geolocation} from "@ionic-native/geolocation";
+import { ConnectivityServiceProvider } from '../providers/connectivity-service/connectivity-service';
+import {Network} from "@ionic-native/network";
+import {GoogleMapsCluster} from "../providers/google-maps-cluster/google-maps-cluster";
+import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
+import {Http, HttpModule} from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -41,6 +46,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     BrowserAnimationsModule,
     IonicModule.forRoot(MyApp)
   ],
@@ -63,9 +69,13 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
   providers: [
     StatusBar,
     SplashScreen,
-    GoogleMaps,
+    Network,
     HealMapLib,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Geolocation,
+    ConnectivityServiceProvider,
+    GoogleMapsCluster,
+    GoogleMapsProvider
   ]
 })
 export class AppModule {}

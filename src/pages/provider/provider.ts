@@ -1,8 +1,13 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import {IonicPage, Platform} from 'ionic-angular';
 import {mapExpandAnimation} from "../../app/animations";
+import {Geolocation} from "@ionic-native/geolocation";
+import {ConnectivityServiceProvider} from "../../providers/connectivity-service/connectivity-service";
+import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
+import {GoogleMaps} from "@ionic-native/google-maps";
+import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 
-declare var google:any;
+declare var google;
 
 @IonicPage()
 @Component({
@@ -14,21 +19,78 @@ export class ProviderPage {
 
 
   @ViewChild('map_canvas') mapRef : ElementRef;
+  @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
   map: any;
+  mapInitialized : boolean = false;
   expanded: boolean =false;
   marginTop= -500;
+  apiKey = 'AIzaSyC4WV2cYd2AazjXpH7-rcbcBk8EeP5HfB0';
 
-  constructor() {
+  constructor(public geolocation:Geolocation,
+              public connectivityService:ConnectivityServiceProvider,
+              public platform:Platform,
+              public maps:GoogleMapsProvider,
+              public mapCluster:GoogleMapsCluster) {
   }
 
   ionViewDidLoad() {
-    this.loadMap();
+    this.platform.ready().then(()=>{
+      let mapLoaded = this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
+        this.mapCluster.addCluster(map);
+      });
+    })
+    //this.loadMap();
   }
 
 
   // to load google map with its options.
   loadMap() {
 
+
+    this.addConnectivityListeners();
+
+    if(typeof google == "undefined" || typeof google.maps == "undefined"){
+
+      console.log("Google maps JavaScript needs to be loaded.");
+      this.disableMap();
+
+      if(this.connectivityService.isOnline()){
+        console.log("online, loading map");
+
+        //Load the SDK
+        window['mapInit'] = () => {
+          this.initMap();
+          this.enableMap();
+        }
+
+        let script = document.createElement("script");
+        script.id = "googleMaps";
+
+        if(this.apiKey){
+          script.src = 'http://maps.google.com/maps/api/js?key=' + this.apiKey + '&callback=mapInit';
+        } else {
+          script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';
+        }
+
+        document.body.appendChild(script);
+
+      }
+    }
+    else {
+
+      if(this.connectivityService.isOnline()){
+        console.log("showing map");
+        this.initMap();
+        this.enableMap();
+      }
+      else {
+        console.log("disabling map");
+        this.disableMap();
+      }
+    }
+  }
+
+  initMap(){
     var retro =  [
       {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
       {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
@@ -149,24 +211,53 @@ export class ProviderPage {
       }
     ]
 
+    this.geolocation.getCurrentPosition().then( position =>{
+      console.log(position);
+      let latLng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+
+      // options
+      var options = {
+
+        center:latLng,
+        zoom:15,
+        mapTypeControlOptions: {
+          mapTypeIds: []
+        },
+        streetViewControl: false
+      }
 
 
-    // location
-    const location = new google.maps.LatLng(39.9334,32.8597);
+      this.map = new google.maps.Map(this.mapRef.nativeElement,options);
+      this.map.setOptions({styles: retro});
 
-    // options
 
-    var options = {
-      center:location,
-      zoom:15,
-      mapTypeControlOptions: {
-        mapTypeIds: []
-      },
-      streetViewControl: false
-    }
+      let marker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: latLng
+      });
 
-    this.map = new google.maps.Map(this.mapRef.nativeElement,options);
-    this.map.setOptions({styles: retro});
+      let content = "<h4>Information!</h4>";
+
+      this.addInfoWindow(marker, content);
+
+
+    },error =>{
+      console.log(error.toLocaleString());
+    })
+
+  }
+
+  addInfoWindow(marker, content){
+
+    let infoWindow = new google.maps.InfoWindow({
+      content: content
+    });
+
+    google.maps.event.addListener(marker, 'click', () => {
+      infoWindow.open(this.map, marker);
+    });
+
   }
 
   expandMap(){
@@ -178,5 +269,41 @@ export class ProviderPage {
     this.expanded = !this.expanded;
   }
 
+  disableMap(){
+    console.log("disable map");
+  }
 
+  enableMap(){
+    console.log("enable map");
+  }
+
+  addConnectivityListeners(){
+
+    let onOnline = () => {
+
+      setTimeout(() => {
+        if(typeof google == "undefined" || typeof google.maps == "undefined"){
+
+          this.loadMap();
+
+        } else {
+
+          if(!this.mapInitialized){
+            this.initMap();
+          }
+
+          this.enableMap();
+        }
+      }, 2000);
+
+    };
+
+    let onOffline = () => {
+      this.disableMap();
+    };
+
+    document.addEventListener('online', onOnline, false);
+    document.addEventListener('offline', onOffline, false);
+
+  }
 }
