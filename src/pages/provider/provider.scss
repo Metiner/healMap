@@ -6,11 +6,6 @@ page-provider {
   //.row{
   //  border: 1px solid black;
   //}
-
-
-
-
-
   #map_canvas {
     height: 100%;
   }
@@ -18,9 +13,6 @@ page-provider {
   .mapRowProvider{
     height: 150px;
     margin: 0;
-  }
-  .scroll-content{
-    padding: 0 !important;
   }
   .providerInfo{
     background-color: #FFFFFF;
@@ -41,7 +33,6 @@ page-provider {
     background-color: #f0ecec;
     padding: 5px;
   }
-
 
   .infoTextClass{
     margin-left: 30px;
@@ -67,6 +58,10 @@ page-provider {
   .scroll-zoom-wrapper {
     white-space: nowrap;
   }
+  .scroll-content{
+    padding: 0 !important;
+  }
+
   ion-card{
     margin: 10px 1px 10px 1px !important;
 

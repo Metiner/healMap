@@ -2,22 +2,13 @@ import {Component, ViewChild} from '@angular/core';
 import {MenuController, NavController, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { HomePage } from '../pages/home/home';
 import {LoginPage} from "../pages/login/login";
-import {ProviderPage} from "../pages/provider/provider";
-import {ProfilePage} from "../pages/profile/profile";
-import {PhotosPage} from "../pages/photos/photos";
-import {ChatListPage} from "../pages/chat-list/chat-list";
-import {NotificationsPage} from "../pages/notifications/notifications";
-import {ChatPage} from "../pages/chat/chat";
-import {ExpertsPage} from "../pages/experts/experts";
-import {ReviewsPage} from "../pages/reviews/reviews";
-import {WriteReviewPage} from "../pages/write-review/write-review";
+import {MapPage} from "../pages/map/map";
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = ProviderPage;
+  rootPage:any = MapPage;
   @ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ConnectivityServiceProvider} from "../connectivity-service/connectivity-service";
 import {Geolocation} from "@ionic-native/geolocation";
+import {Retro} from "../../components/googleMapStyle";
 
 declare var google;
 
@@ -11,10 +12,8 @@ export class GoogleMapsProvider {
   pleaseConnect: any;
   map: any;
   mapInitialised: boolean = false;
-  mapLoaded: any;
-  mapLoadedObserver: any;
-  currentMarker: any;
   apiKey: string;
+  retro = Retro;
 
   constructor(public connectivityService: ConnectivityServiceProvider,
               public geolocation:Geolocation) {
@@ -64,7 +63,6 @@ export class GoogleMapsProvider {
         }
       }
       else {
-
         if(this.connectivityService.isOnline()){
           this.initMap();
           this.enableMap();
@@ -72,13 +70,9 @@ export class GoogleMapsProvider {
         else {
           this.disableMap();
         }
-
       }
-
       this.addConnectivityListeners();
-
     });
-
   }
 
   initMap(): Promise<any> {
@@ -99,6 +93,7 @@ export class GoogleMapsProvider {
         }
 
         this.map = new google.maps.Map(this.mapElement, mapOptions);
+        this.map.setOptions({styles: this.retro});
         resolve(this.map);
 
       });
@@ -138,22 +133,14 @@ export class GoogleMapsProvider {
           if(!this.mapInitialised){
             this.initMap();
           }
-
           this.enableMap();
         }
-
       }, 2000);
-
     });
 
     this.connectivityService.watchOffline().subscribe(() => {
-
       console.log("offline");
-
       this.disableMap();
-
     });
-
   }
-
 }

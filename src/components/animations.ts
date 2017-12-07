@@ -20,3 +20,13 @@ export const mapExpandAnimation = trigger('mapExpandAnimation',[
       marginTop:-500
     }))
   ])])
+
+
+export const mapFilterButtonAnimation = trigger('mapFilterButtonAnimation',[
+
+  transition('* <=> *', [
+    style({
+      backgroundColor: 'black'
+    })
+  ])
+])

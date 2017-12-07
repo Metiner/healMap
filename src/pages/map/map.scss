@@ -1,0 +1,45 @@
+page-map {
+
+  //.col{
+  //  border: 1px solid black;
+  //}
+  //.row{
+  //  border: 1px solid black;
+  //}
+
+
+
+  #map_canvas {
+    height: 100%;
+  }
+  ion-scroll {
+    min-height: 40px;
+    height: 40px;
+
+    .scroll-content {
+      padding: 0px !important;
+      background-color: #f0ecec;
+    }
+  }
+
+  .pressedButtonStyle{
+    background-color: #b2b2b2;
+    border: 1px solid #bfbfbf;
+    font-weight: bolder;
+    color: black;
+    transition: all .1s ease-out;
+    transform : scale(.9);
+  }
+  .notPressedButtonStyle{
+    background-color: #f0ecec;
+    transition: all .1s ease-out;
+  }
+
+  .scroll-zoom-wrapper {
+    white-space: nowrap;
+  }
+  .scroll-content{
+    padding: 0 !important;
+  }
+
+}

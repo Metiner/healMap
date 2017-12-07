@@ -26,6 +26,7 @@ import {Network} from "@ionic-native/network";
 import {GoogleMapsCluster} from "../providers/google-maps-cluster/google-maps-cluster";
 import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 import {Http, HttpModule} from "@angular/http";
+import {MapPage} from "../pages/map/map";
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {Http, HttpModule} from "@angular/http";
     ChatPage,
     ExpertsPage,
     ReviewsPage,
-    WriteReviewPage
+    WriteReviewPage,
+    MapPage
   ],
   imports: [
     BrowserModule,
@@ -64,7 +66,8 @@ import {Http, HttpModule} from "@angular/http";
     ChatPage,
     ExpertsPage,
     ReviewsPage,
-    WriteReviewPage
+    WriteReviewPage,
+    MapPage
   ],
   providers: [
     StatusBar,
