@@ -4,11 +4,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {LoginPage} from "../pages/login/login";
 import {MapPage} from "../pages/map/map";
+import {ProviderOrpatientsPage} from "../pages/provider-orpatients/provider-orpatients";
+import {SignupPage} from "../pages/signup/signup";
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = MapPage;
+  rootPage:any = SignupPage;
   @ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,

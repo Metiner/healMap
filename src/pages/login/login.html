@@ -7,25 +7,27 @@
 <ion-content padding>
   <ion-grid>
     <ion-row>
-      <ion-col offset-3 col-6>
+      <ion-col
+        [ngClass]="itemone ? 'toLogoUp' : 'toLogoDown'"
+        offset-27 col-60>
         <img style="text-shadow: #222222" src="../../assets/imgs/login_logo.png">
       </ion-col>
     </ion-row>
     <form #f="ngForm" (submit)="onLogin(f)">
-      <ion-item no-lines class="inputBox">
+      <ion-item [ngClass]="itemtwo ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
         <ion-input type="text" placeholder="username or e-mail"></ion-input>
       </ion-item>
-      <ion-item no-lines class="inputBox">
+      <ion-item [ngClass]="itemthree ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
         <ion-input type="password" placeholder="password"></ion-input>
       </ion-item>
-      <ion-row>
-        <ion-col col-7>
+      <ion-row [ngClass]="itemfour ? 'toLogoUp' : 'toLogoDown'" >
+        <ion-col  col-70>
           <ion-item no-lines class="rememberMe">
             <ion-label>Remember Username</ion-label>
             <ion-checkbox style="margin-right: 8px" [ngModel] name="rememberMe"></ion-checkbox>
           </ion-item>
         </ion-col>
-        <ion-col col-5>
+        <ion-col col-50>
           <button ion-button
                   clear
                   (click)="onForgotPassword()"
@@ -35,7 +37,8 @@
           >Forgot Password</button>
         </ion-col>
       </ion-row>
-      <button ion-button
+      <button [ngClass]="itemfive ? 'toLogoUp' : 'toLogoDown'"
+              ion-button
               type="submit"
               outline
               color="light"
@@ -44,38 +47,36 @@
               round
       >Login</button>
     </form>
-    <ion-row>
+    <ion-row [ngClass]="itemsix ? 'toLogoUp' : 'toLogoDown'">
       <ion-col text-center>
         <ion-label style="font-style: italic;color: whitesmoke;">or</ion-label>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row [ngClass]="itemseven ? 'toLogoUp' : 'toLogoDown'">
       <button ion-button
               block
               round
-              small
+
               style="background-color: #0077b5"
       >LinkedIn</button>
     </ion-row>
-    <ion-row>
+    <ion-row [ngClass]="itemeight ? 'toLogoUp' : 'toLogoDown'">
       <button ion-button
               block
               round
-              small
               (click)="onFacebookLogin()"
               style="background-color: #3b5998"
       >Facebook</button>
     </ion-row>
-    <ion-row>
+    <ion-row [ngClass]="itemnine ? 'toLogoUp' : 'toLogoDown'">
       <button ion-button
-              small
               block
               round
               (click)="onGoogleLogin()"
               style="background-color: #d34836"
       >Google Plus</button>
     </ion-row>
-    <ion-row>
+    <ion-row [ngClass]="itemten ? 'toLogoUp' : 'toLogoDown'">
       <button ion-button
               small
               block
@@ -84,7 +85,7 @@
               style="background-color: whitesmoke;color: darkred"
       >Create a free account</button>
     </ion-row>
-    <ion-row>
+    <ion-row [ngClass]="itemeleven ? 'toLogoUp' : 'toLogoDown'">
       <button ion-button
               small
               block

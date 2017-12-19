@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {NgForm} from "@angular/forms";
+import {SignupPage} from "../signup/signup";
 
 /**
- * Generated class for the SignupPage page.
+ * Generated class for the ProviderOrpatientsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -11,21 +11,19 @@ import {NgForm} from "@angular/forms";
 
 @IonicPage()
 @Component({
-  selector: 'page-signup',
-  templateUrl: 'signup.html',
+  selector: 'page-provider-orpatients',
+  templateUrl: 'provider-orpatients.html',
 })
-export class SignupPage {
+export class ProviderOrpatientsPage {
+
+  providerSignUpPage = SignupPage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SignupPage');
+  providerSignUp(){
+    this.navCtrl.push(this.providerSignUpPage);
   }
 
 
-  onSignUp(form:NgForm){
-
-
-  }
 }

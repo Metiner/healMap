@@ -5,7 +5,53 @@
 
 <ion-content padding>
   <form #f="ngForm" (submit)="onSignUp(f)">
-    <ion-item no-lines class="inputBox" style="margin-top: 30%">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-20 offset-10>
+          <ion-avatar item-start>
+            <img src="assets/imgs/pp.png">
+          </ion-avatar>
+        </ion-col>
+        <ion-col>
+          <span style="color: white;margin-left: 30px;font-size: medium">Change It</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item no-lines class="inputBox" style="margin-top: 20px">
+      <ion-input
+        type="text"
+        name="name"
+        ngModel
+        required
+        placeholder="Name"
+      ></ion-input>
+    </ion-item>
+    <ion-item no-lines class="inputBox">
+      <ion-input
+        type="text"
+        name="surname"
+        ngModel
+        required
+        placeholder="Surname"
+      ></ion-input>
+    </ion-item>
+    <ion-item no-lines class="inputBox">
+      <ion-input
+        type="text"
+        name="profession"
+        ngModel
+        required
+        placeholder="What is your Profession ?"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item no-lines class="inputBox">
+      <ion-textarea ngModel
+                    required
+                    placeholder="Say something about yourself"
+                    name="aboutMe" ></ion-textarea>
+    </ion-item>
+    <ion-item no-lines class="inputBox">
       <ion-input
         type="email"
         name="email"
@@ -42,13 +88,6 @@
             block
             round>Create Account</button>
 
-    <button ion-button
-            type="button"
-            outline
-            style="font-size: large;border: 2px white solid;color: white"
-            block
-            (click) = "toTabsPage()"
-            round>Continue as a guest</button>
   </form>
 
 

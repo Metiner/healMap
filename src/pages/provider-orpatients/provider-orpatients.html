@@ -1,0 +1,49 @@
+<ion-header>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row style="margin-top: 100px" text-center>
+      <ion-col>
+        <span style="color: white;font-size: large;font-weight: bold">Do you use HealMap as a provider or a patient ?</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button
+                style="font-size: large;border: 2px white solid;color: white;margin-top: 10%"
+                block
+                color="white"
+                (click)="providerSignUp()"
+                round><span style="color: #a0051c;font-weight: bolder;font-size: medium">Provider</span></button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button
+                style="font-size: large;border: 2px white solid;color: white"
+                block
+                color="white"
+                (click)="patientSignUp()"
+                round><span style="color: #a0051c;font-weight: bolder;font-size: medium">Patient</span></button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button
+                type="button"
+                style="font-size: large;border: 2px white solid;color: white"
+                color="white"
+                block
+                (click) = "toTabsPage()"
+                round><span style="color: #a0051c;font-weight: bolder;font-size: medium">Continue as a Guest</span></button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+    </ion-content>
+

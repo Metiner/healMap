@@ -27,6 +27,7 @@ import {GoogleMapsCluster} from "../providers/google-maps-cluster/google-maps-cl
 import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 import {Http, HttpModule} from "@angular/http";
 import {MapPage} from "../pages/map/map";
+import {ProviderOrpatientsPage} from "../pages/provider-orpatients/provider-orpatients";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {MapPage} from "../pages/map/map";
     ExpertsPage,
     ReviewsPage,
     WriteReviewPage,
-    MapPage
+    MapPage,
+    ProviderOrpatientsPage
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ import {MapPage} from "../pages/map/map";
     ExpertsPage,
     ReviewsPage,
     WriteReviewPage,
-    MapPage
+    MapPage,
+    ProviderOrpatientsPage
   ],
   providers: [
     StatusBar,
