@@ -10,7 +10,7 @@ import {SignupPage} from "../pages/signup/signup";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = SignupPage;
+  rootPage:any = MapPage;
   @ViewChild('nav') nav: NavController;
 
   constructor(platform: Platform,

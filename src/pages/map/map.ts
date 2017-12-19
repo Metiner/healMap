@@ -34,6 +34,14 @@ export class MapPage {
   }
 
   onFilterButton(pressedButton) {
+    var map = this.maps.getMap();
+
+    map.addListener("bounds_changed",()=>{
+      console.log(map.getBounds().getNorthEast() + " --- " + map.getBounds().getSouthWest());
+    })
+    map.addListener("zoom_changed",()=>{
+      console.log(map.getBounds().getNorthEast() + " --- " + map.getBounds().getSouthWest());
+    })
     if(pressedButton.pressed){
       pressedButton.style = 'pressedButtonStyle';
       pressedButton.pressed = false;
