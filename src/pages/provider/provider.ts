@@ -31,7 +31,7 @@ export class ProviderPage {
   ionViewDidLoad() {
     this.platform.ready().then(()=>{
       let mapLoaded = this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
-        this.mapCluster.addCluster(map);
+        //this.mapCluster.addCluster(map);
       });
     })
   }

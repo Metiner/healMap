@@ -83,12 +83,11 @@ export class GoogleMapsProvider {
 
       this.geolocation.getCurrentPosition().then((position) => {
 
-        //let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        let latLng = new google.maps.LatLng(-31.563910, 147.154312);
+        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
         let mapOptions = {
           center: latLng,
-          zoom: 2,
+          zoom: 10,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         }
 

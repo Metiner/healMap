@@ -25,7 +25,7 @@ import { ConnectivityServiceProvider } from '../providers/connectivity-service/c
 import {Network} from "@ionic-native/network";
 import {GoogleMapsCluster} from "../providers/google-maps-cluster/google-maps-cluster";
 import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
-import {Http, HttpModule} from "@angular/http";
+import { HttpModule} from "@angular/http";
 import {MapPage} from "../pages/map/map";
 import {ProviderOrpatientsPage} from "../pages/provider-orpatients/provider-orpatients";
 
