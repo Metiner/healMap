@@ -64,7 +64,9 @@ export class GoogleMapsProvider {
       }
       else {
         if(this.connectivityService.isOnline()){
-          this.initMap();
+          this.initMap().then((map)=>{
+            resolve(map);
+          });
           this.enableMap();
         }
         else {
@@ -135,6 +137,8 @@ export class GoogleMapsProvider {
           this.enableMap();
         }
       }, 2000);
+    },error2 => {
+      error2.toString();
     });
 
     this.connectivityService.watchOffline().subscribe(() => {
