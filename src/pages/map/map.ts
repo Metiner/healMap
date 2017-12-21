@@ -19,6 +19,7 @@ export class MapPage {
 
   providers = ['Doctor','Nurse','PT','Volunteer','Pharmacy'];
   providersFromGoogle;
+  map;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -35,17 +36,27 @@ export class MapPage {
   ionViewDidLoad() {
     this.platform.ready().then(()=>{
       this.initMap().then(map=>{
-        this.getProvidersFromGoogle().then(response=>{
-          this.mapCluster.addCluster(map,this.providersFromGoogle);
+        this.map = map;
+
+        this.map.addListener("tilesloaded",()=>{
+
+        this.getCurrentPosition().then(currentPosition=>{
+          this.getProvidersFromGoogle(currentPosition).then(providersFromGoogle=>{
+            this.mapCluster.addCluster(this.map,providersFromGoogle);
+
+          })
+        })
+
         });
-      })
+        })
+
+
     })
   }
 
   initMap(){
     return new Promise((resolve => {
       this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
-        console.log(map);
         resolve(map);
       }).catch(error=>{
         console.log(error);
@@ -54,15 +65,13 @@ export class MapPage {
   }
 
 
-  getProvidersFromGoogle(){
+  getProvidersFromGoogle(currentPosition){
 
     return new Promise((resolve) => {
-      this.getCurrentPosition().then(response=>{
 
         this.getRadius().then(radius=>{
 
-          this.healmapLib.getVenueFromGoogleMaps(response.latitude,response.longitude,radius,'pharmacy','').subscribe(response=>{
-            console.log(response.json());
+          this.healmapLib.getVenueFromGoogleMaps(currentPosition.latitude,currentPosition.longitude,radius,'pharmacy','').subscribe(response=>{
             var objects = response.json().results;
             this.providersFromGoogle= [];
             objects.forEach(element =>{
@@ -72,7 +81,7 @@ export class MapPage {
           });
         })
       })
-    })
+
 
   }
   getCurrentPosition(){
@@ -88,10 +97,8 @@ export class MapPage {
 
   onFilterButton(pressedButton) {
 
-    //
-    // map.addListener("bounds_changed",()=>{
-    //   console.log(map.getBounds().getNorthEast() + " --- " + map.getBounds().getSouthWest());
-    // })
+
+
     // map.addListener("zoom_changed",()=>{
     //   console.log(map.getBounds().getNorthEast() + " --- " + map.getBounds().getSouthWest());
     // })
@@ -106,7 +113,8 @@ export class MapPage {
 
   getRadius(){
     return new Promise((resolve) => {
-      var map = this.maps.getMap();
+
+      var map = this.map;
       var bounds = map.getBounds();
       var center = map.getCenter();
       if(bounds && center){

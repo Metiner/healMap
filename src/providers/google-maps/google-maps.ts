@@ -146,7 +146,4 @@ export class GoogleMapsProvider {
       this.disableMap();
     });
   }
-  getMap(): any{
-    return this.map;
-  }
 }
