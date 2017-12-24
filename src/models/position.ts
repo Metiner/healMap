@@ -1,28 +1,28 @@
 export class Position{
 
 
-  constructor(longitude: string, latitude: string) {
+  constructor(longitude: number, latitude: number) {
     this._longitude = longitude;
     this._latitude = latitude;
   }
 
-  private _longitude: string;
-  private _latitude: string;
+  private _longitude: number;
+  private _latitude: number;
 
 
-  get longitude(): string {
+  get longitude(): number {
     return this._longitude;
   }
 
-  set longitude(value: string) {
+  set longitude(value: number) {
     this._longitude = value;
   }
 
-  get latitude(): string {
+  get latitude(): number {
     return this._latitude;
   }
 
-  set latitude(value: string) {
+  set latitude(value: number) {
     this._latitude = value;
   }
 }

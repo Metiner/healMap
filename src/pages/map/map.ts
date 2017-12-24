@@ -4,7 +4,6 @@ import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {HealMapLib} from "../../services/healMapLib";
 import {Geolocation} from "@ionic-native/geolocation";
-import {Position} from "../../models/position";
 declare var google;
 
 @IonicPage()
@@ -13,13 +12,22 @@ declare var google;
   templateUrl: 'map.html',
 })
 export class MapPage {
+  [x: string]: any;
 
   @ViewChild('map_canvas') mapRef : ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect : ElementRef;
 
-  providers = ['Doctor','Nurse','PT','Volunteer','Pharmacy'];
-  providersFromGoogle;
+  providers = ['Doctor','Dentist','Hospital','Beauty Salon','Pharmacy','Veterinary Care','Physiotherapist'];
+  providersFromGoogle=[];
+  providerIds=[];
   map;
+  center;
+  dragStartPosition;
+  dragEndPosition;
+  calculatedDistance;
+  radius;
+  mapReadyFirstToUse=true;
+  selectedProviders = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -33,24 +41,60 @@ export class MapPage {
 
   }
 
+  ionViewWillEnter(){
+    if(this.map){
+      this.map.setCenter({
+        lat: this.center.lat(),
+        lng: this.center.lng()
+      });
+    }
+  }
+
   ionViewDidLoad() {
+    this.mapReadyFirstToUse = true;
     this.platform.ready().then(()=>{
       this.initMap().then(map=>{
+
         this.map = map;
 
-        this.map.addListener("tilesloaded",()=>{
+        this.map.addListener("idle",()=>{
+          if(this.mapReadyFirstToUse) {
 
-        this.getCurrentPosition().then(currentPosition=>{
-          this.getProvidersFromGoogle(currentPosition).then(providersFromGoogle=>{
-            this.mapCluster.addCluster(this.map,providersFromGoogle);
+            this.getCenterOfMap().then(center => {
+              this.dragEndPosition = center;
+              this.center = center;
+              this.getProvidersFromGoogle(center, this.selectedProviders).then(providersFromGoogle => {
+                this.mapCluster.addCluster(this.map, providersFromGoogle);
+              })
+            })
+          }
+        })
 
+        this.map.addListener("dragstart",()=>{
+          this.getCenterOfMap().then(center=>{
+            this.dragStartPosition = center;
+            this.mapReadyFirstToUse = false;
           })
+      })
+
+        this.map.addListener("dragend",()=>{
+          this.getCenterOfMap().then(center=>{
+            this.dragEndPosition = center;
+            this.center = center;
+            this.getProvidersFromGoogle(center,this.selectedProviders).then(providersFromGoogle=>{
+              this.mapCluster.addCluster(this.map,providersFromGoogle);
+            })
+          })
+          this.mapReadyFirstToUse= false;
         })
+      })
+    })
+  }
 
-        });
-        })
-
-
+  getCenterOfMap(){
+    return new Promise((resolve) =>{
+      this.center = this.map.getCenter();
+      resolve(this.map.getCenter());
     })
   }
 
@@ -65,47 +109,64 @@ export class MapPage {
   }
 
 
-  getProvidersFromGoogle(currentPosition){
+  getProvidersFromGoogle(center,providerName){
+
+
+    this.providersFromGoogle = [];
 
     return new Promise((resolve) => {
 
         this.getRadius().then(radius=>{
 
-          this.healmapLib.getVenueFromGoogleMaps(currentPosition.latitude,currentPosition.longitude,radius,'pharmacy','').subscribe(response=>{
-            var objects = response.json().results;
-            this.providersFromGoogle= [];
-            objects.forEach(element =>{
-              this.providersFromGoogle.push(element);
-            })
-            resolve(this.providersFromGoogle);
-          });
+          this.calculateDistance().then(calculatedDistance=>{
+
+
+            this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),radius,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
+              var objects = response.json().results;
+
+
+              objects.forEach(element =>{
+
+
+                  if(this.providerIds.indexOf(element.id) == -1){
+                    this.providersFromGoogle.push(element);
+                    this.providerIds.push(element.id);
+                  }else{
+                    this.providersFromGoogle = [];
+                  }
+                }
+              )
+              resolve(this.providersFromGoogle);
+            });
+          })
         })
       })
 
 
   }
-  getCurrentPosition(){
-
-    return new Promise<Position>((resolve)=>{
-      this.geolocation.getCurrentPosition().then(position => {
-
-        var currentPosition:Position = new Position(position.coords.longitude.toString(),position.coords.latitude.toString());
-        resolve(currentPosition);
-    });
-    });
-  }
-
-  onFilterButton(pressedButton) {
+  onFilterButton(pressedButton,providerName) {
 
 
 
     // map.addListener("zoom_changed",()=>{
     //   console.log(map.getBounds().getNorthEast() + " --- " + map.getBounds().getSouthWest());
     // })
+    providerName = providerName.toLowerCase();
+    providerName = providerName.replace(' ','_');
     if(pressedButton.pressed){
+
+      this.removeFromProviderArray(providerName);
+      console.log(this.selectedProviders);
+
       pressedButton.style = 'pressedButtonStyle';
       pressedButton.pressed = false;
+
     }else{
+
+      this.selectedProviders.push(providerName);
+
+      console.log(this.selectedProviders);
+      this.getProvidersFromGoogle(this.center,this.selectedProviders);
       pressedButton.style = 'notPressedButtonStyle';
       pressedButton.pressed = true;
     }
@@ -119,10 +180,29 @@ export class MapPage {
       var center = map.getCenter();
       if(bounds && center){
         var ne = bounds.getNorthEast();
-        var radius = google.maps.geometry.spherical.computeDistanceBetween(center,ne);
+        this.radius = google.maps.geometry.spherical.computeDistanceBetween(center,ne);
       }
-      return resolve(radius);
+      return resolve(this.radius);
     })
 
   }
+
+
+  calculateDistance(){
+    return new Promise<boolean>((resolve)=>{
+      this.calculatedDistance = google.maps.geometry.spherical.computeDistanceBetween(this.dragStartPosition,this.dragEndPosition);
+      resolve(this.calculatedDistance);
+    })
+  }
+
+
+
+  removeFromProviderArray(providerName){
+    var index = this.selectedProviders.indexOf(providerName);
+    if(index > -1){
+      this.selectedProviders.splice(index,1);
+    }
+  }
+
+
 }

@@ -76,8 +76,15 @@ export class HealMapLib{
     return this.http.get(this.api_address + '/location/all',{params:{sw_lat:sw_lat,sw_long:sw_long,ne_lat:ne_lat,ne_long:ne_long}})
   }
 
-  getVenueFromGoogleMaps(lat,long,radius,types,name){
-    return this.http.get(this.googleMapsApiAdress+'location='+lat.toString()+','+long.toString()+'&radius='+radius+'&types='+types+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo');
+  getVenueFromGoogleMaps(lat,long,radius,types,name,distance){
+    if(types.length<1){
+      types = "doctor";
+    }
+
+    console.log(distance + "---" + radius);
+    if(distance > radius){
+      return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+types+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo');
+    }
   }
 
 }

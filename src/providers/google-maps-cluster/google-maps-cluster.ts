@@ -26,6 +26,7 @@ export class GoogleMapsCluster {
 
       this.markerCluster = new MarkerClusterer(map, markers, {imagePath: 'assets/imgs/m'});
 
+
     } else {
       console.warn('Google maps needs to be loaded before adding a cluster');
     }
