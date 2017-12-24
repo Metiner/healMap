@@ -90,6 +90,12 @@ export class GoogleMapsProvider {
         let mapOptions = {
           center: latLng,
           zoom: 15,
+          maxZoom:16,
+          minZoom:13,
+          streetViewControl:false,
+          mapTypeControl:false,
+          keyboardShortcuts:false,
+          fullScreenControl:false,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         }
 

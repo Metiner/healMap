@@ -11,6 +11,7 @@ page-map {
 
   #map_canvas {
     height: 100%;
+    position: initial !important;
   }
   ion-scroll {
     min-height: 40px;

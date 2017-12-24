@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content text-center>
   <ion-scroll scrollX="true" direction="x">
     <ion-grid>
       <ion-row>
@@ -23,12 +23,18 @@
       </ion-row>
     </ion-grid>
   </ion-scroll>
+    <button ion-button
+            style="margin-bottom: -50px;z-index: 10"
+            round
+            color="redButton"
+            (click)="find()"
+            >Find</button>
   <div #pleaseConnect id="please-connect">
     <p>Please connect to the Internet...</p>
   </div>
   <div #map_canvas id="map_canvas">
   </div>
-  <ion-grid style="position:relative;">
+  <!--<ion-grid style="position:relative;">
     <ion-row style="margin-top: -200px">
       <ion-col col-30 offset-10 style="max-height: 100px;min-height: 100px">
         <img style="width: 100%;height: 100%" src="http://via.placeholder.com/1300x1300">
@@ -46,5 +52,5 @@
         </ion-row>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid>-->
 </ion-content>

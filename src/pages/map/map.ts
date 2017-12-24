@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, Platform, LoadingController} from 'ionic-angular';
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {HealMapLib} from "../../services/healMapLib";
@@ -22,11 +22,8 @@ export class MapPage {
   providerIds=[];
   map;
   center;
-  dragStartPosition;
-  dragEndPosition;
   calculatedDistance;
   radius;
-  mapReadyFirstToUse=true;
   selectedProviders = [];
 
   constructor(public navCtrl: NavController,
@@ -35,6 +32,7 @@ export class MapPage {
               public maps: GoogleMapsProvider,
               public mapCluster: GoogleMapsCluster,
               private healmapLib: HealMapLib,
+              private loadingCtrl:LoadingController,
               public geolocation:Geolocation) {
 
 
@@ -43,6 +41,7 @@ export class MapPage {
 
   ionViewWillEnter(){
     if(this.map){
+      console.log(this.center);
       this.map.setCenter({
         lat: this.center.lat(),
         lng: this.center.lng()
@@ -50,45 +49,38 @@ export class MapPage {
     }
   }
 
-  ionViewDidLoad() {
-    this.mapReadyFirstToUse = true;
+  ionViewDidLoad(){
     this.platform.ready().then(()=>{
-      this.initMap().then(map=>{
-
-        this.map = map;
-
-        this.map.addListener("idle",()=>{
-          if(this.mapReadyFirstToUse) {
-
-            this.getCenterOfMap().then(center => {
-              this.dragEndPosition = center;
-              this.center = center;
-              this.getProvidersFromGoogle(center, this.selectedProviders).then(providersFromGoogle => {
-                this.mapCluster.addCluster(this.map, providersFromGoogle);
-              })
-            })
-          }
-        })
-
-        this.map.addListener("dragstart",()=>{
-          this.getCenterOfMap().then(center=>{
-            this.dragStartPosition = center;
-            this.mapReadyFirstToUse = false;
-          })
+      const loading = this.loadingCtrl.create({
+        content: "Map is Loading"
       })
+      loading.present();
+        this.initMap().then(map=> {
+          this.map = map;
+          loading.dismiss();
+        })
+    })
+  }
 
-        this.map.addListener("dragend",()=>{
-          this.getCenterOfMap().then(center=>{
+  initializeFind() {
+
+
+        if(this.selectedProviders.length < 1){
+          this.healmapLib.showToast('Please select at least one category!',3000,"bottom");
+        }else{
+          this.getCenterOfMap().then(center => {
+            this.dragStartPosition = center;
             this.dragEndPosition = center;
             this.center = center;
-            this.getProvidersFromGoogle(center,this.selectedProviders).then(providersFromGoogle=>{
-              this.mapCluster.addCluster(this.map,providersFromGoogle);
+
+            this.getProvidersFromGoogle(center).then(providersFromGoogle => {
+              this.mapCluster.addCluster(this.map, providersFromGoogle);
             })
           })
-          this.mapReadyFirstToUse= false;
-        })
-      })
-    })
+        }
+
+
+
   }
 
   getCenterOfMap(){
@@ -109,7 +101,7 @@ export class MapPage {
   }
 
 
-  getProvidersFromGoogle(center,providerName){
+  getProvidersFromGoogle(center){
 
 
     this.providersFromGoogle = [];
@@ -119,6 +111,9 @@ export class MapPage {
         this.getRadius().then(radius=>{
 
           this.calculateDistance().then(calculatedDistance=>{
+
+
+            try{
 
 
             this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),radius,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
@@ -138,6 +133,10 @@ export class MapPage {
               )
               resolve(this.providersFromGoogle);
             });
+            }catch (e){
+
+              console.log(e);
+            }
           })
         })
       })
@@ -148,25 +147,20 @@ export class MapPage {
 
 
 
-    // map.addListener("zoom_changed",()=>{
-    //   console.log(map.getBounds().getNorthEast() + " --- " + map.getBounds().getSouthWest());
-    // })
     providerName = providerName.toLowerCase();
     providerName = providerName.replace(' ','_');
     if(pressedButton.pressed){
 
       this.removeFromProviderArray(providerName);
-      console.log(this.selectedProviders);
 
       pressedButton.style = 'pressedButtonStyle';
       pressedButton.pressed = false;
 
     }else{
 
+      this.mapReadyFirstToUse = true;
       this.selectedProviders.push(providerName);
 
-      console.log(this.selectedProviders);
-      this.getProvidersFromGoogle(this.center,this.selectedProviders);
       pressedButton.style = 'notPressedButtonStyle';
       pressedButton.pressed = true;
     }
@@ -202,6 +196,12 @@ export class MapPage {
     if(index > -1){
       this.selectedProviders.splice(index,1);
     }
+  }
+
+  //finds providers from the observable area.
+  find(){
+
+    this.initializeFind();
   }
 
 

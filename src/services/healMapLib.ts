@@ -1,13 +1,17 @@
 
 import {Http, RequestOptions} from "@angular/http";
 import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {AlertController, ToastController} from "ionic-angular";
 
 @Injectable()
 export class HealMapLib{
   api_address = 'https://healmap.cleverapps.io';
   googleMapsApiAdress = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
   static token:string ="";
-  constructor(private http:Http){}
+  constructor(private http:Http,
+              private alertCtrl:AlertController,
+              private toastCtrl:ToastController){}
 
 
   public signUp(email,password){
@@ -77,14 +81,39 @@ export class HealMapLib{
   }
 
   getVenueFromGoogleMaps(lat,long,radius,types,name,distance){
-    if(types.length<1){
-      types = "doctor";
+
+    let typesString="";
+    if(types.length > 0){
+      types.forEach(element=>{
+        if(types.indexOf(element) == types.length-1){
+          typesString += element;
+        }else{
+          typesString += element + '|'
+        }
+      })
     }
 
-    console.log(distance + "---" + radius);
-    if(distance > radius){
-      return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+types+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo');
-    }
+    console.log(typesString);
+    return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo');
+
+  }
+
+  public showAlert(title:string,subTitle:string,buttons:any[]) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: subTitle,
+      buttons: buttons
+    });
+    alert.present();
+  }
+  public showToast(message: string,duration:number,position:string){
+
+    const toast = this.toastCtrl.create({
+      message : message,
+      duration : duration,
+      position : position
+    })
+    toast.present();
   }
 
 }
