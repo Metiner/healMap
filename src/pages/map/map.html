@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content text-center>
+<ion-content text-center style="width:100%; height:100%">
   <ion-scroll scrollX="true" direction="x">
     <ion-grid>
       <ion-row>
@@ -26,14 +26,25 @@
     <button ion-button
             style="margin-bottom: -50px;z-index: 10"
             round
+            small
             color="redButton"
             (click)="find()"
             >Find</button>
+  <button ion-button
+          style="margin-bottom: -50px;z-index: 10"
+          round
+          small
+          color="redButton"
+          (click)="locateMe()"
+  >Locate me &nbsp;&nbsp;&nbsp;<ion-icon name="locate"></ion-icon></button>
+
+
   <div #pleaseConnect id="please-connect">
     <p>Please connect to the Internet...</p>
   </div>
   <div #map_canvas id="map_canvas">
   </div>
+
   <!--<ion-grid style="position:relative;">
     <ion-row style="margin-top: -200px">
       <ion-col col-30 offset-10 style="max-height: 100px;min-height: 100px">

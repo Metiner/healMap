@@ -17,13 +17,16 @@ export class MapPage {
   @ViewChild('map_canvas') mapRef : ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect : ElementRef;
 
-  providers = ['Doctor','Dentist','Hospital','Beauty Salon','Pharmacy','Veterinary Care','Physiotherapist'];
+  providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Physiotherapist','Beauty Salon'];
   providersFromGoogle=[];
   providerIds=[];
   map;
   center;
   calculatedDistance;
   radius;
+  LatLng;
+  currentLocationMarker;
+  userCurrentLocation;
   selectedProviders = [];
 
   constructor(public navCtrl: NavController,
@@ -40,13 +43,7 @@ export class MapPage {
   }
 
   ionViewWillEnter(){
-    if(this.map){
-      console.log(this.center);
-      this.map.setCenter({
-        lat: this.center.lat(),
-        lng: this.center.lng()
-      });
-    }
+    this.setCenter();
   }
 
   ionViewDidLoad(){
@@ -57,15 +54,32 @@ export class MapPage {
       loading.present();
         this.initMap().then(map=> {
           this.map = map;
+          this.getCenterOfMap();
           loading.dismiss();
         })
     })
   }
 
+  setCenter(){
+    this.geolocation.getCurrentPosition().then(location=> {
+      this.userCurrentLocation = location;
+      let lat = location.coords.latitude;
+      let lng = location.coords.longitude;
+      console.log("setcenter"+"lat:"+lat+"long:" + lng );
+
+
+      if(this.map){
+          this.map.setCenter({
+            lat: lat,
+            lng: lng
+          })
+        }
+
+    })
+  }
+
   initializeFind() {
-
-
-        if(this.selectedProviders.length < 1){
+      if(this.selectedProviders.length < 1){
           this.healmapLib.showToast('Please select at least one category!',3000,"bottom");
         }else{
           this.getCenterOfMap().then(center => {
@@ -86,6 +100,7 @@ export class MapPage {
   getCenterOfMap(){
     return new Promise((resolve) =>{
       this.center = this.map.getCenter();
+      console.log(this.center);
       resolve(this.map.getCenter());
     })
   }
@@ -145,8 +160,6 @@ export class MapPage {
   }
   onFilterButton(pressedButton,providerName) {
 
-
-
     providerName = providerName.toLowerCase();
     providerName = providerName.replace(' ','_');
     if(pressedButton.pressed){
@@ -165,7 +178,15 @@ export class MapPage {
       pressedButton.pressed = true;
     }
   }
+  //sets the center of map to users current location
+  locateMe(){
 
+      this.setCenter();
+      this.setMarker(this.userCurrentLocation.coords.latitude,this.userCurrentLocation.coords.longitude);
+
+
+
+  }
   getRadius(){
     return new Promise((resolve) => {
 
@@ -189,7 +210,26 @@ export class MapPage {
     })
   }
 
+  setMarker(lat,lng){
 
+
+       this.LatLng = new google.maps.LatLng(lat,lng);
+
+       if(this.currentLocationMarker === undefined){
+         this.currentLocationMarker = new google.maps.Marker({
+           position:this.LatLng,
+           map:this.map,
+           animation:google.maps.Animation.BOUNCE,
+           icon: "http://maps.google.com/mapfiles/ms/micons/blue.png"
+         })
+         this.currentLocationMarker.setMap(this.map);
+
+       }
+
+
+
+
+  }
 
   removeFromProviderArray(providerName){
     var index = this.selectedProviders.indexOf(providerName);
@@ -200,7 +240,6 @@ export class MapPage {
 
   //finds providers from the observable area.
   find(){
-
     this.initializeFind();
   }
 

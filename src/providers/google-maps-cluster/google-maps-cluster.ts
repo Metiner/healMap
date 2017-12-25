@@ -26,6 +26,7 @@ export class GoogleMapsCluster {
         });
       });
 
+
       const loading = this.loadingCtrl.create({
         content: "Finding..."
       })
