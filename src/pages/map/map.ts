@@ -17,7 +17,7 @@ export class MapPage {
   @ViewChild('map_canvas') mapRef : ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect : ElementRef;
 
-  providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Physiotherapist','Beauty Salon'];
+  providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Beauty Salon'];
   providersFromGoogle=[];
   providerIds=[];
   map;
