@@ -90,7 +90,7 @@ export class GoogleMapsProvider {
         let mapOptions = {
           center: latLng,
           zoom: 15,
-          maxZoom:17,
+          maxZoom:22,
           minZoom:13,
           streetViewControl:false,
           mapTypeControl:false,

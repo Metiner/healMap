@@ -25,6 +25,7 @@ export class MapPage {
   calculatedDistance;
   radius;
   LatLng;
+  radar;
   currentLocationMarker;
   userCurrentLocation;
   selectedProviders = [];
@@ -48,6 +49,8 @@ export class MapPage {
 
   ionViewDidLoad(){
     this.platform.ready().then(()=>{
+
+
       const loading = this.loadingCtrl.create({
         content: "Map is Loading"
       })
@@ -65,7 +68,6 @@ export class MapPage {
       this.userCurrentLocation = location;
       let lat = location.coords.latitude;
       let lng = location.coords.longitude;
-      console.log("setcenter"+"lat:"+lat+"long:" + lng );
 
 
       if(this.map){
@@ -79,28 +81,49 @@ export class MapPage {
   }
 
   initializeFind() {
+
+      if(this.radar){
+        this.radar.setMap(null);
+      }
       if(this.selectedProviders.length < 1){
           this.healmapLib.showToast('Please select at least one category!',3000,"bottom");
         }else{
+
           this.getCenterOfMap().then(center => {
             this.dragStartPosition = center;
             this.dragEndPosition = center;
             this.center = center;
 
+            this.radar = new google.maps.Circle({
+              strokeColor: '#FF0000',
+              strokeOpacity: 0.2,
+              strokeWeight: 5,
+              fillColor: '#FF0000',
+              fillOpacity: 0.1,
+              map: this.map,
+              center: this.center,
+              radius: 400
+            });
+
             this.getProvidersFromGoogle(center).then(providersFromGoogle => {
               this.mapCluster.addCluster(this.map, providersFromGoogle);
+
             })
           })
         }
 
+        this.map.addListener("dragend",()=>{
 
+          this.getCenterOfMap().then(center=>{
+            this.center = center;
+          })
+        })
 
   }
 
   getCenterOfMap(){
     return new Promise((resolve) =>{
       this.center = this.map.getCenter();
-      console.log(this.center);
       resolve(this.map.getCenter());
     })
   }
@@ -131,7 +154,7 @@ export class MapPage {
             try{
 
 
-            this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),radius,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
+            this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
               var objects = response.json().results;
 
 
@@ -139,25 +162,25 @@ export class MapPage {
 
 
                   if(this.providerIds.indexOf(element.id) == -1){
+
                     this.providersFromGoogle.push(element);
                     this.providerIds.push(element.id);
                   }else{
                     this.providersFromGoogle = [];
+                    this.providerIds = [];
                   }
                 }
               )
               resolve(this.providersFromGoogle);
             });
             }catch (e){
-
               console.log(e);
             }
           })
         })
       })
-
-
   }
+
   onFilterButton(pressedButton,providerName) {
 
     providerName = providerName.toLowerCase();
@@ -178,13 +201,12 @@ export class MapPage {
       pressedButton.pressed = true;
     }
   }
+
   //sets the center of map to users current location
   locateMe(){
 
       this.setCenter();
       this.setMarker(this.userCurrentLocation.coords.latitude,this.userCurrentLocation.coords.longitude);
-
-
 
   }
   getRadius(){
@@ -212,7 +234,6 @@ export class MapPage {
 
   setMarker(lat,lng){
 
-
        this.LatLng = new google.maps.LatLng(lat,lng);
 
        if(this.currentLocationMarker === undefined){
@@ -223,12 +244,7 @@ export class MapPage {
            icon: "http://maps.google.com/mapfiles/ms/micons/blue.png"
          })
          this.currentLocationMarker.setMap(this.map);
-
        }
-
-
-
-
   }
 
   removeFromProviderArray(providerName){
