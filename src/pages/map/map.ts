@@ -1,9 +1,10 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Platform, LoadingController} from 'ionic-angular';
+import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, Platform, LoadingController, Events} from 'ionic-angular';
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {HealMapLib} from "../../services/healMapLib";
 import {Geolocation} from "@ionic-native/geolocation";
+
 declare var google;
 
 @IonicPage()
@@ -17,6 +18,8 @@ export class MapPage {
   @ViewChild('map_canvas') mapRef : ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect : ElementRef;
 
+  static page = MapPage;
+
   providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Beauty Salon'];
   providersFromGoogle=[];
   providerIds=[];
@@ -26,8 +29,11 @@ export class MapPage {
   radius;
   LatLng;
   radar;
+  providerIcon;
   currentLocationMarker;
   userCurrentLocation;
+  showProviderDetails = false;
+  selectedProviderToShowInDetails = {};
   selectedProviders = [];
 
   constructor(public navCtrl: NavController,
@@ -37,14 +43,25 @@ export class MapPage {
               public mapCluster: GoogleMapsCluster,
               private healmapLib: HealMapLib,
               private loadingCtrl:LoadingController,
-              public geolocation:Geolocation) {
+              public geolocation:Geolocation,
+              private eventCtrl:Events,
+              private changeDetector:ChangeDetectorRef) {
 
+    this.eventCtrl.subscribe('providerDetailOnClick',(provider,showProviderDetails,providerIcon)=>{
+
+      this.selectedProviderToShowInDetails = provider;
+      this.providerIcon = providerIcon;
+      this.showProviderDetails = showProviderDetails;
+      this.changeDetector.detectChanges();
+
+    })
 
 
   }
 
   ionViewWillEnter(){
     this.setCenter();
+
   }
 
   ionViewDidLoad(){
@@ -62,7 +79,6 @@ export class MapPage {
         })
     })
   }
-
   setCenter(){
     this.geolocation.getCurrentPosition().then(location=> {
       this.userCurrentLocation = location;
@@ -106,7 +122,7 @@ export class MapPage {
             });
 
             this.getProvidersFromGoogle(center).then(providersFromGoogle => {
-              this.mapCluster.addCluster(this.map, providersFromGoogle);
+              this.mapCluster.addCluster(this.map, providersFromGoogle,this.selectedProviders);
 
             })
           })
@@ -183,8 +199,15 @@ export class MapPage {
 
   onFilterButton(pressedButton,providerName) {
 
+
+
+    if(pressedButton == 'metiner')
+      return;
+
+
     providerName = providerName.toLowerCase();
     providerName = providerName.replace(' ','_');
+
     if(pressedButton.pressed){
 
       this.removeFromProviderArray(providerName);
@@ -258,6 +281,4 @@ export class MapPage {
   find(){
     this.initializeFind();
   }
-
-
 }
