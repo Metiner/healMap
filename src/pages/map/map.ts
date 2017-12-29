@@ -199,12 +199,6 @@ export class MapPage {
 
   onFilterButton(pressedButton,providerName) {
 
-
-
-    if(pressedButton == 'metiner')
-      return;
-
-
     providerName = providerName.toLowerCase();
     providerName = providerName.replace(' ','_');
 
