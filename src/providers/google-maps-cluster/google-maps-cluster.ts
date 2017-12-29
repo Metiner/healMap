@@ -11,6 +11,7 @@ export class GoogleMapsCluster {
 
   imagePath;
   markerClusterers = new Map<string,MarkerClusterer>();
+  addedMarkers:string[] = [];
 
   constructor(public http: Http,
               private loadingCtrl:LoadingController,
@@ -72,7 +73,6 @@ export class GoogleMapsCluster {
       this.createMarkers(filteredProviders).then(response => {
         markers = response;
 
-        this.clearClusters();
         this.createMarkerCluster(map, markers).then(createdMarkerCluster =>{
           this.markerClusterers.set(provider,createdMarkerCluster);
           console.log(this.markerClusterers);
@@ -83,6 +83,7 @@ export class GoogleMapsCluster {
       //Creates markers with given provider array.
       createMarkers(filteredProviders){
 
+        console.log(this.addedMarkers);
         return new Promise((resolve)=>{
 
           let markers = filteredProviders.map((provider) => {
@@ -120,10 +121,20 @@ export class GoogleMapsCluster {
             marker.addListener('click',()=>{
               this.eventCtrl.publish('providerDetailOnClick',provider,true,providerIcon);
             })
-            return marker;
+            if(this.checkIfMarkerAlreadyAdded(marker)){
+              console.log("var aynısı");
+              return;
+            }else{
+              this.addedMarkers.push(marker.position.lat()+marker.position.lng());
+              return marker;
+            }
           });
+
+          console.log(this.addedMarkers);
           resolve(markers);
+
         })
+
       }
 
 
@@ -135,7 +146,7 @@ export class GoogleMapsCluster {
             content: "Finding..."
           })
           loading.present();
-          markerClusterer= new MarkerClusterer(map, markers, {imagePath: this.imagePath,gridSize: 40});
+          markerClusterer= new MarkerClusterer(map, markers, {imagePath: this.imagePath,gridSize: 60});
           resolve(markerClusterer);
           loading.dismiss();
         })
@@ -144,7 +155,6 @@ export class GoogleMapsCluster {
       //Clears markers from given cluster.
       clearClusters(){
           this.markerClusterers.forEach(cluster=>{
-
             cluster.clearMarkers();
           })
       }
@@ -155,5 +165,19 @@ export class GoogleMapsCluster {
           console.log(cluster);
           cluster.addMarkers(markers);
         })
+      }
+
+      //checks if marker already added.
+      checkIfMarkerAlreadyAdded(marker):boolean{
+        this.addedMarkers.forEach(element=>{
+          let latlong = marker.position.lat() + marker.position.lng();
+            if(element===latlong){
+             return true;
+            }
+            else{
+             return false;
+            }
+          });
+        return false;
       }
 }

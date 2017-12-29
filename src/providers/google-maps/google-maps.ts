@@ -91,7 +91,7 @@ export class GoogleMapsProvider {
           center: latLng,
           zoom: 16,
           maxZoom:22,
-          minZoom:15,
+          minZoom:11,
           streetViewControl:false,
           mapTypeControl:false,
           keyboardShortcuts:false,
