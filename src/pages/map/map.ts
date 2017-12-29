@@ -176,15 +176,8 @@ export class MapPage {
 
               objects.forEach(element =>{
 
-
-                  if(this.providerIds.indexOf(element.id) == -1){
-
                     this.providersFromGoogle.push(element);
                     this.providerIds.push(element.id);
-                  }else{
-                    this.providersFromGoogle = [];
-                    this.providerIds = [];
-                  }
                 }
               )
               resolve(this.providersFromGoogle);

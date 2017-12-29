@@ -71,6 +71,8 @@ export class GoogleMapsCluster {
     }
       this.createMarkers(filteredProviders).then(response => {
         markers = response;
+
+        this.clearClusters();
         this.createMarkerCluster(map, markers).then(createdMarkerCluster =>{
           this.markerClusterers.set(provider,createdMarkerCluster);
           console.log(this.markerClusterers);
@@ -140,7 +142,18 @@ export class GoogleMapsCluster {
       }
 
       //Clears markers from given cluster.
-      clearClusters(markerCluster:MarkerClusterer){
-          markerCluster.clearMarkers();
+      clearClusters(){
+          this.markerClusterers.forEach(cluster=>{
+
+            cluster.clearMarkers();
+          })
+      }
+
+      //Adds additional given markers to cluster
+      addMarkersToCluster(markers,clusterName){
+        this.markerClusterers.forEach(cluster=>{
+          console.log(cluster);
+          cluster.addMarkers(markers);
+        })
       }
 }
