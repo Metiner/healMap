@@ -6,13 +6,17 @@ import {AlertController, ToastController} from "ionic-angular";
 
 @Injectable()
 export class HealMapLib{
-  api_address = 'https://healmap.cleverapps.io';
+  api_address = 'http://localhost:3000';
   googleMapsApiAdress = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
   static token:string ="";
   constructor(private http:Http,
               private alertCtrl:AlertController,
               private toastCtrl:ToastController){}
 
+
+  public getAppData(){
+    return this.http.get(this.api_address + '/app_data.json');
+  }
 
   public signUp(email,password){
     console.log(email +' '+ password);
