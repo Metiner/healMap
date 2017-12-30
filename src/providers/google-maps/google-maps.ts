@@ -89,9 +89,9 @@ export class GoogleMapsProvider {
 
         let mapOptions = {
           center: latLng,
-          zoom: 15,
-          maxZoom:17,
-          minZoom:13,
+          zoom: 16,
+          maxZoom:22,
+          minZoom:11,
           streetViewControl:false,
           mapTypeControl:false,
           keyboardShortcuts:false,

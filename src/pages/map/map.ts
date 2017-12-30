@@ -1,9 +1,10 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Platform, LoadingController} from 'ionic-angular';
+import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, Platform, LoadingController, Events} from 'ionic-angular';
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {HealMapLib} from "../../services/healMapLib";
 import {Geolocation} from "@ionic-native/geolocation";
+
 declare var google;
 
 @IonicPage()
@@ -17,7 +18,9 @@ export class MapPage {
   @ViewChild('map_canvas') mapRef : ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect : ElementRef;
 
-  providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Physiotherapist','Beauty Salon'];
+  static page = MapPage;
+
+  providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Beauty Salon'];
   providersFromGoogle=[];
   providerIds=[];
   map;
@@ -25,8 +28,12 @@ export class MapPage {
   calculatedDistance;
   radius;
   LatLng;
+  radar;
+  providerIcon;
   currentLocationMarker;
   userCurrentLocation;
+  showProviderDetails = false;
+  selectedProviderToShowInDetails = {};
   selectedProviders = [];
 
   constructor(public navCtrl: NavController,
@@ -36,18 +43,31 @@ export class MapPage {
               public mapCluster: GoogleMapsCluster,
               private healmapLib: HealMapLib,
               private loadingCtrl:LoadingController,
-              public geolocation:Geolocation) {
+              public geolocation:Geolocation,
+              private eventCtrl:Events,
+              private changeDetector:ChangeDetectorRef) {
 
+    this.eventCtrl.subscribe('providerDetailOnClick',(provider,showProviderDetails,providerIcon)=>{
+
+      this.selectedProviderToShowInDetails = provider;
+      this.providerIcon = providerIcon;
+      this.showProviderDetails = showProviderDetails;
+      this.changeDetector.detectChanges();
+
+    })
 
 
   }
 
   ionViewWillEnter(){
     this.setCenter();
+
   }
 
   ionViewDidLoad(){
     this.platform.ready().then(()=>{
+
+
       const loading = this.loadingCtrl.create({
         content: "Map is Loading"
       })
@@ -59,13 +79,11 @@ export class MapPage {
         })
     })
   }
-
   setCenter(){
     this.geolocation.getCurrentPosition().then(location=> {
       this.userCurrentLocation = location;
       let lat = location.coords.latitude;
       let lng = location.coords.longitude;
-      console.log("setcenter"+"lat:"+lat+"long:" + lng );
 
 
       if(this.map){
@@ -79,28 +97,49 @@ export class MapPage {
   }
 
   initializeFind() {
+
+      if(this.radar){
+        this.radar.setMap(null);
+      }
       if(this.selectedProviders.length < 1){
           this.healmapLib.showToast('Please select at least one category!',3000,"bottom");
         }else{
+
           this.getCenterOfMap().then(center => {
             this.dragStartPosition = center;
             this.dragEndPosition = center;
             this.center = center;
 
+            this.radar = new google.maps.Circle({
+              strokeColor: '#FF0000',
+              strokeOpacity: 0.2,
+              strokeWeight: 5,
+              fillColor: '#FF0000',
+              fillOpacity: 0.1,
+              map: this.map,
+              center: this.center,
+              radius: 400
+            });
+
             this.getProvidersFromGoogle(center).then(providersFromGoogle => {
-              this.mapCluster.addCluster(this.map, providersFromGoogle);
+              this.mapCluster.addCluster(this.map, providersFromGoogle,this.selectedProviders);
+
             })
           })
         }
 
+        this.map.addListener("dragend",()=>{
 
+          this.getCenterOfMap().then(center=>{
+            this.center = center;
+          })
+        })
 
   }
 
   getCenterOfMap(){
     return new Promise((resolve) =>{
       this.center = this.map.getCenter();
-      console.log(this.center);
       resolve(this.map.getCenter());
     })
   }
@@ -131,37 +170,31 @@ export class MapPage {
             try{
 
 
-            this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),radius,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
+            this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
               var objects = response.json().results;
 
 
               objects.forEach(element =>{
 
-
-                  if(this.providerIds.indexOf(element.id) == -1){
                     this.providersFromGoogle.push(element);
                     this.providerIds.push(element.id);
-                  }else{
-                    this.providersFromGoogle = [];
-                  }
                 }
               )
               resolve(this.providersFromGoogle);
             });
             }catch (e){
-
               console.log(e);
             }
           })
         })
       })
-
-
   }
+
   onFilterButton(pressedButton,providerName) {
 
     providerName = providerName.toLowerCase();
     providerName = providerName.replace(' ','_');
+
     if(pressedButton.pressed){
 
       this.removeFromProviderArray(providerName);
@@ -178,13 +211,12 @@ export class MapPage {
       pressedButton.pressed = true;
     }
   }
+
   //sets the center of map to users current location
   locateMe(){
 
       this.setCenter();
       this.setMarker(this.userCurrentLocation.coords.latitude,this.userCurrentLocation.coords.longitude);
-
-
 
   }
   getRadius(){
@@ -212,7 +244,6 @@ export class MapPage {
 
   setMarker(lat,lng){
 
-
        this.LatLng = new google.maps.LatLng(lat,lng);
 
        if(this.currentLocationMarker === undefined){
@@ -223,12 +254,7 @@ export class MapPage {
            icon: "http://maps.google.com/mapfiles/ms/micons/blue.png"
          })
          this.currentLocationMarker.setMap(this.map);
-
        }
-
-
-
-
   }
 
   removeFromProviderArray(providerName){
@@ -242,6 +268,4 @@ export class MapPage {
   find(){
     this.initializeFind();
   }
-
-
 }

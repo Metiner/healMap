@@ -19,13 +19,11 @@ export class HealMapLib{
   }
 
   public signUp(email,password){
-    console.log(email +' '+ password);
     return this.http.post(this.api_address + '/users.json',{"user":{"email":email,"password":password}});
   }
 
   public checkLogin(){
     let opt = this.setHeader();
-    console.log(opt);
     return this.http.get(this.api_address + '/users/login_check',opt);
   }
 
@@ -35,7 +33,6 @@ export class HealMapLib{
   }
 
   public signIn(email,password){
-    console.log(email,password);
     return this.http.post(this.api_address + '/users/sign_in.json',{"user":{"email":email,"password":password}});
   }
 
@@ -97,7 +94,6 @@ export class HealMapLib{
       })
     }
 
-    console.log(typesString);
     return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo');
 
   }
