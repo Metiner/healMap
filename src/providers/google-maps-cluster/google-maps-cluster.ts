@@ -22,6 +22,7 @@ export class GoogleMapsCluster {
   // initialization function for adding marker cluster.
   addCluster(map,providersFromGoogle,selectedProviders) {
 
+    console.log(providersFromGoogle);
     const loading = this.loadingCtrl.create({
       content: "Finding..."
     })
@@ -33,22 +34,19 @@ export class GoogleMapsCluster {
       let filteredProviders=[];
       switch (provider) {
       case 'doctor':
-        providersFromGoogle.forEach(element => {
-          if(element.types[0] == 'doctor'){
-            this.createMarkers(filteredProviders,provider,element).then(markers=>{
-              markers = markers;
-            })
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'doctor'){
+            imagePath = 'assets/imgs/doctor/m';
+            markers.push(this.createMarker(providersFromGoogle[i]));
           }
-        })
-        console.log(markers);
-        this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
-          this.markerClusterers.set(provider,createdMarkerCluster);
-        });
+        }
+          this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
+
          break;
       case 'dentist':
         providersFromGoogle.forEach(element => {
           if(element.types[0] == 'dentist'){
-            this.createMarkers(filteredProviders,provider,element).then(markers=>{
+            this.createMarker(element).then(markers=>{
               this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
                 this.markerClusterers.set(provider,createdMarkerCluster);
               });
@@ -59,7 +57,8 @@ export class GoogleMapsCluster {
       case 'pharmacy':
         providersFromGoogle.forEach(element => {
           if(element.types[0] == 'pharmacy'){
-            this.createMarkers(filteredProviders,provider,element).then(markers=>{
+            imagePath = 'assets/imgs/pharmacy/m';
+            this.createMarker(element).then(markers=>{
               this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
                 this.markerClusterers.set(provider,createdMarkerCluster);
               });
@@ -70,7 +69,8 @@ export class GoogleMapsCluster {
       case 'veterinary_care':
         providersFromGoogle.forEach(element => {
           if(element.types[0] == 'veterinary_care'){
-            this.createMarkers(filteredProviders,provider,element).then(markers=>{
+            imagePath = 'assets/imgs/veterinary_care/m';
+            this.createMarker(element).then(markers=>{
               this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
                 this.markerClusterers.set(provider,createdMarkerCluster);
               });
@@ -81,7 +81,7 @@ export class GoogleMapsCluster {
       case 'hospital':
         providersFromGoogle.forEach(element => {
           if(element.types[0] == 'hospital'){
-            this.createMarkers(filteredProviders,provider,element).then(markers=>{
+            this.createMarker(element).then(markers=>{
               this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
                 this.markerClusterers.set(provider,createdMarkerCluster);
               });
@@ -92,7 +92,7 @@ export class GoogleMapsCluster {
       case 'beauty_salon':
         providersFromGoogle.forEach(element => {
           if(element.types[0] == 'beauty_salon'){
-            this.createMarkers(filteredProviders,provider,element).then(markers=>{
+            this.createMarker(element).then(markers=>{
               this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
                 this.markerClusterers.set(provider,createdMarkerCluster);
               });
@@ -103,7 +103,7 @@ export class GoogleMapsCluster {
       case 'psychotherapist':
         providersFromGoogle.forEach(element => {
           if(element.types[0] == 'psychotherapist'){
-            this.createMarkers(filteredProviders,provider,element).then(markers=>{
+            this.createMarker(element).then(markers=>{
               this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
                 this.markerClusterers.set(provider,createdMarkerCluster);
               });
@@ -116,21 +116,18 @@ export class GoogleMapsCluster {
     loading.dismiss();
   }
       //Creates markers with given provider array.
-      createMarkers(filteredProviders,imagePath,element){
+      createMarker(element){
 
-          return new Promise((resolve)=>{
-
-          imagePath = 'assets/imgs/veterinary_care/m';
-          filteredProviders.push(element);
-          let markers = filteredProviders.map((provider) => {
-            if(this.checkIfMarkerAlreadyAdded(provider.geometry.location)){
+            let imagePath;
+            if(this.checkIfMarkerAlreadyAdded(element.geometry.location)){
 
               console.log("var aynısı");
               return;
             }else{
-              let providerProffession = provider.types[0];
+              let providerProffession = element.types[0];
               let providerIcon;
               if (providerProffession == 'doctor') {
+
                 providerIcon = 'http://healmap.cleverapps.io/img/doctor_icon.png';
               } else if (providerProffession == 'pharmacy') {
                 providerIcon = 'http://healmap.cleverapps.io/img/pharmacists_icon.png';
@@ -151,18 +148,17 @@ export class GoogleMapsCluster {
                 anchor: new google.maps.Point(20, 40) // lets offset the marker image
               };
               let marker = new google.maps.Marker({
-                position: provider.geometry.location,
+                position: element.geometry.location,
                 icon: markerIcon,
               });
               marker.addListener('click',()=>{
-                this.eventCtrl.publish('providerDetailOnClick',provider,true,providerIcon);
+                this.eventCtrl.publish('providerDetailOnClick',element,true,providerIcon);
               })
               this.addedMarkers.push(marker.position.lat()+marker.position.lng());
               return marker;
             }
-          });
-          resolve(markers);
-          })
+
+
 
       }
 
@@ -170,10 +166,15 @@ export class GoogleMapsCluster {
       //Creates markerCluster with given markers.
       createMarkerCluster(map,markers,imagePath){
         let markerClusterer:MarkerClusterer;
-        return new Promise((resolve) =>{
-          markerClusterer= new MarkerClusterer(map, markers, {imagePath: imagePath,gridSize: 60});
-          resolve(markerClusterer);
-        })
+        console.log(map);
+        console.log(markers);
+        console.log(imagePath);
+        markerClusterer= new MarkerClusterer(map, markers, {imagePath: imagePath,gridSize: 60});
+        return markerClusterer;
+        // return new Promise((resolve) =>{
+        //
+        //   resolve(markerClusterer);
+        // })
       }
 
       //Clears markers from given cluster.
