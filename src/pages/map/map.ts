@@ -105,6 +105,7 @@ export class MapPage {
           this.healmapLib.showToast('Please select at least one category!',3000,"bottom");
         }else{
 
+
           this.getCenterOfMap().then(center => {
             this.dragStartPosition = center;
             this.dragEndPosition = center;
@@ -122,6 +123,7 @@ export class MapPage {
             });
 
             this.getProvidersFromGoogle(center).then(providersFromGoogle => {
+
               this.mapCluster.addCluster(this.map, providersFromGoogle,this.selectedProviders);
 
             })
