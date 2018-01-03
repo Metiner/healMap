@@ -1,7 +1,6 @@
 
-import {Http, RequestOptions} from "@angular/http";
+import {Http, RequestOptions,Headers} from "@angular/http";
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs/Observable";
 import {AlertController, ToastController} from "ionic-angular";
 
 @Injectable()
@@ -44,14 +43,12 @@ export class HealMapLib{
 
     myHeaders.set('Authorization',HealMapLib.token);
 
-    //TODO : Something wrong here, probably with imports and stuff, I'll fix it later on.
-    // opt = new RequestOptions({
-    //   headers:myHeaders
-    // });
+    opt = new RequestOptions({
+      headers:myHeaders
+    });
 
     return opt;
   }
-
 
   updateLocationPrecise(lat,long){
     let opt = this.setHeader();

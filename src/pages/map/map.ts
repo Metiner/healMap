@@ -20,7 +20,7 @@ export class MapPage {
 
   static page = MapPage;
 
-  providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Beauty Salon'];
+  providers = ['Doctor','Dentist','Pharmacy','Hospital','Veterinary Care','Physiotherapist','Beauty Salon','Masseur','Nurse','Nutritionist','Personal Trainer'];
   providersFromGoogle=[];
   providerIds=[];
   map;

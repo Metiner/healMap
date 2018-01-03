@@ -44,72 +44,73 @@ export class GoogleMapsCluster {
 
          break;
       case 'dentist':
-        providersFromGoogle.forEach(element => {
-          if(element.types[0] == 'dentist'){
-            this.createMarker(element).then(markers=>{
-              this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
-                this.markerClusterers.set(provider,createdMarkerCluster);
-              });
-            })
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'dentist'){
+            imagePath = 'assets/imgs/dentist/m';
+            markers.push(this.createMarker(providersFromGoogle[i]));
           }
-        })
+        }
+        this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
         break;
       case 'pharmacy':
-        providersFromGoogle.forEach(element => {
-          if(element.types[0] == 'pharmacy'){
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'pharmacy'){
             imagePath = 'assets/imgs/pharmacy/m';
-            this.createMarker(element).then(markers=>{
-              this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
-                this.markerClusterers.set(provider,createdMarkerCluster);
-              });
-            })
+            markers.push(this.createMarker(providersFromGoogle[i]));
           }
-        })
+        }
+        this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
+
         break;
       case 'veterinary_care':
-        providersFromGoogle.forEach(element => {
-          if(element.types[0] == 'veterinary_care'){
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'veterinary_care'){
             imagePath = 'assets/imgs/veterinary_care/m';
-            this.createMarker(element).then(markers=>{
-              this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
-                this.markerClusterers.set(provider,createdMarkerCluster);
-              });
-            })
+            markers.push(this.createMarker(providersFromGoogle[i]));
           }
-        })
+        }
+        this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
+
         break;
       case 'hospital':
-        providersFromGoogle.forEach(element => {
-          if(element.types[0] == 'hospital'){
-            this.createMarker(element).then(markers=>{
-              this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
-                this.markerClusterers.set(provider,createdMarkerCluster);
-              });
-            })
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'hospital'){
+            imagePath = 'assets/imgs/doctor/m';
+            markers.push(this.createMarker(providersFromGoogle[i]));
           }
-        })
+        }
+        this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
+
         break;
       case 'beauty_salon':
-        providersFromGoogle.forEach(element => {
-          if(element.types[0] == 'beauty_salon'){
-            this.createMarker(element).then(markers=>{
-              this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
-                this.markerClusterers.set(provider,createdMarkerCluster);
-              });
-            })
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'beauty_salon'){
+            imagePath = 'assets/imgs/beauty_salon/m';
+            markers.push(this.createMarker(providersFromGoogle[i]));
           }
-        })
+        }
+        this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
+
         break;
       case 'psychotherapist':
-        providersFromGoogle.forEach(element => {
-          if(element.types[0] == 'psychotherapist'){
-            this.createMarker(element).then(markers=>{
-              this.createMarkerCluster(map, markers,imagePath).then(createdMarkerCluster =>{
-                this.markerClusterers.set(provider,createdMarkerCluster);
-              });
-            })
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'psychotherapist'){
+            imagePath = 'assets/imgs/psychotherapist/m';
+            markers.push(this.createMarker(providersFromGoogle[i]));
           }
-        })
+        }
+        this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
+
+        break;
+      case 'physiotherapist':
+        for(let i=0;i<providersFromGoogle.length;i++){
+          if(providersFromGoogle[i].types[0] == 'physiotherapist'){
+            imagePath = 'assets/imgs/physiotherapist/m';
+            markers.push(this.createMarker(providersFromGoogle[i]));
+          }
+        }
+        this.markerClusterers.set(provider,this.createMarkerCluster(map, markers,imagePath));
+
         break;
     }
     })
@@ -129,9 +130,13 @@ export class GoogleMapsCluster {
               if (providerProffession == 'doctor') {
 
                 providerIcon = 'http://healmap.cleverapps.io/img/doctor_icon.png';
-              } else if (providerProffession == 'pharmacy') {
+              }
+              else if (providerProffession == 'pharmacy') {
                 providerIcon = 'http://healmap.cleverapps.io/img/pharmacists_icon.png';
-              } else if (providerProffession == 'hospital') {
+              }
+              else if (providerProffession == 'hospital') {
+
+                providerIcon = 'http://healmap.cleverapps.io/img/hospital_icon.png';
               }
               else if (providerProffession == 'veterinary_care') {
                 providerIcon = 'http://healmap.cleverapps.io/img/animal_icon.png';
@@ -140,6 +145,13 @@ export class GoogleMapsCluster {
                 providerIcon = 'http://healmap.cleverapps.io/img/psychologist_icon.png';
               }
               else if (providerProffession == 'beauty_salon') {
+                providerIcon = 'http://healmap.cleverapps.io/img/beauty_icon.png';
+              }
+              else if (providerProffession == 'dentist') {
+                providerIcon = 'http://healmap.cleverapps.io/img/dentist_icon.png';
+              }
+              else if (providerProffession == 'physiotherapist') {
+                providerIcon = 'http://healmap.cleverapps.io/img/ftr_icon.png';
               }
               let markerIcon = {
                 url: providerIcon,
@@ -166,15 +178,8 @@ export class GoogleMapsCluster {
       //Creates markerCluster with given markers.
       createMarkerCluster(map,markers,imagePath){
         let markerClusterer:MarkerClusterer;
-        console.log(map);
-        console.log(markers);
-        console.log(imagePath);
         markerClusterer= new MarkerClusterer(map, markers, {imagePath: imagePath,gridSize: 60});
         return markerClusterer;
-        // return new Promise((resolve) =>{
-        //
-        //   resolve(markerClusterer);
-        // })
       }
 
       //Clears markers from given cluster.
@@ -193,15 +198,18 @@ export class GoogleMapsCluster {
 
       //checks if marker already added.
       checkIfMarkerAlreadyAdded(location):boolean{
-        this.addedMarkers.forEach(element=>{
+
+
+        for(let i=0;i<this.addedMarkers.length;i++){
           let latlong = location.lat + location.lng;
-            if(element===latlong){
-             return true;
-            }
-            else{
-             return false;
-            }
-          });
+          if(this.addedMarkers[i]===latlong){
+            return true;
+          }
+          else{
+            return false;
+          }
+        }
         return false;
-      }
+        }
+
 }

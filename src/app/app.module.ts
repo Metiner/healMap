@@ -28,6 +28,7 @@ import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 import { HttpModule} from "@angular/http";
 import {MapPage} from "../pages/map/map";
 import {ProviderOrpatientsPage} from "../pages/provider-orpatients/provider-orpatients";
+import {PatientSignUpPage} from "../pages/patient-sign-up/patient-sign-up";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {ProviderOrpatientsPage} from "../pages/provider-orpatients/provider-orpa
     ReviewsPage,
     WriteReviewPage,
     MapPage,
-    ProviderOrpatientsPage
+    ProviderOrpatientsPage,
+    PatientSignUpPage
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,8 @@ import {ProviderOrpatientsPage} from "../pages/provider-orpatients/provider-orpa
     ReviewsPage,
     WriteReviewPage,
     MapPage,
-    ProviderOrpatientsPage
+    ProviderOrpatientsPage,
+    PatientSignUpPage
   ],
   providers: [
     StatusBar,

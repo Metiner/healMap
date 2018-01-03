@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {SignupPage} from "../signup/signup";
+import {PatientSignUpPage} from "../patient-sign-up/patient-sign-up";
 
 /**
  * Generated class for the ProviderOrpatientsPage page.
@@ -17,6 +18,7 @@ import {SignupPage} from "../signup/signup";
 export class ProviderOrpatientsPage {
 
   providerSignUpPage = SignupPage;
+  patientSignUpPage = PatientSignUpPage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -25,5 +27,8 @@ export class ProviderOrpatientsPage {
     this.navCtrl.push(this.providerSignUpPage);
   }
 
+  patientSignUp(){
+    this.navCtrl.push(this.patientSignUpPage);
+  }
 
 }

@@ -35,23 +35,14 @@
         placeholder="Surname"
       ></ion-input>
     </ion-item>
-    <ion-item [ngClass]="itemfour ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
-      <ion-input
-        type="text"
-        name="profession"
-        ngModel
-        required
-        placeholder="What is your Profession ?"
-      ></ion-input>
-    </ion-item>
 
-    <ion-item [ngClass]="itemfive ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
+    <ion-item [ngClass]="itemfour ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-textarea ngModel
                     required
                     placeholder="Say something about yourself"
                     name="aboutMe" ></ion-textarea>
     </ion-item>
-    <ion-item [ngClass]="itemsix ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
+    <ion-item [ngClass]="itemfive ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-input
         type="email"
         name="email"
@@ -60,7 +51,7 @@
         placeholder="E-mail"
       ></ion-input>
     </ion-item>
-    <ion-item [ngClass]="itemseven ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
+    <ion-item [ngClass]="itemsix ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-input
         type="password"
         name="password"
@@ -70,7 +61,7 @@
         [minlength]="6"
       ></ion-input>
     </ion-item>
-    <ion-item [ngClass]="itemeight ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
+    <ion-item [ngClass]="itemseven ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-input
         type="password"
         name="passwordTwo"
@@ -80,7 +71,7 @@
         [minlength]="6"
       ></ion-input>
     </ion-item>
-    <button [ngClass]="itemnine ? 'toLogoUp' : 'toLogoDown'"
+    <button [ngClass]="itemeight ? 'toLogoUp' : 'toLogoDown'"
             ion-button
             type="submit"
             outline
