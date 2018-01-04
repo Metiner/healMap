@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Patient} from "../../models/patient";
 
 /**
  * Generated class for the ProfilePage page.
@@ -15,11 +16,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ProfilePage {
 
+  patient: Patient;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    if(this.navParams){
+      this.patient = new Patient(this.navParams.get("id"),this.navParams.get("email"),this.navParams.get("name"),this.navParams.get("surname"),this.navParams.get("phone"));
+    }
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
-  }
-
 }

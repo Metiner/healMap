@@ -42,6 +42,7 @@
                     placeholder="Say something about yourself"
                     name="aboutMe" ></ion-textarea>
     </ion-item>
+
     <ion-item [ngClass]="itemfive ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-input
         type="email"
@@ -53,6 +54,21 @@
     </ion-item>
     <ion-item [ngClass]="itemsix ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-input
+        type="tel"
+        name="tel"
+        ngModel
+        required
+        placeholder="phone"
+      ></ion-input>
+    </ion-item>
+    <ion-item [ngClass]="itemfour ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
+      <ion-textarea ngModel
+                    required
+                    placeholder="Address"
+                    name="adress" ></ion-textarea>
+    </ion-item>
+    <ion-item [ngClass]="itemseven ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
+      <ion-input
         type="password"
         name="password"
         ngModel
@@ -61,7 +77,7 @@
         [minlength]="6"
       ></ion-input>
     </ion-item>
-    <ion-item [ngClass]="itemseven ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
+    <ion-item [ngClass]="itemeight ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-input
         type="password"
         name="passwordTwo"
@@ -71,7 +87,7 @@
         [minlength]="6"
       ></ion-input>
     </ion-item>
-    <button [ngClass]="itemeight ? 'toLogoUp' : 'toLogoDown'"
+    <button [ngClass]="itemnine ? 'toLogoUp' : 'toLogoDown'"
             ion-button
             type="submit"
             outline

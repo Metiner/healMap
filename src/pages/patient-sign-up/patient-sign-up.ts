@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {NgForm} from "@angular/forms";
 import {HealMapLib} from "../../services/healMapLib";
 import {LoginPage} from "../login/login";
+import {ProviderPage} from "../provider/provider";
+import {ProfilePage} from "../profile/profile";
 
 /**
  * Generated class for the PatientSignUpPage page.
@@ -25,6 +27,7 @@ export class PatientSignUpPage {
   itemsix=true;
   itemseven=true;
   itemeight=true;
+  itemnine=true;
   constructor(public navCtrl: NavController, public navParams: NavParams,private healMapLib:HealMapLib) {
     this.setItemsBooleanOpposite();
   }
@@ -45,8 +48,10 @@ export class PatientSignUpPage {
         if(data.json != null){
 
           if(data.json() != null && data.json().state.code == 0){
+            console.log(data);
             this.healMapLib.showToast("Kullanıcı oluşturuldu",3000,"bottom");
-            this.navCtrl.push(LoginPage);
+            let patientParams = {name:form.value.name, surname:form.value.surname, aboutMe: form.value.aboutMe , phone: form.value.tel};
+            this.navCtrl.push(ProfilePage,patientParams);
 
           }else if (data.json().state.code == 1){
             this.healMapLib.showToast(data.json().state.messages[0],3500,"bottom");
@@ -85,5 +90,8 @@ export class PatientSignUpPage {
     setTimeout(()=>{
       this.itemeight=! this.itemeight;
     },700)
+    setTimeout(()=>{
+      this.itemnine=! this.itemnine;
+    },800)
   }
 }

@@ -96,6 +96,7 @@ export class GoogleMapsProvider {
           mapTypeControl:false,
           keyboardShortcuts:false,
           fullScreenControl:false,
+
           mapTypeId: google.maps.MapTypeId.ROADMAP
         }
 
