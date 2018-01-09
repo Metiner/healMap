@@ -28,6 +28,7 @@ export class PatientSignUpPage {
   itemseven=true;
   itemeight=true;
   itemnine=true;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,private healMapLib:HealMapLib) {
     this.setItemsBooleanOpposite();
   }
@@ -43,18 +44,18 @@ export class PatientSignUpPage {
       this.healMapLib.showToast("Parolalar uyuşmamakta",3000,"bottom");
     }else{
 
-      this.healMapLib.signUp(form.value.email, form.value.password).subscribe(data=>{
+      console.log(form);
+      this.healMapLib.signUpPatient(form).subscribe(data=>{
 
         if(data.json != null){
 
-          if(data.json() != null && data.json().state.code == 0){
-            console.log(data);
+          if(data.json().id != undefined){
+            let patient = this.healMapLib.createPatient(data.json().id,form);
             this.healMapLib.showToast("Kullanıcı oluşturuldu",3000,"bottom");
-            let patientParams = {name:form.value.name, surname:form.value.surname, aboutMe: form.value.aboutMe , phone: form.value.tel};
-            this.navCtrl.push(ProfilePage,patientParams);
+            this.navCtrl.push(ProfilePage,patient);
 
-          }else if (data.json().state.code == 1){
-            this.healMapLib.showToast(data.json().state.messages[0],3500,"bottom");
+          }else{
+            this.healMapLib.showToast('E-mail '+data.json().email,3500,"bottom");
             form.reset();
           }
         }

@@ -12,10 +12,10 @@
       </ion-col>
       <ion-col offset-4>
         <ion-row>
-          <span style="color: #b5b3b3;margin-top: 10px">Ankara Turkey</span>
+          <span style="color: #b5b3b3;margin-top: 10px">{{patient.address}}</span>
         </ion-row>
         <ion-row>
-          <span style="font-weight: bolder;font-size: medium">John Doe</span>
+          <span style="font-weight: bolder;font-size: medium">{{patient.name}}</span>
         </ion-row>
         <ion-row>
           <ion-icon name="star"></ion-icon>
@@ -43,19 +43,15 @@
     <ion-row style="margin-top: 10px;">
       <ion-item>
         <ion-icon style="margin-left: 15px;color:#A0051C" name="pin"></ion-icon>
-        <span style="font-size: small;margin-left: 38px">Ankaralılar Cad. Koru Sitesi no:52</span>
-      </ion-item>
-      <ion-item>
-        <ion-icon style="margin-left: 15px;color:#A0051C" name="time"></ion-icon>
-        <span style="font-size: small;margin-left: 30px" class="infoTextClass">12pm-12am</span>
+        <span style="font-size: small;margin-left: 38px">{{patient.address}}</span>
       </ion-item>
       <ion-item>
         <ion-icon style="margin-left: 15px;color:#A0051C" name="call"></ion-icon>
-        <span style="font-size: small;margin-left: 34px">0 532 793 20 84</span>
+        <span style="font-size: small;margin-left: 34px">{{patient.address}}</span>
       </ion-item>
       <ion-item>
         <ion-icon style="margin-left: 15px;color:#A0051C" name="mail"></ion-icon>
-        <span style="font-size: small;margin-left: 32px">metinerkck@gmail.com</span>
+        <span style="font-size: small;margin-left: 32px">{{patient.email}}</span>
       </ion-item>
     </ion-row>
   </ion-grid>

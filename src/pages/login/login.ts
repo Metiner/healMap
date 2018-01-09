@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Events, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {NgForm} from "@angular/forms";
 import {SignupPage} from "../signup/signup";
 import {HomePage} from "../home/home";
 import {ProviderOrpatientsPage} from "../provider-orpatients/provider-orpatients";
+import {HealMapLib} from "../../services/healMapLib";
+import {MapPage} from "../map/map";
 
 /**
  * Generated class for the LoginPage page.
@@ -33,13 +35,52 @@ export class LoginPage {
   itemten=true;
   itemeleven=true;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,
+              private healMapLib:HealMapLib,
+              private loadingCtrl:LoadingController,
+              private eventCtrl:Events) {
     this.setItemsBooleanOpposite();
   }
 
   // Standart login
   onLogin(form:NgForm){
+    this.healMapLib.signIn(form.value.email, form.value.password).subscribe(data=>{
 
+      // this.onLoginLogo = true;
+      if(data.json() != null && data.json().success == true ){
+
+
+        this.setItemsBooleanOpposite();
+
+
+        setTimeout( ()=>{
+
+            this.setStorageAndUserInfoAfterSuccessLogin(data.json());
+
+          }
+          ,1100);
+
+      }
+    },error => {
+
+      this.healMapLib.showAlert(" ","Yanlış e-mail veya parola girdiniz.",["Tamam"]);
+    })
+  }
+
+
+  //sets the user info to benimfirsatimlib's static user variable and stores token in local storage
+  setStorageAndUserInfoAfterSuccessLogin(data){
+    const loading = this.loadingCtrl.create({
+      content : "Giriş yapılıyor..."
+    });
+    loading.present();
+
+    this.healMapLib.setUserInfoAfterLogin(data.user);
+    this.eventCtrl.publish('user.login',' ');
+    this.healMapLib.storageControl("user",data);
+    this.navCtrl.push(MapPage);
+    loading.dismiss();
+    this.healMapLib.showToast("Giriş yapıldı",1500,"bottom");
   }
   // Facebook login
   onFacebookLogin(){
