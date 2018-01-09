@@ -2,38 +2,39 @@
 import {Http, RequestOptions,Headers} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {AlertController, ToastController} from "ionic-angular";
+import {User} from "../models/user";
 
 @Injectable()
 export class HealMapLib{
-  api_address = 'http://localhost:3000';
+  api_address = 'https://healmap.cleverapps.io';
   googleMapsApiAdress = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+  static user;
   static token:string ="";
   constructor(private http:Http,
               private alertCtrl:AlertController,
               private toastCtrl:ToastController){}
 
 
-  public getAppData(){
-    return this.http.get(this.api_address + '/app_data.json');
+  public login(email,password){
+      return this.http.post(this.api_address + '/users/sign_in.json',{"user":{"email":email,"password":password}});
+  }
+  public signUpPatient(form){
+    return this.http.post(this.api_address + '/signup/patient',{'email':form.value.email,'name':form.value.name,'password':form.value.password,'surname':form.value.surname,'phone':form.value.tel,'about_me':form.value.aboutMe,'address':form.value.address});
+  }
+  public signUpProvider(form){
+    return this.http.post(this.api_address + '/signup/patient',{'email':form.value.email,'name':form.value.name,'password':form.value.password,'surname':form.value.surname,'phone':form.value.tel,'about_me':form.value.aboutMe,'address':form.value.address,'proffessionId':form.value.proffessionId});
   }
 
-  public signUp(email,password){
-    return this.http.post(this.api_address + '/users.json',{"user":{"email":email,"password":password}});
+  public createPatient(id,patientData){
+    if(id != null || patientData != null){
+      let patient = new Patient(id,patientData.value.email,patientData.value.name,patientData.value.surname,patientData.value.tel,patientData.value.aboutMe,patientData.value.address);
+      return patient;
+    }
+    else{
+      return false;
+    }
   }
 
-  public checkLogin(){
-    let opt = this.setHeader();
-    return this.http.get(this.api_address + '/users/login_check',opt);
-  }
-
-  public signupOrLogin(email,name,avatar_url,uid,authResponse,provider_name){
-    let opt = this.setHeader();
-    return this.http.post(this.api_address+'/users/auto_oauth',{"email":email,"name":name,"avatar_url":avatar_url,"uid":uid,"provider":provider_name,login_data:authResponse},opt);
-  }
-
-  public signIn(email,password){
-    return this.http.post(this.api_address + '/users/sign_in.json',{"user":{"email":email,"password":password}});
-  }
 
   // to set request header for authentication
   private setHeader():RequestOptions{
@@ -113,4 +114,11 @@ export class HealMapLib{
     toast.present();
   }
 
+
+  // sets user object to user static variable which locates in this class after login.
+  public setUserInfoAfterLogin(user:any){
+    let u:User=new User();
+    Object.assign(u,user);
+    HealMapLib.user = u;
+  }
 }
