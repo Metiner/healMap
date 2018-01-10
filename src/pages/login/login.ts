@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import {Events, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {NgForm} from "@angular/forms";
-import {SignupPage} from "../signup/signup";
-import {HomePage} from "../home/home";
 import {ProviderOrpatientsPage} from "../provider-orpatients/provider-orpatients";
 import {HealMapLib} from "../../services/healMapLib";
 import {MapPage} from "../map/map";
@@ -44,7 +42,7 @@ export class LoginPage {
 
   // Standart login
   onLogin(form:NgForm){
-    this.healMapLib.signIn(form.value.email, form.value.password).subscribe(data=>{
+    this.healMapLib.login(form.value.email, form.value.password).subscribe(data=>{
 
       // this.onLoginLogo = true;
       if(data.json() != null && data.json().success == true ){
@@ -82,14 +80,7 @@ export class LoginPage {
     loading.dismiss();
     this.healMapLib.showToast("Giriş yapıldı",1500,"bottom");
   }
-  // Facebook login
-  onFacebookLogin(){
 
-  }
-  // Google login
-  onGoogleLogin(){
-
-  }
 
   // Onsignup Page
   onSignUp(){

@@ -3,8 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {NgForm} from "@angular/forms";
 import {HealMapLib} from "../../services/healMapLib";
 import {LoginPage} from "../login/login";
-import {ProviderPage} from "../provider/provider";
-import {ProfilePage} from "../profile/profile";
 
 /**
  * Generated class for the PatientSignUpPage page.
@@ -38,32 +36,29 @@ export class PatientSignUpPage {
   }
 
 
-  onSignUp(form:NgForm){
+  onSignUp(form:NgForm) {
 //check if passwords are different
-    if(!form.value.password == form.value.passwordTwo){
-      this.healMapLib.showToast("Parolalar uyuşmamakta",3000,"bottom");
-    }else{
+    if (!form.value.password == form.value.passwordTwo) {
+      this.healMapLib.showToast("Parolalar uyuşmamakta", 3000, "bottom");
+    } else {
 
-      console.log(form);
-      this.healMapLib.signUpPatient(form).subscribe(data=>{
+      this.healMapLib.signUp(form.value.email, form.value.password).subscribe(data => {
 
-        if(data.json != null){
+        if (data.json != null) {
 
-          if(data.json().id != undefined){
-            let patient = this.healMapLib.createPatient(data.json().id,form);
-            this.healMapLib.showToast("Kullanıcı oluşturuldu",3000,"bottom");
-            this.navCtrl.push(ProfilePage,patient);
+          if (data.json() != null && data.json().state.code == 0) {
+            this.healMapLib.showToast("Kullanıcı oluşturuldu", 3000, "bottom");
+            this.navCtrl.push(LoginPage);
 
-          }else{
-            this.healMapLib.showToast('E-mail '+data.json().email,3500,"bottom");
+          } else if (data.json().state.code == 1) {
+            this.healMapLib.showToast(data.json().state.messages[0], 3500, "bottom");
             form.reset();
           }
         }
-      },error =>{
-        this.healMapLib.showAlert("",error,["Tamam"]);
+      }, error => {
+        this.healMapLib.showAlert("", error, ["Tamam"]);
       });
     }
-
   }
   setItemsBooleanOpposite(){
 

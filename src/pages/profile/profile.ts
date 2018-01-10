@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {Patient} from "../../models/patient";
+import {User} from "../../models/user";
 
 /**
  * Generated class for the ProfilePage page.
@@ -16,7 +16,7 @@ import {Patient} from "../../models/patient";
 })
 export class ProfilePage {
 
-  patient: Patient;
+  patient: User;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     if(this.navParams){

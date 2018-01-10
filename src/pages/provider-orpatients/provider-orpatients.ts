@@ -19,15 +19,18 @@ export class ProviderOrpatientsPage {
 
   providerSignUpPage = SignupPage;
   patientSignUpPage = PatientSignUpPage;
+  static userTypeDecision; // 1-patient,2-provider.
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   providerSignUp(){
+    ProviderOrpatientsPage.userTypeDecision = 2;
     this.navCtrl.push(this.providerSignUpPage);
   }
 
   patientSignUp(){
+    ProviderOrpatientsPage.userTypeDecision = 1;
     this.navCtrl.push(this.patientSignUpPage);
   }
 

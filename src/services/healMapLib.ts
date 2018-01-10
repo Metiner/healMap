@@ -3,6 +3,7 @@ import {Http, RequestOptions,Headers} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {AlertController, ToastController} from "ionic-angular";
 import {User} from "../models/user";
+import {Storage} from "@ionic/storage";
 
 @Injectable()
 export class HealMapLib{
@@ -12,27 +13,52 @@ export class HealMapLib{
   static token:string ="";
   constructor(private http:Http,
               private alertCtrl:AlertController,
-              private toastCtrl:ToastController){}
+              private toastCtrl:ToastController,
+              private storageCtrl:Storage){}
 
 
   public login(email,password){
       return this.http.post(this.api_address + '/users/sign_in.json',{"user":{"email":email,"password":password}});
   }
-  public signUpPatient(form){
-    return this.http.post(this.api_address + '/signup/patient',{'email':form.value.email,'name':form.value.name,'password':form.value.password,'surname':form.value.surname,'phone':form.value.tel,'about_me':form.value.aboutMe,'address':form.value.address});
-  }
-  public signUpProvider(form){
-    return this.http.post(this.api_address + '/signup/patient',{'email':form.value.email,'name':form.value.name,'password':form.value.password,'surname':form.value.surname,'phone':form.value.tel,'about_me':form.value.aboutMe,'address':form.value.address,'proffessionId':form.value.proffessionId});
+
+  public signUp(email,password){
+    console.log(email +' '+ password);
+    return this.http.post(this.api_address + '/users.json',{"user":{"email":email,"password":password}});
   }
 
-  public createPatient(id,patientData){
-    if(id != null || patientData != null){
-      let patient = new Patient(id,patientData.value.email,patientData.value.name,patientData.value.surname,patientData.value.tel,patientData.value.aboutMe,patientData.value.address);
-      return patient;
-    }
-    else{
-      return false;
-    }
+  public checkLogin(){
+    let opt = this.setHeader();
+    console.log(opt);
+    return this.http.get(this.api_address + '/users/login_check',opt);
+  }
+
+
+  // Function for setting key and value on devices storage.
+  public storageControl(key:string,value:string){
+    this.storageCtrl.set(key,value)
+      .then( success =>{
+          this.setTokenFromStorage();
+          return success;
+        }
+      )
+      .catch(
+        err => {
+          this.showToast(err,3000,"bottom");
+        }
+      );
+
+  }
+
+  // sets token to static variable named token in this class after login.
+  public setTokenFromStorage():string{
+    this.storageCtrl.get("user").then(data=>{
+        HealMapLib.token= data.token;
+        return HealMapLib.token;
+      }
+    ).catch(err=> {
+      this.showToast(err,300,"bottom");
+    })
+    return '';
   }
 
 

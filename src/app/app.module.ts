@@ -29,6 +29,7 @@ import { HttpModule} from "@angular/http";
 import {MapPage} from "../pages/map/map";
 import {ProviderOrpatientsPage} from "../pages/provider-orpatients/provider-orpatients";
 import {PatientSignUpPage} from "../pages/patient-sign-up/patient-sign-up";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {PatientSignUpPage} from "../pages/patient-sign-up/patient-sign-up";
     BrowserModule,
     HttpModule,
     BrowserAnimationsModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot({driverOrder: ['indexeddb', 'websql', 'sqlite']})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
