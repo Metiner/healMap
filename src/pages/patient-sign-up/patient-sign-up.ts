@@ -42,7 +42,7 @@ export class PatientSignUpPage {
       this.healMapLib.showToast("Parolalar uyuşmamakta", 3000, "bottom");
     } else {
 
-      this.healMapLib.signUp(form.value.email, form.value.password).subscribe(data => {
+      this.healMapLib.signUp(form).subscribe(data => {
 
         if (data.json != null) {
 

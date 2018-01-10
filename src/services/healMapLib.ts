@@ -22,9 +22,13 @@ export class HealMapLib{
       return this.http.post(this.api_address + '/users/sign_in.json',{"user":{"email":email,"password":password}});
   }
 
-  public signUp(email,password){
-    console.log(email +' '+ password);
-    return this.http.post(this.api_address + '/users.json',{"user":{"email":email,"password":password}});
+  public signUp(formValues){
+    return this.http.post(this.api_address + '/users.json',
+      {"user":{"email":formValues.value.email,
+                     "password":formValues.value.password,
+                      "name":formValues.value.name,
+                      "surname:":formValues.value.surname,
+                      "phone_no":formValues.value.tel}});
   }
 
   public checkLogin(){

@@ -11,7 +11,7 @@ import {ChatListPage} from "../pages/chat-list/chat-list";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = MapPage;
+  rootPage:any = LoginPage;
   @ViewChild('nav') nav: NavController;
   isAuthenticated = false;
   currentUser:User;
@@ -44,17 +44,17 @@ export class MyApp {
     this.menuCtrl.close();
   }
   onEmergencyNumbers(){
-    this.healMapLib.showToast("Q",1000,"bottom");
+    this.healMapLib.showToast("KURTAR BENİ",1000,"bottom");
   }
   onSettings(){
-    this.healMapLib.showToast("Ciuv",1000,"bottom");
+    this.healMapLib.showToast("BEYNİMİ SANAL GERÇEKLİK İÇİNE HAPSETTİLER",1000,"bottom");
   }
   onLogout(){
 
     this.healMapLib.logOutFromStorageAndAuth();
     this.menuCtrl.close();
     this.nav.setRoot(MapPage);
-    this.healMapLib.showToast("Çıkış yapıldı",2000,"bottom");
+    this.healMapLib.showToast("Çıkış ",2000,"bottom");
 
     //Executes the code after waiting a second.
     setTimeout(()=>{
@@ -63,7 +63,14 @@ export class MyApp {
 
   }
   reviewOnStore(){
-    this.healMapLib.showToast("BASMA NE BASIYON",1000,"bottom");
+    this.healMapLib.showToast("UYGULAMANIN İÇİNE HAPSOLDUM",1000,"bottom");
+  }
+
+  leaveFeedback(){
+    this.healMapLib.showToast("YARDIM ET",1000,"bottom");
+  }
+  reportBug(){
+    this.healMapLib.showToast("SONSUZLUKTA ACI ÇEKİYORUM",1000,"bottom");
   }
 }
 

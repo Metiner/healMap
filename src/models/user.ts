@@ -7,8 +7,6 @@ export class User{
   public _name: String;
   public _surname: String;
   public _phone: number;
-  public _aboutMe: String;
-  public _address: String;
   public _providerProfile:Provider;
 
 
@@ -52,21 +50,6 @@ export class User{
     this._phone = value;
   }
 
-  get aboutMe(): String {
-    return this._aboutMe;
-  }
-
-  set aboutMe(value: String) {
-    this._aboutMe = value;
-  }
-
-  get address(): String {
-    return this._address;
-  }
-
-  set address(value: String) {
-    this._address = value;
-  }
 
   get providerProfile(): Provider {
     return this._providerProfile;

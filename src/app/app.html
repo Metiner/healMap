@@ -74,7 +74,7 @@
     <ion-item style="background-color: #FFFFFF" *ngIf="isAuthenticated">
       <button ion-button
               clear
-              (click)="onLogout()"
+              (click)="leaveFeedback()"
               icon-left>
         <span class="menuSpan">Leave Feedback</span>
       </button>
@@ -82,7 +82,7 @@
     <ion-item style="background-color: #FFFFFF" *ngIf="isAuthenticated">
       <button ion-button
               clear
-              (click)="onLogout()"
+              (click)="reportBug()"
               icon-left>
         <span class="menuSpan">Report Bug</span>
       </button>
