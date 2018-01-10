@@ -15,10 +15,10 @@
     </ion-row>
     <form #f="ngForm" (submit)="onLogin(f)">
       <ion-item [ngClass]="itemtwo ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
-        <ion-input type="text" placeholder="username or e-mail"></ion-input>
+        <ion-input type="text" [ngModel] name="email" placeholder="E-mail"></ion-input>
       </ion-item>
       <ion-item [ngClass]="itemthree ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
-        <ion-input type="password" placeholder="password"></ion-input>
+        <ion-input type="password" [ngModel] name="password" placeholder="Password"></ion-input>
       </ion-item>
       <ion-row [ngClass]="itemfour ? 'toLogoUp' : 'toLogoDown'" >
         <ion-col  col-70>

@@ -2,14 +2,14 @@ import {Provider} from "./provider";
 
 export class User{
 
-  private _id: number;
-  private _email: String;
-  private _name: String;
-  private _surname: String;
-  private _phone: number;
-  private _aboutMe: String;
-  private _address: String;
-  private _providerProfile:Provider;
+  public _id: number;
+  public _email: String;
+  public _name: String;
+  public _surname: String;
+  public _phone: number;
+  public _aboutMe: String;
+  public _address: String;
+  public _providerProfile:Provider;
 
 
   get id(): number {

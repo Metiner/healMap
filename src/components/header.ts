@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 @Component({
   selector:'header-component',
   template:`
-    <ion-navbar>
       <ion-grid>
         <ion-row>
           <ion-col col-20>
@@ -40,7 +39,7 @@ import {Component} from '@angular/core';
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-navbar>`
+    `
 })
 export class HeaderComponent{
 

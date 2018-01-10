@@ -18,6 +18,7 @@ export class HealMapLib{
 
 
   public login(email,password){
+      console.log(email+" " +password);
       return this.http.post(this.api_address + '/users/sign_in.json',{"user":{"email":email,"password":password}});
   }
 
@@ -143,8 +144,21 @@ export class HealMapLib{
 
   // sets user object to user static variable which locates in this class after login.
   public setUserInfoAfterLogin(user:any){
+    console.log(user);
     let u:User=new User();
     Object.assign(u,user);
     HealMapLib.user = u;
+  }
+
+  //It removes all of users from device local storage.
+  public logOutFromStorageAndAuth(){
+    this.storageCtrl.clear().then(
+      data => {
+        return true;
+      }
+    ).catch(err =>{
+      this.showToast(err,3000,"bottom");
+      return false;
+    })
   }
 }

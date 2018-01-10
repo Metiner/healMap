@@ -42,6 +42,7 @@ export class LoginPage {
 
   // Standart login
   onLogin(form:NgForm){
+    console.log(form);
     this.healMapLib.login(form.value.email, form.value.password).subscribe(data=>{
 
       // this.onLoginLogo = true;
@@ -76,7 +77,7 @@ export class LoginPage {
     this.healMapLib.setUserInfoAfterLogin(data.user);
     this.eventCtrl.publish('user.login',' ');
     this.healMapLib.storageControl("user",data);
-    this.navCtrl.push(MapPage);
+    this.navCtrl.setRoot(MapPage);
     loading.dismiss();
     this.healMapLib.showToast("Giriş yapıldı",1500,"bottom");
   }
