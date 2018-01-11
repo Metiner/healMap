@@ -3,15 +3,13 @@ import {Component} from '@angular/core';
   selector:'header-component',
   template:`
       <ion-grid>
-        <ion-row>
+        <ion-row style="background-color: #1A1A1A">
           <ion-col col-20>
             <button
               ion-button
-              icon-only
               clear
-              small
               menuToggle>
-              <img style="height: 100%;width: 100%;border-radius: 50%" src="assets/imgs/pp.png">
+              <ion-icon style='color: #e8e8e8;margin-top: 15px' name="menu"></ion-icon>
             </button>
           </ion-col>
           <ion-col col-20 offset-30>

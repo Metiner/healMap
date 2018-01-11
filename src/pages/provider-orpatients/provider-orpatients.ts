@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {SignupPage} from "../signup/signup";
 import {PatientSignUpPage} from "../patient-sign-up/patient-sign-up";
+import {MapPage} from "../map/map";
 
 /**
  * Generated class for the ProviderOrpatientsPage page.
@@ -32,6 +33,9 @@ export class ProviderOrpatientsPage {
   patientSignUp(){
     ProviderOrpatientsPage.userTypeDecision = 1;
     this.navCtrl.push(this.patientSignUpPage);
+  }
+  toTabsPage(){
+    this.navCtrl.setRoot(MapPage);
   }
 
 }

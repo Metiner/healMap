@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {NgForm} from "@angular/forms";
+import {HealMapLib} from "../../services/healMapLib";
+import {LoginPage} from "../login/login";
 
 /**
  * Generated class for the SignupPage page.
@@ -26,9 +28,15 @@ export class SignupPage {
   itemseven=true;
   itemeight=true;
   itemnine=true;
+  professions = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public healMapLib: HealMapLib) {
     this.setItemsBooleanOpposite();
+    this.healMapLib.getProfessions().subscribe(response=>{
+      this.professions = response.json().professions;
+    })
 
   }
 
@@ -39,7 +47,32 @@ export class SignupPage {
 
   onSignUp(form:NgForm){
 
+    //check if passwords are different
+    if (!form.value.password == form.value.passwordTwo) {
+      this.healMapLib.showToast("Parolalar uyuşmamakta", 3000, "bottom");
+    } else {
 
+      this.healMapLib.signUp(form).subscribe(data => {
+
+        if (data.json != null) {
+
+          if (data.json() != null && data.json().state.code == 0) {
+
+            this.healMapLib.createProviderProfile(form).subscribe(response=>{
+              console.log(response);
+            });
+            this.healMapLib.showToast("Kullanıcı oluşturuldu", 3000, "bottom");
+            this.navCtrl.push(LoginPage);
+
+          } else if (data.json().state.code == 1) {
+            this.healMapLib.showToast(data.json().state.messages[0], 3500, "bottom");
+            form.reset();
+          }
+        }
+      }, error => {
+        this.healMapLib.showAlert("", error, ["Tamam"]);
+      });
+    }
   }
 
   setItemsBooleanOpposite() {

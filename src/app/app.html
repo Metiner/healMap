@@ -8,8 +8,8 @@
     <ion-item *ngIf="isAuthenticated" class="menuItem">
       <ion-grid>
         <ion-row >
-          <ion-col col-30 offset-7 style="border-radius: 50%;max-height: max-content;border:1px solid darkred">
-            <img style="height: 100%;width: 100%" src="assets/imgs/pp.png">
+          <ion-col col-30 offset-7>
+            <img style="height: 100%;width: 100%;border-radius: 50%;max-height: max-content;border:1px solid black;" src="{{currentUser.avatar_url}}">
           </ion-col>
           <ion-col offset-6 style="margin-top: 20px">
             <span class="menuSpan">{{currentUser.name + ' ' + currentUser.surname}}</span>
@@ -25,6 +25,15 @@
               class="menuSpan">
         <ion-icon class="menuSpan" name="log-in"></ion-icon>
         <span class="menuSpan">Log in</span>
+      </button>
+    </ion-item>
+    <ion-item class="menuItem" *ngIf="isAuthenticated">
+      <button ion-button
+              clear
+              (click)="onProfile()"
+              icon-left>
+        <ion-icon class="menuSpan" name="contact"></ion-icon>
+        <span class="menuSpan">Profile</span>
       </button>
     </ion-item>
     <ion-item class="menuItem" *ngIf="isAuthenticated">

@@ -27,7 +27,7 @@ export class HealMapLib{
       {"user":{"email":formValues.value.email,
                      "password":formValues.value.password,
                       "name":formValues.value.name,
-                      "surname:":formValues.value.surname,
+                      "surname":formValues.value.surname,
                       "phone_no":formValues.value.tel}});
   }
 
@@ -164,5 +164,13 @@ export class HealMapLib{
       this.showToast(err,3000,"bottom");
       return false;
     })
+  }
+  public getProfessions(){
+    return this.http.get(this.api_address + '/app_data');
+  }
+
+  public createProviderProfile(form){
+    let opt = this.setHeader();
+    return this.http.post(this.api_address + '/provider/create',{'profession_id':form.value.profession_id,'name':form.value.name},opt);
   }
 }

@@ -37,7 +37,7 @@ export class PatientSignUpPage {
 
 
   onSignUp(form:NgForm) {
-//check if passwords are different
+    //check if passwords are different
     if (!form.value.password == form.value.passwordTwo) {
       this.healMapLib.showToast("Parolalar uyuşmamakta", 3000, "bottom");
     } else {

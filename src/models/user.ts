@@ -8,7 +8,19 @@ export class User{
   public _surname: String;
   public _phone: number;
   public _providerProfile:Provider;
+  private _avatar_url: String
 
+
+  constructor() {
+  }
+
+  get avatar_url(): String {
+    return this._avatar_url;
+  }
+
+  set avatar_url(value: String) {
+    this._avatar_url = value;
+  }
 
   get id(): number {
     return this._id;

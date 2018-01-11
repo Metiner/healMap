@@ -36,15 +36,12 @@
       ></ion-input>
     </ion-item>
     <ion-item [ngClass]="itemfour ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
-      <ion-input
-        type="text"
-        name="profession"
-        ngModel
-        required
-        placeholder="What is your Profession ?"
-      ></ion-input>
+      <ion-label style="color:#eea5af">What is your Profession ?</ion-label>
+      <ion-select ngModel
+                  name="profession_id">
+        <ion-option *ngFor="let profession of professions" value="{{profession.id}}">{{profession.name}}</ion-option>
+      </ion-select>
     </ion-item>
-
     <ion-item [ngClass]="itemfive ? 'toLogoUp' : 'toLogoDown'" no-lines class="inputBox">
       <ion-textarea ngModel
                     required

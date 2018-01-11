@@ -47,12 +47,27 @@ export class MapPage {
               private eventCtrl:Events,
               private changeDetector:ChangeDetectorRef) {
 
+    this.platform.ready().then(()=>{
+
+
+      const loading = this.loadingCtrl.create({
+        content: "Map is Loading"
+      })
+      loading.present();
+      this.initMap().then(map=> {
+        this.map = map;
+        this.getCenterOfMap();
+        loading.dismiss();
+      })
+    })
+
     this.eventCtrl.subscribe('providerDetailOnClick',(provider,showProviderDetails,providerIcon)=>{
 
       this.selectedProviderToShowInDetails = provider;
       this.providerIcon = providerIcon;
       this.showProviderDetails = showProviderDetails;
       this.changeDetector.detectChanges();
+
 
     })
 
@@ -65,19 +80,7 @@ export class MapPage {
   }
 
   ionViewDidLoad(){
-    this.platform.ready().then(()=>{
 
-
-      const loading = this.loadingCtrl.create({
-        content: "Map is Loading"
-      })
-      loading.present();
-        this.initMap().then(map=> {
-          this.map = map;
-          this.getCenterOfMap();
-          loading.dismiss();
-        })
-    })
   }
   setCenter(){
     this.geolocation.getCurrentPosition().then(location=> {
