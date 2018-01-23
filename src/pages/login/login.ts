@@ -45,14 +45,16 @@ export class LoginPage {
     console.log(form);
     this.healMapLib.login(form.value.email, form.value.password).subscribe(data=>{
 
+
+
+
+
       // this.onLoginLogo = true;
       if(data.json() != null && data.json().success == true ){
 
 
         this.setItemsBooleanOpposite();
-
-
-        setTimeout( ()=>{
+            setTimeout( ()=>{
 
             this.setStorageAndUserInfoAfterSuccessLogin(data.json());
 
@@ -74,6 +76,8 @@ export class LoginPage {
     });
     loading.present();
 
+    if(data.has("user")){
+    }
     this.healMapLib.setUserInfoAfterLogin(data.user);
     this.eventCtrl.publish('user.login',' ');
     this.healMapLib.storageControl("user",data);

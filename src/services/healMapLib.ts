@@ -171,6 +171,8 @@ export class HealMapLib{
 
   public createProviderProfile(form){
     let opt = this.setHeader();
-    return this.http.post(this.api_address + '/provider/create',{'profession_id':form.value.profession_id,'name':form.value.name},opt);
+    console.log(opt);
+    console.log(HealMapLib.token);
+    return this.http.post(this.api_address + '/provider/create',{'profession_id':form.value.profession_id,'description':form.value.name},opt);
   }
 }

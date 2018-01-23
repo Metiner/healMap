@@ -44,9 +44,11 @@ export class PatientSignUpPage {
 
       this.healMapLib.signUp(form).subscribe(data => {
 
-        if (data.json != null) {
+        if (data.json() != null) {
 
           if (data.json() != null && data.json().state.code == 0) {
+
+            HealMapLib.token = data.json().data.login_token;
             this.healMapLib.showToast("Kullanıcı oluşturuldu", 3000, "bottom");
             this.navCtrl.push(LoginPage);
 
