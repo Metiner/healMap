@@ -1,9 +1,11 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage, Platform} from 'ionic-angular';
+import {IonicPage, NavParams, Platform} from 'ionic-angular';
 import {mapExpandAnimation} from "../../components/animations";
 import {Geolocation} from "@ionic-native/geolocation";
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
+import {User} from "../../models/user";
+import {HealMapLib} from "../../services/healMapLib";
 
 declare var google;
 
@@ -21,11 +23,23 @@ export class ProviderPage {
   map: any;
   expanded: boolean =false;
   marginTop= -500;
-
+  provider: any;
   constructor(public geolocation:Geolocation,
               public platform:Platform,
               public maps:GoogleMapsProvider,
-              public mapCluster:GoogleMapsCluster) {
+              public mapCluster:GoogleMapsCluster,
+              public navParams:NavParams,
+              public healMapLib:HealMapLib) {
+
+    if(this.navParams){
+      this.provider = this.navParams.data;
+
+      this.healMapLib.getProviderProfile(this.provider.provider_id).subscribe(response=>{
+        console.log(response);
+      },error=>{
+        console.log(error);
+      })
+    }
   }
 
   ionViewDidLoad() {

@@ -5,6 +5,7 @@ import {AlertController, ToastController} from "ionic-angular";
 import {User} from "../models/user";
 import {Storage} from "@ionic/storage";
 
+
 @Injectable()
 export class HealMapLib{
   api_address = 'https://healmap.cleverapps.io';
@@ -174,5 +175,11 @@ export class HealMapLib{
     console.log(opt);
     console.log(HealMapLib.token);
     return this.http.post(this.api_address + '/provider/create',{'profession_id':form.value.profession_id,'description':form.value.name},opt);
+  }
+  public getUserInfoFromStorage(){
+    return this.storageCtrl.get('user');
+  }
+  public getProviderProfile(provider_id){
+    return this.http.get(this.api_address + '/provider/'+provider_id);
   }
 }

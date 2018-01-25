@@ -9,11 +9,12 @@ import {HealMapLib} from "../services/healMapLib";
 import {ChatListPage} from "../pages/chat-list/chat-list";
 import {ProfilePage} from "../pages/profile/profile";
 import {SignupPage} from "../pages/signup/signup";
+import {ProviderPage} from "../pages/provider/provider";
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = SignupPage;
+  rootPage:any = LoginPage;
   @ViewChild('nav') nav: NavController;
   isAuthenticated = false;
   currentUser:User;
@@ -75,7 +76,14 @@ export class MyApp {
     this.healMapLib.showToast("SONSUZLUKTA ACI ÇEKİYORUM",1000,"bottom");
   }
   onProfile(){
-    this.nav.push(ProfilePage,this.currentUser);
+    console.log("asdasdasd")
+    this.healMapLib.getUserInfoFromStorage().then(response=>{
+        if(response.user.provider_id != undefined){
+          this.nav.push(ProviderPage,this.currentUser);
+        }else{
+          this.nav.push(ProfilePage,this.currentUser);
+        }
+      })
     this.menuCtrl.close();
   }
 }

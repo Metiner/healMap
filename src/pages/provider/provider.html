@@ -15,7 +15,7 @@
                class="providerInfo"
                [ngStyle]="{'marginTop.px':marginTop}">
         <ion-col col-27 offset-12 style="margin-top: -50px;border-radius: 50%;max-height: max-content;border:5px solid white">
-          <img style="height: 100%;width: 100%" src="assets/imgs/pp.png">
+          <img style="height: 100%;width: 100%;border-radius: 50%" src="{{provider.avatar_url}}">
         </ion-col>
         <ion-col  style="max-height: max-content">
           <ion-row style="margin-top: 10px;color:#9f9e9e">
@@ -28,7 +28,7 @@
           </ion-row>
           <ion-row>
             <ion-col style="font-size: large;font-weight: bolder">
-              <span>John Doe</span>
+              <span>{{provider.name}}</span>
             </ion-col>
           </ion-row>
         </ion-col>
