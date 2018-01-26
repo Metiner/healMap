@@ -10,11 +10,14 @@ import {ChatListPage} from "../pages/chat-list/chat-list";
 import {ProfilePage} from "../pages/profile/profile";
 import {SignupPage} from "../pages/signup/signup";
 import {ProviderPage} from "../pages/provider/provider";
+import {SettingsPage} from "../pages/settings/settings";
+import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings";
+import {SetLocationOnMapPage} from "../pages/set-location-on-map/set-location-on-map";
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = LoginPage;
+  rootPage:any = SetLocationOnMapPage;
   @ViewChild('nav') nav: NavController;
   isAuthenticated = false;
   currentUser:User;
@@ -50,7 +53,8 @@ export class MyApp {
     this.healMapLib.showToast("KURTAR BENİ",1000,"bottom");
   }
   onSettings(){
-    this.healMapLib.showToast("BEYNİMİ SANAL GERÇEKLİK İÇİNE HAPSETTİLER",1000,"bottom");
+    this.nav.push(SettingsPage);
+    this.menuCtrl.close();
   }
   onLogout(){
 

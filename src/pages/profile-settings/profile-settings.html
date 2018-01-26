@@ -1,0 +1,36 @@
+
+
+<ion-header>
+  <header-component></header-component>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <img style="border-radius: 50%" src="{{profile.avatar_url}}">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <form #f="ngForm" >
+    <ion-list>
+      <ion-item>
+        <button  (click)="onTakePhoto()"  ion-button clear>Change Profile Picture</button>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Name</ion-label>
+        <ion-input ngModel name="name" minlength="5" maxlength="20" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Surname</ion-label>
+        <ion-input ngModel name="surname" minlength="5" maxlength="20" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Phone</ion-label>
+        <ion-input ngModel name="phone" type="number"></ion-input>
+      </ion-item>
+        <button ion-button
+                (click)="onProfileChange(f)">Save</button>
+    </ion-list>
+  </form>
+</ion-content>

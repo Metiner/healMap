@@ -24,6 +24,9 @@ export class ProviderPage {
   expanded: boolean =false;
   marginTop= -500;
   provider: any;
+  description = "";
+  profession = "";
+
   constructor(public geolocation:Geolocation,
               public platform:Platform,
               public maps:GoogleMapsProvider,
@@ -35,7 +38,8 @@ export class ProviderPage {
       this.provider = this.navParams.data;
 
       this.healMapLib.getProviderProfile(this.provider.provider_id).subscribe(response=>{
-        console.log(response);
+      this.description = response.json().description;
+      this.profession = response.json().profession;
       },error=>{
         console.log(error);
       })

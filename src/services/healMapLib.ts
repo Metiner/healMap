@@ -182,4 +182,8 @@ export class HealMapLib{
   public getProviderProfile(provider_id){
     return this.http.get(this.api_address + '/provider/'+provider_id);
   }
+
+  public updateProfile(){
+    // buraya user parametreleri gelecek,gökay yaptıktan sonra
+  }
 }
