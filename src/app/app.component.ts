@@ -17,7 +17,7 @@ import {SetLocationOnMapPage} from "../pages/set-location-on-map/set-location-on
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = SetLocationOnMapPage;
+  rootPage:any = LoginPage;
   @ViewChild('nav') nav: NavController;
   isAuthenticated = false;
   currentUser:User;

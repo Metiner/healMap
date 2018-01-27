@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {Camera} from '@ionic-native/camera';
 import {HealMapLib} from "../../services/healMapLib";
 import {SetLocationOnMapPage} from "../set-location-on-map/set-location-on-map";
@@ -14,12 +14,20 @@ export class ProviderSettingsPage {
   base64Image = "";
   base64ImageToUpload = "";
   profile:any = {};
+  selectedLocation = {};
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public camera:Camera) {
+              public camera:Camera,
+              public popover:PopoverController,
+              public healMapLib:HealMapLib) {
     console.log(HealMapLib.user);
     this.profile = HealMapLib.user;
+  }
+
+  ionViewWillEnter(){
+    let markers = this.navParams.get("markers");
+    console.log(markers);
   }
 
   onProfileChange(form){
@@ -46,7 +54,19 @@ export class ProviderSettingsPage {
   }
 
   selectLocationOnMap(){
-    this.navCtrl.push(SetLocationOnMapPage);
+
+    let callBack = function (params) {
+      return new Promise(((resolve, reject) => {
+        if(params[0] != undefined){
+          this.selectedLocation = {lat:params[0].position.lat(),lng:params[0].position.lng()}
+          this.healMapLib.showToast("Location has been set",3000,"bottom");
+          }
+        resolve();
+      }))
+    }
+    this.navCtrl.push(SetLocationOnMapPage,{
+      callback: callBack
+    });
   }
 
 }

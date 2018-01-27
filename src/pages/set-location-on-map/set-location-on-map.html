@@ -6,10 +6,20 @@
 <ion-content>
 
   <ion-label>Please tap a location.</ion-label>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button
+                (click)="saveMyPin(markers)"
+        >Save my pin.</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div #pleaseConnect id="please-connect">
     <p>Please connect to the Internet...</p>
   </div>
   <div #map_canvas id="map_canvas"></div>
+
 
 </ion-content>

@@ -1,5 +1,5 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, Platform, PopoverController} from 'ionic-angular';
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {Geolocation} from "@ionic-native/geolocation";
@@ -17,14 +17,16 @@ export class SetLocationOnMapPage {
   @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
   map;
   markers = [];
+  callback;
 
   constructor(public geolocation:Geolocation,
               public platform:Platform,
               public maps:GoogleMapsProvider,
               public mapCluster:GoogleMapsCluster,
               public navParams:NavParams,
-              public healMapLib:HealMapLib) {
-
+              public healMapLib:HealMapLib,
+              public navCtrl:NavController) {
+      this.callback = this.navParams.get('callback')
   }
   ionViewDidLoad() {
     this.platform.ready().then(()=>{
@@ -68,7 +70,11 @@ export class SetLocationOnMapPage {
     })
   }
 
-
+  saveMyPin(markers){
+    this.callback(markers).then(()=>{
+      this.navCtrl.pop();
+    });
+  }
 
 
 }
