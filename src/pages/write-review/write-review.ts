@@ -1,12 +1,8 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {NgForm} from "@angular/forms";
+import {HealMapLib} from "../../services/healMapLib";
 
-/**
- * Generated class for the WriteReviewPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -15,11 +11,29 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class WriteReviewPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  provider:any;
+  @ViewChild(Content) content:Content;
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public healMapLib:HealMapLib) {
+      this.provider = this.navParams.data;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WriteReviewPage');
+
+  onCommentSubmit(form: NgForm) {
+    this.healMapLib.createReview(this.provider.provider_id,form.value.comment,form.value.star).subscribe(data => {
+      // newlyAdded.newlyAdded = 'newlyAdded';
+      // this.comment.comments.push(newlyAdded);
+      setTimeout(()=>{
+        this.scrollToNewlyAddedComment();
+      },200)
+      form.reset();
+    });
   }
 
+  scrollToNewlyAddedComment(){
+    let newlyAddedComment:any = document.getElementById('newlyAdded');
+    //this.content.scrollTo(0,newlyAddedComment.offsetTop,1000);
+  }
 }

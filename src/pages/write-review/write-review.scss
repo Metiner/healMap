@@ -1,13 +1,4 @@
 page-write-review {
-  background-color: #F0ECEC;
-  ion-item{
-    background-color: #F0ECEC !important;
-  }
-  textarea{
-    height: inherit;
-  }
 
-  .item-input-has-focus , input-has-focus{
-    color:#a0051c !important;
-  }
+  $text-input-placeholder-color : black;
 }

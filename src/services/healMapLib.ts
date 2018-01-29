@@ -172,8 +172,6 @@ export class HealMapLib{
 
   public createProviderProfile(form){
     let opt = this.setHeader();
-    console.log(opt);
-    console.log(HealMapLib.token);
     return this.http.post(this.api_address + '/provider/create',{'profession_id':form.value.profession_id,'description':form.value.name},opt);
   }
   public getUserInfoFromStorage(){
@@ -183,7 +181,21 @@ export class HealMapLib{
     return this.http.get(this.api_address + '/provider/'+provider_id);
   }
 
-  public updateProfile(){
-    // buraya user parametreleri gelecek,gökay yaptıktan sonra
+  public updateLocation(lat,lng){
+    let opt = this.setHeader();
+    return this.http.post(this.api_address+'/provider/update_position' ,{lat:lat,lng:lng},opt);
+  }
+
+
+  public createReview(provider_id,review,star){
+    let opt = this.setHeader();
+    return this.http.post(this.api_address + '/provider/' + provider_id +'/comment',{comment_body:review,score:star},opt);
+  }
+
+  public getReviews(provider_id){
+    return this.http.get(this.api_address + '/provider/' + provider_id + '/comments');
+  }
+  getProvidersToMap(lat_top_left,lat_bottom_right,lng_top_left,lng_bottom_right){
+    return this.http.get(this.api_address + '/query?lat_top_left=' + lat_top_left + '&lat_bottom_right=' +lat_bottom_right + '&lng_top_left=' + lng_top_left + '&lng_bottom_right=' + lng_bottom_right);
   }
 }

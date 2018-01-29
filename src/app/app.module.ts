@@ -58,7 +58,8 @@ import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings
     SettingsPage,
     ProfileSettingsPage,
     SetLocationOnMapPage,
-    ProviderSettingsPage
+    ProviderSettingsPage,
+    WriteReviewPage
   ],
   imports: [
     BrowserModule,
@@ -88,7 +89,8 @@ import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings
     SettingsPage,
     ProfileSettingsPage,
     ProviderSettingsPage,
-    SetLocationOnMapPage
+    SetLocationOnMapPage,
+    WriteReviewPage
   ],
   providers: [
     StatusBar,

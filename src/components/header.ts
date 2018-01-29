@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {NavController} from "ionic-angular";
+import {MapPage} from "../pages/map/map";
 @Component({
   selector:'header-component',
   template:`
@@ -13,7 +15,7 @@ import {Component} from '@angular/core';
             </button>
           </ion-col>
           <ion-col col-20 offset-30>
-            <img style="height: 100%;width: 100%" src="assets/imgs/dashboard_logo.png">
+            <img (click)="goToMap()" style="height: 100%;width: 100%" src="assets/imgs/dashboard_logo.png">
           </ion-col>
           <ion-col col-10 offset-30 style="display: inline-flex;align-items: center;">
             <button
@@ -41,4 +43,11 @@ import {Component} from '@angular/core';
 })
 export class HeaderComponent{
 
+  constructor(public navCtrl:NavController){
+
+  }
+
+  goToMap(){
+   this.navCtrl.push(MapPage);
+  }
 }

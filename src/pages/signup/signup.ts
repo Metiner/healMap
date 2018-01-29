@@ -56,11 +56,11 @@ export class SignupPage {
 
         if (data.json != null) {
 
-          if (data.json() != null && data.json().state.code == 0) {
+          if (data.json() != null && data.json().success) {
 
-            HealMapLib.token = data.json().data.login_token;
+            HealMapLib.token = data.json().user.login_token;
             this.healMapLib.createProviderProfile(form).subscribe(response=>{
-
+              console.log(response);
             });
             this.healMapLib.showToast("Kullanıcı oluşturuldu", 3000, "bottom");
             this.navCtrl.push(LoginPage);

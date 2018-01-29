@@ -14,24 +14,32 @@ export class ProviderSettingsPage {
   base64Image = "";
   base64ImageToUpload = "";
   profile:any = {};
-  selectedLocation = {};
+  selectedLocation:any={};
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public camera:Camera,
               public popover:PopoverController,
               public healMapLib:HealMapLib) {
-    console.log(HealMapLib.user);
     this.profile = HealMapLib.user;
   }
 
   ionViewWillEnter(){
     let markers = this.navParams.get("markers");
-    console.log(markers);
   }
 
-  onProfileChange(form){
+  onProfileChange(form) {
+    if (this.selectedLocation != {}){
+      this.healMapLib.updateLocation(this.selectedLocation.lat,this.selectedLocation.lng).subscribe(response=>{
+        console.log(response.json());
+        if(this.selectedLocation.lat != response.json().lat || this.selectedLocation.lat != response.json().lng){
 
+        }
+      },error2 =>
+      {
+        this.healMapLib.showToast(error2.message,3000,"bottom");
+      })
+    }
   }
 
   onTakePhoto(){
@@ -54,14 +62,14 @@ export class ProviderSettingsPage {
   }
 
   selectLocationOnMap(){
-
+    var self = this;
     let callBack = function (params) {
       return new Promise(((resolve, reject) => {
         if(params[0] != undefined){
-          this.selectedLocation = {lat:params[0].position.lat(),lng:params[0].position.lng()}
+          self.selectedLocation = {lat:params[0].position.lat(),lng:params[0].position.lng()}
           this.healMapLib.showToast("Location has been set",3000,"bottom");
           }
-        resolve();
+        resolve(this.selectedLocation);
       }))
     }
     this.navCtrl.push(SetLocationOnMapPage,{

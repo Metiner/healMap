@@ -28,6 +28,11 @@ export class SetLocationOnMapPage {
               public navCtrl:NavController) {
       this.callback = this.navParams.get('callback')
   }
+
+  ionViewWillEnter(){
+    this.setCenter();
+  }
+
   ionViewDidLoad() {
     this.platform.ready().then(()=>{
       let mapLoaded = this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
@@ -76,5 +81,21 @@ export class SetLocationOnMapPage {
     });
   }
 
+  setCenter(){
+    this.geolocation.getCurrentPosition().then(location=> {
+
+      let lat = location.coords.latitude;
+      let lng = location.coords.longitude;
+
+
+      if(this.map){
+        this.map.setCenter({
+          lat: lat,
+          lng: lng
+        })
+      }
+
+    })
+  }
 
 }

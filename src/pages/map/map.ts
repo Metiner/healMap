@@ -76,7 +76,6 @@ export class MapPage {
 
   ionViewWillEnter(){
     this.setCenter();
-
   }
 
   ionViewDidLoad(){
@@ -130,6 +129,7 @@ export class MapPage {
               this.mapCluster.addCluster(this.map, providersFromGoogle,this.selectedProviders);
 
             })
+
           })
         }
 
@@ -177,6 +177,18 @@ export class MapPage {
 
             this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
               var objects = response.json().results;
+
+              var bounds = this.map.getBounds();
+              var NECorner = bounds.getNorthEast();
+              var SWCorner = bounds.getSouthWest();
+              var NWCorner = new google.maps.LatLng(NECorner.lat(), SWCorner.lng());
+              var SECorner = new google.maps.LatLng(SWCorner.lat(), NECorner.lng());
+
+              this.healmapLib.getProvidersToMap(NWCorner.lat(),SECorner.lat(),NWCorner.lng(),SECorner.lng()).subscribe(response=>{
+                  console.log(response.json());
+              },error2 => {
+                this.healmapLib.showToast(error2.message,3000,"bottom");
+              })
 
 
               objects.forEach(element =>{

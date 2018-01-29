@@ -1,11 +1,13 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage, NavParams, Platform} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {mapExpandAnimation} from "../../components/animations";
 import {Geolocation} from "@ionic-native/geolocation";
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
-import {User} from "../../models/user";
 import {HealMapLib} from "../../services/healMapLib";
+import {WriteReviewPage} from "../write-review/write-review";
+import {Review} from "../../models/review";
+import {ReviewsPage} from "../reviews/reviews";
 
 declare var google;
 
@@ -26,13 +28,16 @@ export class ProviderPage {
   provider: any;
   description = "";
   profession = "";
+  reviewCount=0;
+  reviews = [];
 
   constructor(public geolocation:Geolocation,
               public platform:Platform,
               public maps:GoogleMapsProvider,
               public mapCluster:GoogleMapsCluster,
               public navParams:NavParams,
-              public healMapLib:HealMapLib) {
+              public healMapLib:HealMapLib,
+              public navCtrl:NavController) {
 
     if(this.navParams){
       this.provider = this.navParams.data;
@@ -42,6 +47,17 @@ export class ProviderPage {
       this.profession = response.json().profession;
       },error=>{
         console.log(error);
+      })
+
+      this.healMapLib.getReviews(this.provider.provider_id).subscribe(response=>{
+        response.json().forEach(element=>{
+          let review:Review = new Review();
+          Object.assign(review,element);
+          this.reviews.push(review);
+          this.reviewCount = this.reviews.length;
+        })
+        },error2 => {
+        this.healMapLib.showToast(error2.message,3000,'bottom');
       })
     }
   }
@@ -61,5 +77,13 @@ export class ProviderPage {
       this.marginTop = -500
     }
     this.expanded = !this.expanded;
+  }
+
+  writeReview(){
+    this.navCtrl.push(WriteReviewPage,this.provider);
+  }
+
+  seeMoreReview(){
+    this.navCtrl.push(ReviewsPage,{'reviews':this.reviews,'provider':this.provider});
   }
 }

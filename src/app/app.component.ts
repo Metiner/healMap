@@ -82,6 +82,7 @@ export class MyApp {
   onProfile(){
     console.log("asdasdasd")
     this.healMapLib.getUserInfoFromStorage().then(response=>{
+      console.log(response);
         if(response.user.provider_id != undefined){
           this.nav.push(ProviderPage,this.currentUser);
         }else{

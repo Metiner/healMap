@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the ReviewsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {WriteReviewPage} from "../write-review/write-review";
 
 @IonicPage()
 @Component({
@@ -15,11 +9,19 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ReviewsPage {
 
+  reviews = [];
+  reviewCount = 0;
+  provider:any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.reviews = this.navParams.get('reviews');
+    this.provider = this.navParams.get('provider');
+    this.reviewCount = this.reviews.length;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReviewsPage');
+  writeReview(){
+    this.navCtrl.push(WriteReviewPage,this.provider);
   }
+
+
 
 }
