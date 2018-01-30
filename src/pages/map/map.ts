@@ -4,6 +4,7 @@ import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps-cluster";
 import {HealMapLib} from "../../services/healMapLib";
 import {Geolocation} from "@ionic-native/geolocation";
+import {MapObject} from "../../models/mapObject";
 
 declare var google;
 
@@ -184,11 +185,25 @@ export class MapPage {
               var NWCorner = new google.maps.LatLng(NECorner.lat(), SWCorner.lng());
               var SECorner = new google.maps.LatLng(SWCorner.lat(), NECorner.lng());
 
+              // these providers comes from healmaplib, not google, the process makes these providers look alike google response. Nothing fancy.
               this.healmapLib.getProvidersToMap(NWCorner.lat(),SECorner.lat(),NWCorner.lng(),SECorner.lng()).subscribe(response=>{
                   console.log(response.json());
+                  var providers = response.json();
+                  providers.forEach(element=>{
+
+                    let providerObject = new MapObject();
+                    providerObject.name = element.user.name + ' ' + element.user.surname;
+                    providerObject.icon = element.user.avatar_url;
+                    providerObject.geometry = {location:{lat:element.lat,lng:element.lng}};
+                    providerObject.types = [element.profession.name];
+
+                    this.providersFromGoogle.push(element);
+                  })
               },error2 => {
                 this.healmapLib.showToast(error2.message,3000,"bottom");
               })
+
+              //------------------------------------------------------------------
 
 
               objects.forEach(element =>{

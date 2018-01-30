@@ -121,7 +121,6 @@ export class GoogleMapsCluster {
 
             let imagePath;
             if(this.checkIfMarkerAlreadyAdded(element.geometry.location)){
-
               console.log("var aynısı");
               return;
             }else{

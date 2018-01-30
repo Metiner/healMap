@@ -195,7 +195,16 @@ export class HealMapLib{
   public getReviews(provider_id){
     return this.http.get(this.api_address + '/provider/' + provider_id + '/comments');
   }
-  getProvidersToMap(lat_top_left,lat_bottom_right,lng_top_left,lng_bottom_right){
+  public getProvidersToMap(lat_top_left,lat_bottom_right,lng_top_left,lng_bottom_right){
     return this.http.get(this.api_address + '/query?lat_top_left=' + lat_top_left + '&lat_bottom_right=' +lat_bottom_right + '&lng_top_left=' + lng_top_left + '&lng_bottom_right=' + lng_bottom_right);
   }
+  public updateUserInfo(form,base64ImageToUpload){
+    let opt = this.setHeader();
+    return this.http.put(this.api_address + '/users.json',{user:{name:form.value.name,surname:form.value.surname,phone_no:form.value.phone,avatar:base64ImageToUpload,password:form.value.password,password_confirmation:form.value.password_confirmation}},opt);
+  }
+  public updateProviderInfo(description,provider_id){
+    let opt = this.setHeader();
+    return this.http.post(this.api_address + '/provider/' + provider_id ,{description:description},opt);
+  }
+
 }

@@ -22,24 +22,58 @@ export class ProviderSettingsPage {
               public popover:PopoverController,
               public healMapLib:HealMapLib) {
     this.profile = HealMapLib.user;
+    console.log(this.profile);
   }
 
   ionViewWillEnter(){
     let markers = this.navParams.get("markers");
   }
 
-  onProfileChange(form) {
-    if (this.selectedLocation != {}){
-      this.healMapLib.updateLocation(this.selectedLocation.lat,this.selectedLocation.lng).subscribe(response=>{
-        console.log(response.json());
-        if(this.selectedLocation.lat != response.json().lat || this.selectedLocation.lat != response.json().lng){
 
-        }
-      },error2 =>
-      {
-        this.healMapLib.showToast(error2.message,3000,"bottom");
-      })
+  async onProfileChange(form) {
+
+    if(form.value.password != form.value.password_confirmation){
+      this.healMapLib.showToast("Passwords are not matching!",3000,"bottom");
     }
+    else{
+      if(form.value.name != "" || form.value.surname != "" || this.photoTaken || this.selectedLocation.hasOwnProperty('lat') || form.description != "" || form.value.password != ""){
+
+        if(this.selectedLocation.hasOwnProperty('lat')){
+          await this.updateLocation();
+        }
+        if(form.value.name != "" || form.value.surname != "" || this.photoTaken || form.value.password != "" ){
+          await this.updateUserInfo(form).subscribe(response=>{
+            console.log(response);
+          });
+        }
+        if(form.value.description != ""){
+          await this.updateProviderInfo(form).subscribe(response=>{
+            console.log(response);
+          });
+        }
+      }
+    }
+  }
+
+  updateLocation(){
+
+    return this.healMapLib.updateLocation(this.selectedLocation.lat,this.selectedLocation.lng).subscribe(response=>{
+      if(this.selectedLocation.lat != response.json().lat || this.selectedLocation.lat != response.json().lng){
+
+      }
+    },error2 =>
+    {
+      this.healMapLib.showToast(error2.message,3000,"bottom");
+    })
+
+  }
+
+  updateUserInfo(form){
+    return this.healMapLib.updateUserInfo(form,this.base64ImageToUpload);
+  }
+
+  updateProviderInfo(form){
+    return this.healMapLib.updateProviderInfo(form.value.description,this.profile.provider_id);
   }
 
   onTakePhoto(){

@@ -8,8 +8,14 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col col-auto>
         <img style="border-radius: 50%" src="{{profile.avatar_url}}">
+      </ion-col>
+      <ion-col col-auto>
+        <span>{{profile.name}}</span>
+      </ion-col>
+      <ion-col col-auto>
+        <span>{{profile.surname}}</span>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -27,21 +33,25 @@
         <ion-input ngModel name="surname" minlength="5" maxlength="20" type="text"></ion-input>
       </ion-item>
       <ion-item>
+        <ion-label fixed>Password</ion-label>
+        <ion-input ngModel name="password" minlength="6" maxlength="20" type="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Re-password</ion-label>
+        <ion-input ngModel name="password_confirmation" minlength="6" maxlength="20" type="password"></ion-input>
+      </ion-item>
+      <ion-item>
         <ion-label fixed>Description</ion-label>
         <ion-input ngModel name="description" minlength="5" maxlength="20" type="text"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label fixed>Address</ion-label>
-        <ion-input ngModel name="address" minlength="5" maxlength="400" type="text-area"></ion-input>
+        <ion-label fixed>Phone</ion-label>
+        <ion-input ngModel name="phone" type="number"></ion-input>
       </ion-item>
       <ion-item>
         <button ion-button
                 clear
                 (click) = "selectLocationOnMap()">Set location on map</button>
-      </ion-item>
-      <ion-item>
-        <ion-label fixed>Phone</ion-label>
-        <ion-input ngModel name="phone" type="number"></ion-input>
       </ion-item>
       <button ion-button
               (click)="onProfileChange(f)">Save</button>
