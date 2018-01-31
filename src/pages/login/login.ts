@@ -44,6 +44,7 @@ export class LoginPage {
   onLogin(form:NgForm){
     this.healMapLib.login(form.value.email, form.value.password).subscribe(data=>{
 
+      console.log(data.json());
       // this.onLoginLogo = true;
       if(data.json() != null && data.json().success == true ){
 

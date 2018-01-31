@@ -10,8 +10,8 @@ import {Storage} from "@ionic/storage";
 export class HealMapLib{
   api_address = 'https://healmap.cleverapps.io';
   googleMapsApiAdress = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
-  static user;
-  static token:string ="";
+  _user:User;
+  _token:string ="";
   constructor(private http:Http,
               private alertCtrl:AlertController,
               private toastCtrl:ToastController,
@@ -58,8 +58,8 @@ export class HealMapLib{
   // sets token to static variable named token in this class after login.
   public setTokenFromStorage():string{
     this.storageCtrl.get("user").then(data=>{
-        HealMapLib.token= data.token;
-        return HealMapLib.token;
+        this._token= data.token;
+        return this._token;
       }
     ).catch(err=> {
       this.showToast(err,300,"bottom");
@@ -74,7 +74,7 @@ export class HealMapLib{
     let opt:RequestOptions;
     let myHeaders: Headers = new Headers;
 
-    myHeaders.set('Authorization',HealMapLib.token);
+    myHeaders.set('Authorization',this._token);
 
     opt = new RequestOptions({
       headers:myHeaders
@@ -166,10 +166,10 @@ export class HealMapLib{
 
 
   // sets user object to user static variable which locates in this class after login.
-  public setUserInfoAfterLogin(user:any){
+  public setUserInfoAfterLogin(user:User){
     let u:User=new User();
     Object.assign(u,user);
-    HealMapLib.user = u;
+    this._user = u;
   }
 
   //It removes all of users from device local storage.
@@ -234,4 +234,20 @@ export class HealMapLib{
     return this.http.post(this.api_address + '/provider/' + provider_id ,{description:description},opt).toPromise();
   }
 
+
+  get user() {
+    return this._user;
+  }
+
+  set user(value) {
+    this._user = value;
+  }
+
+  get token(): string {
+    return this._token;
+  }
+
+  set token(value: string) {
+    this._token = value;
+  }
 }

@@ -2,9 +2,11 @@ import {User} from "./user";
 
 export class Provider extends User{
 
-  public proffessionId: String;
-  public location:Position;
-  public _aboutMe: String;
-  public _address: String;
+  public providerId:Number;
+  public professionId: String;
+  public professionName:String;
+  public lat:String;
+  public lng:String;
+  public description: String;
 
 }

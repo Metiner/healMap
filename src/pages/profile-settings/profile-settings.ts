@@ -16,9 +16,9 @@ export class ProfileSettingsPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public camera:Camera) {
-    console.log(HealMapLib.user);
-    this.profile = HealMapLib.user;
+              public camera:Camera,
+              public healMapLib:HealMapLib) {
+    this.profile = this.healMapLib.user;
   }
 
   onProfileChange(form){

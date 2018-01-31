@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Injectable, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {mapExpandAnimation} from "../../components/animations";
 import {Geolocation} from "@ionic-native/geolocation";
@@ -8,6 +8,7 @@ import {HealMapLib} from "../../services/healMapLib";
 import {WriteReviewPage} from "../write-review/write-review";
 import {Review} from "../../models/review";
 import {ReviewsPage} from "../reviews/reviews";
+import {User} from "../../models/user";
 
 declare var google;
 
@@ -25,10 +26,7 @@ export class ProviderPage {
   map: any;
   expanded: boolean =false;
   marginTop= -500;
-  provider: any;
-  description = "";
-  profession = "";
-  latLng = {};
+  user: User;
   reviewCount=0;
   reviews = [];
 
@@ -40,18 +38,17 @@ export class ProviderPage {
               public healMapLib:HealMapLib,
               public navCtrl:NavController) {
 
+    this.user = this.healMapLib.user;
 
     if(this.navParams){
-      this.provider = this.navParams.data;
+      this.healMapLib.user= this.navParams.data;
+      this.healMapLib.getProviderProfile(this.healMapLib.user.providerProfile.providerId).subscribe(response=>{
 
-      this.healMapLib.getProviderProfile(this.provider.provider_id).subscribe(response=>{
-      this.description = response.json().description;
-      this.profession = response.json().profession;
       },error=>{
         console.log(error);
       })
 
-      this.healMapLib.getReviews(this.provider.provider_id).subscribe(response=>{
+      this.healMapLib.getReviews(this.healMapLib.user.providerProfile.providerId).subscribe(response=>{
         response.json().forEach(element=>{
           let review:Review = new Review();
           Object.assign(review,element);
@@ -61,13 +58,6 @@ export class ProviderPage {
         },error2 => {
         this.healMapLib.showToast(error2.message,3000,'bottom');
       })
-    }
-  }
-
-
-  ionViewWillEnter(){
-    if(this.navParams) {
-      this.provider = this.navParams.data;
     }
   }
   ionViewDidLoad() {
@@ -88,11 +78,11 @@ export class ProviderPage {
   }
 
   writeReview(){
-    this.navCtrl.push(WriteReviewPage,this.provider);
+    this.navCtrl.push(WriteReviewPage,this.healMapLib.user);
   }
 
   seeMoreReview(){
-    this.navCtrl.push(ReviewsPage,{'reviews':this.reviews,'provider':this.provider});
+    this.navCtrl.push(ReviewsPage,{'reviews':this.reviews,'provider':this.healMapLib.user});
   }
 
 }

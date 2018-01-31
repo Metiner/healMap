@@ -7,14 +7,13 @@ import {ProviderPage} from "../provider/provider";
 @IonicPage()
 @Component({
   selector: 'page-provider-settings',
-  templateUrl: 'provider-settings.html',
+  templateUrl: 'provider-settings.html'
 })
 export class ProviderSettingsPage {
 
   photoTaken = false;
   base64Image = "";
   base64ImageToUpload = "";
-  profile:any = {};
   selectedLocation:any={};
 
   constructor(public navCtrl: NavController,
@@ -22,7 +21,6 @@ export class ProviderSettingsPage {
               public camera:Camera,
               public popover:PopoverController,
               public healMapLib:HealMapLib) {
-    this.profile = HealMapLib.user;
   }
 
   ionViewWillEnter(){
@@ -43,7 +41,8 @@ export class ProviderSettingsPage {
         if(this.selectedLocation.hasOwnProperty('lat')){
           await this.healMapLib.updateLocation(this.selectedLocation.lat,this.selectedLocation.lng).then(success=>{
             if(this.selectedLocation.lat != success.json().lat || this.selectedLocation.lat != success.json().lng){
-              ProviderPage.latLng = {lat:success.json().lat,lng:success.json().lng};
+              this.healMapLib.user.providerProfile.lat = success.json().lat;
+              this.healMapLib.user.providerProfile.lng = success.json().lng;
             }
           }).catch(error=>{
             flag = false;
@@ -53,7 +52,7 @@ export class ProviderSettingsPage {
 
           await this.healMapLib.updateUserInfo(form,this.base64ImageToUpload).then(success=>{
 
-            HealMapLib.user = success.json().user;
+            this.healMapLib.user = success.json().user;
           })
             .catch(error=>{
               flag = false;
@@ -61,8 +60,8 @@ export class ProviderSettingsPage {
           }
         if(form.value.description != ""){
 
-          await this.healMapLib.updateProviderInfo(form.value.description,this.profile.provider_id).then(success=>{
-            ProviderPage.description = success.json().description;
+          await this.healMapLib.updateProviderInfo(form.value.description,this.healMapLib.user.providerProfile.providerId).then(success=>{
+            this.healMapLib.user.providerProfile.description= success.json().description;
             // ProviderPage.description(response.json().user);
           }).catch(error=>{
             flag = false;

@@ -30,7 +30,7 @@ export class MyApp {
               private healMapLib:HealMapLib) {
     this.eventCtrl.subscribe("user.login", () => {
       this.isAuthenticated = true
-      this.currentUser = HealMapLib.user;
+      this.currentUser = this.healMapLib.user;
     });
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -83,9 +83,9 @@ export class MyApp {
   onProfile(){
     this.healMapLib.getUserInfoFromStorage().then(response=>{
         if(response.user.provider_id != undefined){
-          this.nav.push(ProviderPage,HealMapLib.user);
+          this.nav.push(ProviderPage,this.healMapLib.user);
         }else{
-          this.nav.push(ProfilePage,HealMapLib.user);
+          this.nav.push(ProfilePage,this.healMapLib.user);
         }
       })
     this.menuCtrl.close();
