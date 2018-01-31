@@ -165,6 +165,7 @@ export class MapPage {
 
 
     this.providersFromGoogle = [];
+    let self = this;
 
     return new Promise((resolve) => {
 
@@ -185,8 +186,14 @@ export class MapPage {
               var NWCorner = new google.maps.LatLng(NECorner.lat(), SWCorner.lng());
               var SECorner = new google.maps.LatLng(SWCorner.lat(), NECorner.lng());
 
+              //for getting profession_id corresponding with it's name.
+              let selectedProviderIds = [];
+              for(let providerName of self.selectedProviders){
+                selectedProviderIds.push(this.getProfessionId(providerName))
+              }
+
               // these providers comes from healmaplib, not google, the process makes these providers look alike google response. Nothing fancy.
-              this.healmapLib.getProvidersToMap(NWCorner.lat(),SECorner.lat(),NWCorner.lng(),SECorner.lng()).subscribe(response=>{
+              this.healmapLib.getProvidersToMap(NWCorner.lat(),SECorner.lat(),NWCorner.lng(),SECorner.lng(),selectedProviderIds).subscribe(response=>{
                   console.log(response.json());
                   var providers = response.json();
                   providers.forEach(element=>{
@@ -197,7 +204,7 @@ export class MapPage {
                     providerObject.geometry = {location:{lat:element.lat,lng:element.lng}};
                     providerObject.types = [element.profession.name];
 
-                    this.providersFromGoogle.push(element);
+                    this.providersFromGoogle.push(providerObject);
                   })
               },error2 => {
                 this.healmapLib.showToast(error2.message,3000,"bottom");
@@ -220,6 +227,17 @@ export class MapPage {
           })
         })
       })
+  }
+
+
+  // It returns profession_id corresponding with it's name.
+  getProfessionId(professionName:string){
+
+    let professions = [{"id":1,"name":"Veterinary"},{"id":2,"name":"Beauty Saloon"},{"id":3,"name":"Caretaker"},{"id":4,"name":"Dentist"},{"id":5,"name":"Doctor"},{"id":6,"name":"Psysiotherapist"},{"id":7,"name":"Masor"},{"id":8,"name":"Nurse"},{"id":9,"name":"Nutritionist"},{"id":10,"name":"Pharmacist"},{"id":11,"name":"Psychologist"},{"id":12,"name":"Personal Trainer"}];
+    for(let profession of professions){
+      if(profession.name.toLowerCase() == professionName)
+        return profession.id;
+    }
   }
 
   onFilterButton(pressedButton,providerName) {

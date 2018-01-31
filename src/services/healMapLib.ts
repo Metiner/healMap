@@ -111,6 +111,10 @@ export class HealMapLib{
     return this.http.get(this.api_address + '/location/all',{params:{sw_lat:sw_lat,sw_long:sw_long,ne_lat:ne_lat,ne_long:ne_long}})
   }
 
+
+  //########## GETTING PROVIDER FROM HEALMAP AND GOOGLE MAP SERVERS WITH GIVEN LAN,LNG,RADIUS PARAMETERS
+
+  // For getting providers from googleMap servers due to given lat,long radius parameters.
   getVenueFromGoogleMaps(lat,long,radius,types,name,distance){
 
     let typesString="";
@@ -127,7 +131,19 @@ export class HealMapLib{
     return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo');
 
   }
+  // For getting providers from healMap servers due to given lang, lng parameters.
+  public getProvidersToMap(lat_top_left,lat_bottom_right,lng_top_left,lng_bottom_right,profession_ids){
+    let professionIds = "";
+    for(let professionId of profession_ids){
+      if(professionId != undefined)
+        professionIds += "&profession_ids=" + professionId;
+    }
+    return this.http.get(this.api_address + '/query?lat_top_left=' + lat_top_left + '&lat_bottom_right=' +lat_bottom_right + '&lng_top_left=' + lng_top_left + '&lng_bottom_right=' + lng_bottom_right + professionIds);
+  }
 
+  //######################################################################################################
+
+  // it obvious :d
   public showAlert(title:string,subTitle:string,buttons:any[]) {
     let alert = this.alertCtrl.create({
       title: title,
@@ -136,6 +152,8 @@ export class HealMapLib{
     });
     alert.present();
   }
+
+  // it obvious :d
   public showToast(message: string,duration:number,position:string){
 
     const toast = this.toastCtrl.create({
@@ -149,7 +167,6 @@ export class HealMapLib{
 
   // sets user object to user static variable which locates in this class after login.
   public setUserInfoAfterLogin(user:any){
-    console.log(user);
     let u:User=new User();
     Object.assign(u,user);
     HealMapLib.user = u;
@@ -166,45 +183,55 @@ export class HealMapLib{
       return false;
     })
   }
+
+  // Returns provider proffessions from healmap's server.
   public getProfessions(){
     return this.http.get(this.api_address + '/app_data');
   }
 
+  // Function creates provider profile into user's object.
   public createProviderProfile(form){
     let opt = this.setHeader();
     return this.http.post(this.api_address + '/provider/create',{'profession_id':form.value.profession_id,'description':form.value.name},opt);
   }
+
+  // Returns archieved user object which in device's storage.
   public getUserInfoFromStorage(){
     return this.storageCtrl.get('user');
   }
+
+  // It returns user's provider profile if it exists, from HealMap's servers,
   public getProviderProfile(provider_id){
     return this.http.get(this.api_address + '/provider/'+provider_id);
   }
 
+  // It updates provider's location with given lat,lng parameters which selected in settings/profileSettings.
   public updateLocation(lat,lng){
     let opt = this.setHeader();
-    return this.http.post(this.api_address+'/provider/update_position' ,{lat:lat,lng:lng},opt);
+    return this.http.post(this.api_address+'/provider/update_position' ,{lat:lat,lng:lng},opt).toPromise();
   }
 
-
+  // It adds review to providers profile in servers
   public createReview(provider_id,review,star){
     let opt = this.setHeader();
     return this.http.post(this.api_address + '/provider/' + provider_id +'/comment',{comment_body:review,score:star},opt);
   }
 
+  // Returns given provider's reviews
   public getReviews(provider_id){
     return this.http.get(this.api_address + '/provider/' + provider_id + '/comments');
   }
-  public getProvidersToMap(lat_top_left,lat_bottom_right,lng_top_left,lng_bottom_right){
-    return this.http.get(this.api_address + '/query?lat_top_left=' + lat_top_left + '&lat_bottom_right=' +lat_bottom_right + '&lng_top_left=' + lng_top_left + '&lng_bottom_right=' + lng_bottom_right);
-  }
+
+  // Updates user's basic profile informations.
   public updateUserInfo(form,base64ImageToUpload){
     let opt = this.setHeader();
-    return this.http.put(this.api_address + '/users.json',{user:{name:form.value.name,surname:form.value.surname,phone_no:form.value.phone,avatar:base64ImageToUpload,password:form.value.password,password_confirmation:form.value.password_confirmation}},opt);
+    return this.http.put(this.api_address + '/users.json',{user:{name:form.value.name,surname:form.value.surname,phone_no:form.value.phone,avatar:base64ImageToUpload,password:form.value.password,password_confirmation:form.value.password_confirmation}},opt).toPromise();
   }
+
+  // Updates user's provider description if it exists.
   public updateProviderInfo(description,provider_id){
     let opt = this.setHeader();
-    return this.http.post(this.api_address + '/provider/' + provider_id ,{description:description},opt);
+    return this.http.post(this.api_address + '/provider/' + provider_id ,{description:description},opt).toPromise();
   }
 
 }

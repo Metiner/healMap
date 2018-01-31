@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angu
 import {Camera} from '@ionic-native/camera';
 import {HealMapLib} from "../../services/healMapLib";
 import {SetLocationOnMapPage} from "../set-location-on-map/set-location-on-map";
+import {ProviderPage} from "../provider/provider";
 @IonicPage()
 @Component({
   selector: 'page-provider-settings',
@@ -22,7 +23,6 @@ export class ProviderSettingsPage {
               public popover:PopoverController,
               public healMapLib:HealMapLib) {
     this.profile = HealMapLib.user;
-    console.log(this.profile);
   }
 
   ionViewWillEnter(){
@@ -32,6 +32,8 @@ export class ProviderSettingsPage {
 
   async onProfileChange(form) {
 
+    let flag = true;
+
     if(form.value.password != form.value.password_confirmation){
       this.healMapLib.showToast("Passwords are not matching!",3000,"bottom");
     }
@@ -39,41 +41,40 @@ export class ProviderSettingsPage {
       if(form.value.name != "" || form.value.surname != "" || this.photoTaken || this.selectedLocation.hasOwnProperty('lat') || form.description != "" || form.value.password != ""){
 
         if(this.selectedLocation.hasOwnProperty('lat')){
-          await this.updateLocation();
+          await this.healMapLib.updateLocation(this.selectedLocation.lat,this.selectedLocation.lng).then(success=>{
+            if(this.selectedLocation.lat != success.json().lat || this.selectedLocation.lat != success.json().lng){
+              ProviderPage.latLng = {lat:success.json().lat,lng:success.json().lng};
+            }
+          }).catch(error=>{
+            flag = false;
+          })
         }
         if(form.value.name != "" || form.value.surname != "" || this.photoTaken || form.value.password != "" ){
-          await this.updateUserInfo(form).subscribe(response=>{
-            console.log(response);
+
+          await this.healMapLib.updateUserInfo(form,this.base64ImageToUpload).then(success=>{
+
+            HealMapLib.user = success.json().user;
+          })
+            .catch(error=>{
+              flag = false;
           });
-        }
+          }
         if(form.value.description != ""){
-          await this.updateProviderInfo(form).subscribe(response=>{
-            console.log(response);
-          });
+
+          await this.healMapLib.updateProviderInfo(form.value.description,this.profile.provider_id).then(success=>{
+            ProviderPage.description = success.json().description;
+            // ProviderPage.description(response.json().user);
+          }).catch(error=>{
+            flag = false;
+          })
+        }
+        if(flag){
+          this.healMapLib.showToast("Saved",3000,"bottom");
+        }else{
+          this.healMapLib.showToast("Oops! Something went wrong",3000,"bottom");
         }
       }
     }
-  }
-
-  updateLocation(){
-
-    return this.healMapLib.updateLocation(this.selectedLocation.lat,this.selectedLocation.lng).subscribe(response=>{
-      if(this.selectedLocation.lat != response.json().lat || this.selectedLocation.lat != response.json().lng){
-
-      }
-    },error2 =>
-    {
-      this.healMapLib.showToast(error2.message,3000,"bottom");
-    })
-
-  }
-
-  updateUserInfo(form){
-    return this.healMapLib.updateUserInfo(form,this.base64ImageToUpload);
-  }
-
-  updateProviderInfo(form){
-    return this.healMapLib.updateProviderInfo(form.value.description,this.profile.provider_id);
   }
 
   onTakePhoto(){

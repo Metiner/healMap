@@ -13,6 +13,7 @@ import {ProviderPage} from "../pages/provider/provider";
 import {SettingsPage} from "../pages/settings/settings";
 import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings";
 import {SetLocationOnMapPage} from "../pages/set-location-on-map/set-location-on-map";
+import {HomePage} from "../pages/home/home";
 @Component({
   templateUrl: 'app.html'
 })
@@ -42,7 +43,7 @@ export class MyApp {
 
 
   onSignin(){
-    this.nav.push(LoginPage);
+    this.nav.push(HomePage);
     this.menuCtrl.close();
   }
   onChats(){
@@ -80,13 +81,11 @@ export class MyApp {
     this.healMapLib.showToast("SONSUZLUKTA ACI ÇEKİYORUM",1000,"bottom");
   }
   onProfile(){
-    console.log("asdasdasd")
     this.healMapLib.getUserInfoFromStorage().then(response=>{
-      console.log(response);
         if(response.user.provider_id != undefined){
-          this.nav.push(ProviderPage,this.currentUser);
+          this.nav.push(ProviderPage,HealMapLib.user);
         }else{
-          this.nav.push(ProfilePage,this.currentUser);
+          this.nav.push(ProfilePage,HealMapLib.user);
         }
       })
     this.menuCtrl.close();

@@ -28,6 +28,7 @@ export class ProviderPage {
   provider: any;
   description = "";
   profession = "";
+  latLng = {};
   reviewCount=0;
   reviews = [];
 
@@ -38,6 +39,7 @@ export class ProviderPage {
               public navParams:NavParams,
               public healMapLib:HealMapLib,
               public navCtrl:NavController) {
+
 
     if(this.navParams){
       this.provider = this.navParams.data;
@@ -62,6 +64,12 @@ export class ProviderPage {
     }
   }
 
+
+  ionViewWillEnter(){
+    if(this.navParams) {
+      this.provider = this.navParams.data;
+    }
+  }
   ionViewDidLoad() {
     this.platform.ready().then(()=>{
       let mapLoaded = this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
@@ -86,4 +94,5 @@ export class ProviderPage {
   seeMoreReview(){
     this.navCtrl.push(ReviewsPage,{'reviews':this.reviews,'provider':this.provider});
   }
+
 }
