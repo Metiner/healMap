@@ -30,6 +30,7 @@ export class MyApp {
               private healMapLib:HealMapLib) {
     this.eventCtrl.subscribe("user.login", () => {
       this.isAuthenticated = true
+      console.log(this.healMapLib.user);
       this.currentUser = this.healMapLib.user;
     });
     platform.ready().then(() => {

@@ -34,51 +34,24 @@ export class LoginPage {
   itemeleven=true;
 
   constructor(public navCtrl: NavController,
-              private healMapLib:HealMapLib,
-              private loadingCtrl:LoadingController,
-              private eventCtrl:Events) {
+              private healMapLib:HealMapLib) {
     this.setItemsBooleanOpposite();
   }
 
   // Standart login
-  onLogin(form:NgForm){
-    this.healMapLib.login(form.value.email, form.value.password).subscribe(data=>{
-
-      console.log(data.json());
-      // this.onLoginLogo = true;
-      if(data.json() != null && data.json().success == true ){
+  async onLogin(form:NgForm){
+    await this.healMapLib.login(form.value.email, form.value.password).then(success=>{
+      if(success){
 
         this.setItemsBooleanOpposite();
-            setTimeout( ()=>{
-
-            this.setStorageAndUserInfoAfterSuccessLogin(data.json());
-
-          }
-          ,1100);
+        this.navCtrl.setRoot(MapPage);
 
       }
-    },error => {
-
-      this.healMapLib.showAlert(" ","Yanlış e-mail veya parola girdiniz.",["Tamam"]);
-    })
+    }).catch(error=>{
+      console.log(error);
+      }
+    )
   }
-
-
-  //sets the user info to benimfirsatimlib's static user variable and stores token in local storage
-  setStorageAndUserInfoAfterSuccessLogin(data){
-    const loading = this.loadingCtrl.create({
-      content : "Giriş yapılıyor..."
-    });
-    loading.present();
-
-    this.healMapLib.setUserInfoAfterLogin(data.user);
-    this.eventCtrl.publish('user.login',' ');
-    this.healMapLib.storageControl("user",data);
-    this.navCtrl.setRoot(MapPage);
-    loading.dismiss();
-    this.healMapLib.showToast("Giriş yapıldı",1500,"bottom");
-  }
-
 
   // Onsignup Page
   onSignUp(){

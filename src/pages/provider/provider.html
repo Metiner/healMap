@@ -15,7 +15,7 @@
                class="providerInfo"
                [ngStyle]="{'marginTop.px':marginTop}">
         <ion-col col-27 offset-12 style="margin-top: -50px;border-radius: 50%;max-height: max-content;border:5px solid white">
-          <img style="height: 100%;width: 100%;border-radius: 50%" src="{{provider.avatar_url}}">
+          <img style="height: 100%;width: 100%;border-radius: 50%" src="{{user.avatar_url}}">
         </ion-col>
         <ion-col  style="max-height: max-content">
           <ion-row style="margin-top: 10px;color:#9f9e9e">
@@ -40,7 +40,7 @@
           </button>
         </ion-col>
         <ion-col col-100 offset-38 style="font-size: x-small;padding:5px 0 10px 0">
-            <span>{{user.providerProfile.professionName}}
+            <span>{{user.providerProfile.profession.professionName}}
               <ion-icon name="star" style="color:#44a6b8"></ion-icon> 4.3 out of 256 reviews</span>
         </ion-col>
         <ion-col col-100 offset-39 style="font-size: x-small;font-weight: bolder;padding:0 0 20px 0">
@@ -62,7 +62,7 @@
           ><span style="color:#252525;font-weight: bolder">Chat</span></button>
         </ion-col>
         <ion-col col-100 offset-10 class="multiline-ellipsis">
-          <span>{{description}}</span>
+          <span>{{user.providerProfile.description}}</span>
         </ion-col>
       </ion-row>
       <ion-row class="providerExperts">
@@ -144,11 +144,11 @@
           >Write a review</button>
         </ion-col>
         <ion-col offset-10 style="margin-top: 4px">
-          <span style="font-weight: bold;">{{reviewCount}} Recommendations</span>
+          <span style="font-weight: bold;">{{user.providerProfile.comment_count}} Recommendations</span>
         </ion-col>
       </ion-row>
       <ion-row style="background-color: #FFFFFF">
-        <div *ngFor="let review of reviews; let i = index">
+        <div *ngFor="let review of user.providerProfile.comments; let i = index">
           <ion-item *ngIf="i<3" style="margin:10px 0 10px 13px">
             <ion-avatar item-start>
               <img src="{{review.user.avatar_url}}">
@@ -193,7 +193,7 @@
             <p>{{review.body}}</p>
           </ion-item>
         </div>
-        <ion-col col-100 offset-10 *ngIf="reviewCount > 3">
+        <ion-col col-100 offset-10 *ngIf="user.providerProfile.comment_count > 3">
           <button ion-button
                   block
                   outline

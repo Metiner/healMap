@@ -6,9 +6,10 @@ export class User{
   public _email: String;
   public _name: String;
   public _surname: String;
-  public _phone: number;
+  public _phone_no: number;
+  public _provider_id:number;
   public _providerProfile:Provider;
-  private _avatar_url: String
+  public _avatar_url: String
 
 
   constructor() {
@@ -54,12 +55,12 @@ export class User{
     this._surname = value;
   }
 
-  get phone(): number {
-    return this._phone;
+  get phone_no(): number {
+    return this._phone_no;
   }
 
-  set phone(value: number) {
-    this._phone = value;
+  set phone_no(value: number) {
+    this._phone_no = value;
   }
 
 
@@ -69,5 +70,13 @@ export class User{
 
   set providerProfile(value: Provider) {
     this._providerProfile = value;
+  }
+
+  get provider_id(): number {
+    return this._provider_id;
+  }
+
+  set provider_id(value: number) {
+    this._provider_id = value;
   }
 }

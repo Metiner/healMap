@@ -60,7 +60,7 @@ export class ProviderSettingsPage {
           }
         if(form.value.description != ""){
 
-          await this.healMapLib.updateProviderInfo(form.value.description,this.healMapLib.user.providerProfile.providerId).then(success=>{
+          await this.healMapLib.updateProviderInfo(form.value.description,this.healMapLib.user.provider_id).then(success=>{
             this.healMapLib.user.providerProfile.description= success.json().description;
             // ProviderPage.description(response.json().user);
           }).catch(error=>{

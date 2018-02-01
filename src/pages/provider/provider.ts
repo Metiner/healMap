@@ -20,7 +20,6 @@ declare var google;
 })
 export class ProviderPage {
 
-
   @ViewChild('map_canvas') mapRef : ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
   map: any;
@@ -40,15 +39,15 @@ export class ProviderPage {
 
     this.user = this.healMapLib.user;
 
+    console.log(this.navParams);
     if(this.navParams){
-      this.healMapLib.user= this.navParams.data;
-      this.healMapLib.getProviderProfile(this.healMapLib.user.providerProfile.providerId).subscribe(response=>{
+      // this.healMapLib.getProviderProfile(this.navParams.data.user.provider_id).subscribe(response=>{
+      //
+      // },error=>{
+      //   console.log(error);
+      // })
 
-      },error=>{
-        console.log(error);
-      })
-
-      this.healMapLib.getReviews(this.healMapLib.user.providerProfile.providerId).subscribe(response=>{
+      this.healMapLib.getReviews(this.healMapLib.user.provider_id).subscribe(response=>{
         response.json().forEach(element=>{
           let review:Review = new Review();
           Object.assign(review,element);

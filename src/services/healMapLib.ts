@@ -1,9 +1,11 @@
 
 import {Http, RequestOptions,Headers} from "@angular/http";
 import {Injectable} from "@angular/core";
-import {AlertController, ToastController} from "ionic-angular";
+import {AlertController, Events, LoadingController, NavController, ToastController} from "ionic-angular";
 import {User} from "../models/user";
 import {Storage} from "@ionic/storage";
+import {Provider} from "../models/provider";
+import {MapPage} from "../pages/map/map";
 
 
 @Injectable()
@@ -15,12 +17,55 @@ export class HealMapLib{
   constructor(private http:Http,
               private alertCtrl:AlertController,
               private toastCtrl:ToastController,
-              private storageCtrl:Storage){}
+              private storageCtrl:Storage,
+              public loadingCtrl:LoadingController,
+              public eventCtrl:Events){}
 
 
-  public login(email,password){
-      console.log(email+" " +password);
-      return this.http.post(this.api_address + '/users/sign_in.json',{"user":{"email":email,"password":password}});
+  public async login(email,password):Promise<boolean> {
+
+    let token = "";
+    let u: User = new User();
+    let flag = false;
+    await this.http.post(this.api_address + '/users/sign_in.json', {
+      "user": {
+        "email": email,
+        "password": password
+      }
+    }).toPromise()
+      .then(success => {
+        token = success.json().token;
+        Object.assign(u, success.json().user);
+        flag = true;
+      }).catch(error => {
+      });
+
+    //If user has provider profile, provider profile must set on user object like below.
+    if (u.provider_id != undefined) {
+      await this.getProviderProfile(u.provider_id)
+        .then(success => {
+          let provider: Provider = new Provider();
+          Object.assign(provider, success.json());
+          u.providerProfile = provider;
+          flag = true;
+        })
+        .catch(error => {
+          this.showToast("Something went wrong!", 3000, "bottom");
+        })
+    }
+
+
+    if (flag) {
+      this.setTokenAndUserAfterSuccessLogin(u,this.token);
+      return new Promise<boolean>((resolve) => {
+        resolve(true);
+      });
+    }
+    else{
+      return new Promise<boolean>((resolve) => {
+        resolve(false);
+      });
+    }
   }
 
   public signUp(formValues){
@@ -39,33 +84,33 @@ export class HealMapLib{
   }
 
 
-  // Function for setting key and value on devices storage.
-  public storageControl(key:string,value:string){
-    this.storageCtrl.set(key,value)
-      .then( success =>{
-          this.setTokenFromStorage();
-          return success;
-        }
-      )
-      .catch(
-        err => {
-          this.showToast(err,3000,"bottom");
-        }
-      );
-
-  }
+  // // Function for setting key and value on devices storage.
+  // public storageControl(key:string,value:string){
+  //   this.storageCtrl.set(key,value)
+  //     .then( success =>{
+  //         this.setTokenFromStorage();
+  //         return success;
+  //       }
+  //     )
+  //     .catch(
+  //       err => {
+  //         this.showToast(err,3000,"bottom");
+  //       }
+  //     );
+  //
+  // }
 
   // sets token to static variable named token in this class after login.
-  public setTokenFromStorage():string{
-    this.storageCtrl.get("user").then(data=>{
-        this._token= data.token;
-        return this._token;
-      }
-    ).catch(err=> {
-      this.showToast(err,300,"bottom");
-    })
-    return '';
-  }
+  // public setTokenFromStorage():string{
+  //   this.storageCtrl.get("user").then(data=>{
+  //       this._token= data.token;
+  //       return this._token;
+  //     }
+  //   ).catch(err=> {
+  //     this.showToast(err,300,"bottom");
+  //   })
+  //   return '';
+  // }
 
 
   // to set request header for authentication
@@ -169,7 +214,7 @@ export class HealMapLib{
   public setUserInfoAfterLogin(user:User){
     let u:User=new User();
     Object.assign(u,user);
-    this._user = u;
+    this.user = u;
   }
 
   //It removes all of users from device local storage.
@@ -202,7 +247,7 @@ export class HealMapLib{
 
   // It returns user's provider profile if it exists, from HealMap's servers,
   public getProviderProfile(provider_id){
-    return this.http.get(this.api_address + '/provider/'+provider_id);
+    return this.http.get(this.api_address + '/provider/'+provider_id).toPromise();
   }
 
   // It updates provider's location with given lat,lng parameters which selected in settings/profileSettings.
@@ -232,6 +277,19 @@ export class HealMapLib{
   public updateProviderInfo(description,provider_id){
     let opt = this.setHeader();
     return this.http.post(this.api_address + '/provider/' + provider_id ,{description:description},opt).toPromise();
+  }
+
+
+  //sets the user info to user variable and stores token
+  setTokenAndUserAfterSuccessLogin(user,token){
+    const loading = this.loadingCtrl.create({
+      content: "Logging in..."
+    })
+    this.user = user;
+    this.token = token;
+    this.eventCtrl.publish('user.login',' ');
+    loading.dismiss();
+    this.showToast("Logged in.",1500,"bottom");
   }
 
 
