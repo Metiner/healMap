@@ -29,7 +29,7 @@ export class MyApp {
               private eventCtrl:Events,
               private healMapLib:HealMapLib) {
     this.eventCtrl.subscribe("user.login", () => {
-      this.isAuthenticated = true;
+      this.isAuthenticated = true
       this.currentUser = this.healMapLib.user;
     });
     platform.ready().then(() => {
@@ -43,7 +43,7 @@ export class MyApp {
 
 
   onSignin(){
-    this.nav.push(HomePage);
+    this.nav.push(LoginPage);
     this.menuCtrl.close();
   }
   onChats(){
@@ -61,7 +61,7 @@ export class MyApp {
 
     this.healMapLib.logOutFromStorageAndAuth();
     this.menuCtrl.close();
-    this.nav.setRoot(MapPage);
+    this.nav.popToRoot();
     this.healMapLib.showToast("Çıkış ",2000,"bottom");
 
     //Executes the code after waiting a second.
@@ -82,11 +82,11 @@ export class MyApp {
   }
   onProfile(){
 
-    if(this.healMapLib.user.provider_id != undefined){
-      this.nav.push(ProviderPage,this.healMapLib.user);
-    }else{
-      this.nav.push(ProfilePage,this.healMapLib.user);
-    }
+        if(this.healMapLib.user.provider_id != undefined){
+          this.nav.push(ProviderPage,this.healMapLib.user);
+        }else{
+          this.nav.push(ProfilePage,this.healMapLib.user);
+        }
 
     this.menuCtrl.close();
   }

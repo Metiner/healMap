@@ -24,7 +24,6 @@ export class HealMapLib{
 
   public async login(email,password):Promise<boolean> {
 
-    let token = "";
     let u: User = new User();
     let flag = false;
     await this.http.post(this.api_address + '/users/sign_in.json', {
@@ -34,10 +33,15 @@ export class HealMapLib{
       }
     }).toPromise()
       .then(success => {
-        token = success.json().token;
+        this.token = success.json().token;
         Object.assign(u, success.json().user);
         flag = true;
       }).catch(error => {
+        this.showToast("Please check credentials.", 3000, "bottom");
+
+        return new Promise<boolean>((resolve) => {
+          resolve(false);
+        });
       });
 
     //If user has provider profile, provider profile must set on user object like below.
@@ -51,11 +55,17 @@ export class HealMapLib{
         })
         .catch(error => {
           this.showToast("Something went wrong!", 3000, "bottom");
+          return new Promise<boolean>((resolve) => {
+            resolve(false);
+          });
         })
     }
 
 
     if (flag) {
+      const loading = this.loadingCtrl.create({
+
+      })
       this.setTokenAndUserAfterSuccessLogin(u,this.token);
       return new Promise<boolean>((resolve) => {
         resolve(true);
@@ -135,7 +145,7 @@ export class HealMapLib{
 
   updateLocationVenue(venue_id){
     let opt = this.setHeader();
-    return this.http.post(this.api_address + '/user/location/venue',{venue_id:venue_id});
+    return this.http.post(this.api_address + '/user/location/venue',{venue_id:venue_id},opt);
   }
 
   getVenuesDetails(venue_ids){
@@ -277,13 +287,9 @@ export class HealMapLib{
 
   //sets the user info to user variable and stores token
   setTokenAndUserAfterSuccessLogin(user,token){
-    const loading = this.loadingCtrl.create({
-      content: "Logging in..."
-    })
     this.user = user;
     this.token = token;
     this.eventCtrl.publish('user.login',' ');
-    loading.dismiss();
     this.showToast("Logged in.",1500,"bottom");
   }
 

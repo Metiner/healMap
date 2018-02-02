@@ -34,21 +34,31 @@ export class LoginPage {
   itemeleven=true;
 
   constructor(public navCtrl: NavController,
-              private healMapLib:HealMapLib) {
+              private healMapLib:HealMapLib,
+              public loadingCtrl:LoadingController) {
     this.setItemsBooleanOpposite();
   }
 
   // Standart login
   async onLogin(form:NgForm){
+
+    const loading = this.loadingCtrl.create({
+      content: "Logging in."
+    })
+    loading.present();
     await this.healMapLib.login(form.value.email, form.value.password).then(success=>{
       if(success){
 
         this.setItemsBooleanOpposite();
         this.navCtrl.setRoot(MapPage);
+        loading.dismiss();
+      }else{
+        loading.dismiss();
 
       }
     }).catch(error=>{
       console.log(error);
+
       }
     )
   }
