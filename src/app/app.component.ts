@@ -31,6 +31,7 @@ export class MyApp {
     this.eventCtrl.subscribe("user.login", () => {
       this.isAuthenticated = true
       this.currentUser = this.healMapLib.user;
+
     });
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -40,6 +41,9 @@ export class MyApp {
     });
   }
 
+  ionViewWillEnter(){
+    this.currentUser = this.healMapLib.user;
+  }
 
 
   onSignin(){

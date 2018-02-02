@@ -22,7 +22,6 @@ export class GoogleMapsCluster {
   // initialization function for adding marker cluster.
   addCluster(map,providersFromGoogle,selectedProviders) {
 
-    console.log(providersFromGoogle);
     const loading = this.loadingCtrl.create({
       content: "Finding..."
     })
@@ -31,7 +30,6 @@ export class GoogleMapsCluster {
     let imagePath;
 
     selectedProviders.forEach(provider => {
-      let filteredProviders=[];
       switch (provider) {
       case 'doctor':
         for(let i=0;i<providersFromGoogle.length;i++){
@@ -83,8 +81,9 @@ export class GoogleMapsCluster {
 
         break;
       case 'beauty_salon':
+        console.log(providersFromGoogle);
         for(let i=0;i<providersFromGoogle.length;i++){
-          if(providersFromGoogle[i].types[0] == 'beauty_salon'){
+          if(providersFromGoogle[i].types[0] == 'beauty_salon' || providersFromGoogle[i].types[0] == 'beauty saloon'){
             imagePath = 'assets/imgs/beauty_salon/m';
             markers.push(this.createMarker(providersFromGoogle[i]));
           }
@@ -143,7 +142,7 @@ export class GoogleMapsCluster {
               else if (providerProffession == 'psychotherapist') {
                 providerIcon = 'http://healmap.cleverapps.io/img/psychologist_icon.png';
               }
-              else if (providerProffession == 'beauty_salon') {
+              else if (providerProffession == 'beauty_salon' || providerProffession.toLowerCase() == 'beauty saloon') {
                 providerIcon = 'http://healmap.cleverapps.io/img/beauty_icon.png';
               }
               else if (providerProffession == 'dentist') {
@@ -158,8 +157,16 @@ export class GoogleMapsCluster {
                 origin: new google.maps.Point(0, 0), // used if icon is a part of sprite, indicates image position in sprite
                 anchor: new google.maps.Point(20, 40) // lets offset the marker image
               };
+
+              // this code convert string lat,lng variables to number, if it comes from healmap's servers.
+              var position = {
+                lat:Number(element.geometry.location.lat),
+                lng:Number(element.geometry.location.lng)
+              }
+              //----------------------------
+
               let marker = new google.maps.Marker({
-                position: element.geometry.location,
+                position: position,
                 icon: markerIcon,
               });
               marker.addListener('click',()=>{

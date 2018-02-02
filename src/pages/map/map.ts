@@ -26,7 +26,6 @@ export class MapPage {
   providerIds=[];
   map;
   center;
-  calculatedDistance;
   radius;
   LatLng;
   radar;
@@ -161,83 +160,81 @@ export class MapPage {
   }
 
 
-  getProvidersFromGoogle(center){
+    async getProvidersFromGoogle(center){
 
 
     this.providersFromGoogle = [];
     let self = this;
 
-    return new Promise((resolve) => {
+    this.getRadius();
 
-        this.getRadius().then(radius=>{
-
-          this.calculateDistance().then(calculatedDistance=>{
+    let calculatedDistance = this.calculateDistance();
 
 
-            try{
+    try{
 
+      await this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).then(response=>{
+        var objects = response.json().results;
+        objects.forEach(element =>{
 
-            this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).subscribe(response=>{
-              var objects = response.json().results;
+            this.providersFromGoogle.push(element);
+            this.providerIds.push(element.id);
+          }
+        )
 
-              var bounds = this.map.getBounds();
-              var NECorner = bounds.getNorthEast();
-              var SWCorner = bounds.getSouthWest();
-              var NWCorner = new google.maps.LatLng(NECorner.lat(), SWCorner.lng());
-              var SECorner = new google.maps.LatLng(SWCorner.lat(), NECorner.lng());
+      }).catch(error=>{
+        console.log(error);
+      });
 
-              //for getting profession_id corresponding with it's name.
-              let selectedProviderIds = [];
-              for(let providerName of self.selectedProviders){
-                selectedProviderIds.push(this.getProfessionId(providerName))
-              }
+      //for getting profession_id corresponding with it's name.
+      let selectedProviderIds = [];
+      for(let providerName of self.selectedProviders){
+        selectedProviderIds.push(this.getProfessionId(providerName))
+      }
+      var bounds = this.map.getBounds();
+      var NECorner = bounds.getNorthEast();
+      var SWCorner = bounds.getSouthWest();
+      var NWCorner = new google.maps.LatLng(NECorner.lat(), SWCorner.lng());
+      var SECorner = new google.maps.LatLng(SWCorner.lat(), NECorner.lng());
 
-              // these providers comes from healmaplib, not google, the process makes these providers look alike google response. Nothing fancy.
-              this.healmapLib.getProvidersToMap(NWCorner.lat(),SECorner.lat(),NWCorner.lng(),SECorner.lng(),selectedProviderIds).subscribe(response=>{
-                  console.log(response.json());
-                  var providers = response.json();
-                  providers.forEach(element=>{
+      // these providers comes from healmaplib, not google, the process makes these providers look alike google response. Nothing fancy.
+      await this.healmapLib.getProvidersToMap(NWCorner.lat(),SECorner.lat(),NWCorner.lng(),SECorner.lng(),selectedProviderIds).then(response=>{
+         var providers = response.json();
+        providers.forEach(element=>{
 
-                    let providerObject = new MapObject();
-                    providerObject.name = element.user.name + ' ' + element.user.surname;
-                    providerObject.icon = element.user.avatar_url;
-                    providerObject.geometry = {location:{lat:element.lat,lng:element.lng}};
-                    providerObject.types = [element.profession.name];
+          let providerObject = new MapObject();
+          providerObject.name = element.user.name + ' ' + element.user.surname;
+          providerObject.icon = element.user.avatar_url;
+          providerObject.geometry = {location:{lat:element.lat,lng:element.lng}};
+          providerObject.types = [element.profession.name.toLowerCase()];
 
-                    this.providersFromGoogle.push(providerObject);
-                  })
-              },error2 => {
-                this.healmapLib.showToast(error2.message,3000,"bottom");
-              })
-
-              //------------------------------------------------------------------
-
-
-              objects.forEach(element =>{
-
-                    this.providersFromGoogle.push(element);
-                    this.providerIds.push(element.id);
-                }
-              )
-              resolve(this.providersFromGoogle);
-            });
-            }catch (e){
-              console.log(e);
-            }
-          })
+          this.providersFromGoogle.push(providerObject);
         })
+      },error2 => {
+        this.healmapLib.showToast(error2.message,3000,"bottom");
+      }).catch(error=>{
+        console.log(error);
       })
+
+      //------------------------------------------------------------------
+
+      return(this.providersFromGoogle);
+
+    }catch (e){
+      console.log(e);
+    }
   }
 
 
   // It returns profession_id corresponding with it's name.
   getProfessionId(professionName:string){
 
-    let professions = [{"id":1,"name":"Veterinary"},{"id":2,"name":"Beauty Saloon"},{"id":3,"name":"Caretaker"},{"id":4,"name":"Dentist"},{"id":5,"name":"Doctor"},{"id":6,"name":"Psysiotherapist"},{"id":7,"name":"Masor"},{"id":8,"name":"Nurse"},{"id":9,"name":"Nutritionist"},{"id":10,"name":"Pharmacist"},{"id":11,"name":"Psychologist"},{"id":12,"name":"Personal Trainer"}];
+    let professions = [{"id":1,"name":"veterinary_care"},{"id":2,"name":"beauty_salon"},{"id":3,"name":"Caretaker"},{"id":4,"name":"Dentist"},{"id":5,"name":"Doctor"},{"id":6,"name":"Psysiotherapist"},{"id":7,"name":"Masor"},{"id":8,"name":"Nurse"},{"id":9,"name":"Nutritionist"},{"id":10,"name":"Pharmacist"},{"id":11,"name":"Psychologist"},{"id":12,"name":"personal_trainer"}];
     for(let profession of professions){
       if(profession.name.toLowerCase() == professionName)
         return profession.id;
     }
+    return 100;//no suitable profession on server.
   }
 
   onFilterButton(pressedButton,providerName) {
@@ -269,8 +266,8 @@ export class MapPage {
       this.setMarker(this.userCurrentLocation.coords.latitude,this.userCurrentLocation.coords.longitude);
 
   }
+
   getRadius(){
-    return new Promise((resolve) => {
 
       var map = this.map;
       var bounds = map.getBounds();
@@ -279,17 +276,11 @@ export class MapPage {
         var ne = bounds.getNorthEast();
         this.radius = google.maps.geometry.spherical.computeDistanceBetween(center,ne);
       }
-      return resolve(this.radius);
-    })
-
   }
 
 
   calculateDistance(){
-    return new Promise<boolean>((resolve)=>{
-      this.calculatedDistance = google.maps.geometry.spherical.computeDistanceBetween(this.dragStartPosition,this.dragEndPosition);
-      resolve(this.calculatedDistance);
-    })
+      return google.maps.geometry.spherical.computeDistanceBetween(this.dragStartPosition,this.dragEndPosition);
   }
 
   setMarker(lat,lng){

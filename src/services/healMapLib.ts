@@ -1,11 +1,11 @@
 
 import {Http, RequestOptions,Headers} from "@angular/http";
 import {Injectable} from "@angular/core";
-import {AlertController, Events, LoadingController, NavController, ToastController} from "ionic-angular";
+import {AlertController, Events, LoadingController, ToastController} from "ionic-angular";
 import {User} from "../models/user";
 import {Storage} from "@ionic/storage";
 import {Provider} from "../models/provider";
-import {MapPage} from "../pages/map/map";
+import {toBase64String} from "@angular/compiler/src/output/source_map";
 
 
 @Injectable()
@@ -93,36 +93,6 @@ export class HealMapLib{
     return this.http.get(this.api_address + '/users/login_check',opt);
   }
 
-
-  // // Function for setting key and value on devices storage.
-  // public storageControl(key:string,value:string){
-  //   this.storageCtrl.set(key,value)
-  //     .then( success =>{
-  //         this.setTokenFromStorage();
-  //         return success;
-  //       }
-  //     )
-  //     .catch(
-  //       err => {
-  //         this.showToast(err,3000,"bottom");
-  //       }
-  //     );
-  //
-  // }
-
-  // sets token to static variable named token in this class after login.
-  // public setTokenFromStorage():string{
-  //   this.storageCtrl.get("user").then(data=>{
-  //       this._token= data.token;
-  //       return this._token;
-  //     }
-  //   ).catch(err=> {
-  //     this.showToast(err,300,"bottom");
-  //   })
-  //   return '';
-  // }
-
-
   // to set request header for authentication
   private setHeader():RequestOptions{
 
@@ -183,7 +153,7 @@ export class HealMapLib{
       })
     }
 
-    return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo');
+    return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo').toPromise();
 
   }
   // For getting providers from healMap servers due to given lang, lng parameters.
@@ -193,7 +163,7 @@ export class HealMapLib{
       if(professionId != undefined)
         professionIds += "&profession_ids=" + professionId;
     }
-    return this.http.get(this.api_address + '/query?lat_top_left=' + lat_top_left + '&lat_bottom_right=' +lat_bottom_right + '&lng_top_left=' + lng_top_left + '&lng_bottom_right=' + lng_bottom_right + professionIds);
+    return this.http.get(this.api_address + '/query?lat_top_left=' + lat_top_left + '&lat_bottom_right=' +lat_bottom_right + '&lng_top_left=' + lng_top_left + '&lng_bottom_right=' + lng_bottom_right + professionIds).toPromise();
   }
 
   //######################################################################################################

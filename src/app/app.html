@@ -7,14 +7,6 @@
   <ion-content style="background-color: #f0ecec">
     <ion-item *ngIf="isAuthenticated" class="menuItem">
       <ion-grid>
-        <ion-row >
-          <ion-col col-30 offset-7>
-            <img style="border-radius: 50%;max-height: max-content;border:1px solid black;" src="{{currentUser.avatar_url}}">
-          </ion-col>
-          <ion-col offset-6 style="margin-top: 20px">
-            <span class="menuSpan">{{currentUser.name + ' ' + currentUser.surname}}</span>
-          </ion-col>
-        </ion-row>
       </ion-grid>
     </ion-item>
     <ion-item class="menuItem" *ngIf="!isAuthenticated">
