@@ -17,12 +17,11 @@ export class SettingsPage {
   }
 
   toProfileSettings(){
-    this.healMapLib.getUserInfoFromStorage().then(response=>{
-      if(response.user.provider_id != undefined){
-        this.navCtrl.push(ProviderSettingsPage);
-      }else{
-        this.navCtrl.push(ProfileSettingsPage);
-      }
-    });
+
+    if(this.healMapLib.user.provider_id != undefined){
+      this.navCtrl.push(ProviderSettingsPage);
+    }else{
+      this.navCtrl.push(ProfileSettingsPage);
+    }
   }
 }

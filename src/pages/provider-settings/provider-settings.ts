@@ -4,6 +4,7 @@ import {Camera} from '@ionic-native/camera';
 import {HealMapLib} from "../../services/healMapLib";
 import {SetLocationOnMapPage} from "../set-location-on-map/set-location-on-map";
 import {ProviderPage} from "../provider/provider";
+import {User} from "../../models/user";
 @IonicPage()
 @Component({
   selector: 'page-provider-settings',
@@ -15,17 +16,17 @@ export class ProviderSettingsPage {
   base64Image = "";
   base64ImageToUpload = "";
   selectedLocation:any={};
+  user:User;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public camera:Camera,
               public popover:PopoverController,
               public healMapLib:HealMapLib) {
+
+    this.user = this.healMapLib.user;
   }
 
-  ionViewWillEnter(){
-    let markers = this.navParams.get("markers");
-  }
 
 
   async onProfileChange(form) {
@@ -52,7 +53,10 @@ export class ProviderSettingsPage {
 
           await this.healMapLib.updateUserInfo(form,this.base64ImageToUpload).then(success=>{
 
-            this.healMapLib.user = success.json().user;
+
+            this.healMapLib.user.name = success.json().user.name;
+            this.healMapLib.user.surname = success.json().user.name;
+
           })
             .catch(error=>{
               flag = false;
@@ -62,6 +66,7 @@ export class ProviderSettingsPage {
 
           await this.healMapLib.updateProviderInfo(form.value.description,this.healMapLib.user.provider_id).then(success=>{
             this.healMapLib.user.providerProfile.description= success.json().description;
+            console.log(this.healMapLib.user);
             // ProviderPage.description(response.json().user);
           }).catch(error=>{
             flag = false;

@@ -30,7 +30,6 @@ export class MyApp {
               private healMapLib:HealMapLib) {
     this.eventCtrl.subscribe("user.login", () => {
       this.isAuthenticated = true
-      console.log(this.healMapLib.user);
       this.currentUser = this.healMapLib.user;
     });
     platform.ready().then(() => {
@@ -44,7 +43,7 @@ export class MyApp {
 
 
   onSignin(){
-    this.nav.push(HomePage);
+    this.nav.push(LoginPage);
     this.menuCtrl.close();
   }
   onChats(){
@@ -62,7 +61,7 @@ export class MyApp {
 
     this.healMapLib.logOutFromStorageAndAuth();
     this.menuCtrl.close();
-    this.nav.setRoot(MapPage);
+    this.nav.popToRoot();
     this.healMapLib.showToast("Çıkış ",2000,"bottom");
 
     //Executes the code after waiting a second.
@@ -82,13 +81,13 @@ export class MyApp {
     this.healMapLib.showToast("SONSUZLUKTA ACI ÇEKİYORUM",1000,"bottom");
   }
   onProfile(){
-    this.healMapLib.getUserInfoFromStorage().then(response=>{
-        if(response.user.provider_id != undefined){
+
+        if(this.healMapLib.user.provider_id != undefined){
           this.nav.push(ProviderPage,this.healMapLib.user);
         }else{
           this.nav.push(ProfilePage,this.healMapLib.user);
         }
-      })
+
     this.menuCtrl.close();
   }
 }

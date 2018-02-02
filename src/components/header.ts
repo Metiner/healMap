@@ -48,6 +48,6 @@ export class HeaderComponent{
   }
 
   goToMap(){
-   this.navCtrl.push(MapPage);
+   this.navCtrl.popToRoot();
   }
 }
