@@ -23,11 +23,6 @@ export class ProviderSettingsPage {
               public healMapLib:HealMapLib) {
   }
 
-  ionViewWillEnter(){
-    let markers = this.navParams.get("markers");
-  }
-
-
   async onProfileChange(form) {
 
     let flag = true;

@@ -119,7 +119,7 @@ export class HealMapLib{
     let opt:RequestOptions;
     let myHeaders: Headers = new Headers;
 
-    myHeaders.set('Authorization',this._token);
+    myHeaders.set('Authorization',this.token);
 
     opt = new RequestOptions({
       headers:myHeaders
@@ -238,11 +238,6 @@ export class HealMapLib{
   public createProviderProfile(form){
     let opt = this.setHeader();
     return this.http.post(this.api_address + '/provider/create',{'profession_id':form.value.profession_id,'description':form.value.name},opt);
-  }
-
-  // Returns archieved user object which in device's storage.
-  public getUserInfoFromStorage(){
-    return this.storageCtrl.get('user');
   }
 
   // It returns user's provider profile if it exists, from HealMap's servers,

@@ -7,8 +7,14 @@
 <ion-content padding>
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col col-auto>
         <img style="border-radius: 50%" src="{{profile.avatar_url}}">
+      </ion-col>
+      <ion-col col-auto>
+        <span>{{profile.name}}</span>
+      </ion-col>
+      <ion-col col-auto>
+        <span>{{profile.surname}}</span>
       </ion-col>
     </ion-row>
   </ion-grid>

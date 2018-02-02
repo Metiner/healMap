@@ -29,8 +29,7 @@ export class MyApp {
               private eventCtrl:Events,
               private healMapLib:HealMapLib) {
     this.eventCtrl.subscribe("user.login", () => {
-      this.isAuthenticated = true
-      console.log(this.healMapLib.user);
+      this.isAuthenticated = true;
       this.currentUser = this.healMapLib.user;
     });
     platform.ready().then(() => {
@@ -82,13 +81,13 @@ export class MyApp {
     this.healMapLib.showToast("SONSUZLUKTA ACI ÇEKİYORUM",1000,"bottom");
   }
   onProfile(){
-    this.healMapLib.getUserInfoFromStorage().then(response=>{
-        if(response.user.provider_id != undefined){
-          this.nav.push(ProviderPage,this.healMapLib.user);
-        }else{
-          this.nav.push(ProfilePage,this.healMapLib.user);
-        }
-      })
+
+    if(this.healMapLib.user.provider_id != undefined){
+      this.nav.push(ProviderPage,this.healMapLib.user);
+    }else{
+      this.nav.push(ProfilePage,this.healMapLib.user);
+    }
+
     this.menuCtrl.close();
   }
 }

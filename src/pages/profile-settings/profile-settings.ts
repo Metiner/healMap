@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Camera} from '@ionic-native/camera';
 import {HealMapLib} from "../../services/healMapLib";
+import {User} from "../../models/user";
 @IonicPage()
 @Component({
   selector: 'page-profile-settings',
@@ -12,7 +13,7 @@ export class ProfileSettingsPage {
   photoTaken = false;
   base64Image = "";
   base64ImageToUpload = "";
-  profile:any = {};
+  profile:User;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -21,8 +22,34 @@ export class ProfileSettingsPage {
     this.profile = this.healMapLib.user;
   }
 
-  onProfileChange(form){
+  async onProfileChange(form) {
 
+    let flag = true;
+
+    if(form.value.password != form.value.password_confirmation){
+      this.healMapLib.showToast("Passwords are not matching!",3000,"bottom");
+    }
+    else{
+      if(form.value.name != "" || form.value.surname != "" || this.photoTaken  || form.value.password != ""){
+
+
+        if(form.value.name != "" || form.value.surname != "" || this.photoTaken || form.value.password != "" ){
+
+          await this.healMapLib.updateUserInfo(form,this.base64ImageToUpload).then(success=>{
+
+            this.healMapLib.user = success.json().user;
+          })
+            .catch(error=>{
+              flag = false;
+            });
+        }
+        if(flag){
+          this.healMapLib.showToast("Saved",3000,"bottom");
+        }else{
+          this.healMapLib.showToast("Oops! Something went wrong",3000,"bottom");
+        }
+      }
+    }
   }
 
   onTakePhoto(){
