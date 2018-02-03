@@ -78,9 +78,6 @@ export class MapPage {
     this.setCenter();
   }
 
-  ionViewDidLoad(){
-
-  }
   setCenter(){
     this.geolocation.getCurrentPosition().then(location=> {
       this.userCurrentLocation = location;

@@ -264,6 +264,7 @@ export class HealMapLib{
   }
 
 
+
   get user() {
     return this._user;
   }

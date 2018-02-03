@@ -1,4 +1,4 @@
-import {Component, ElementRef, Injectable, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
 import {mapExpandAnimation} from "../../components/animations";
 import {Geolocation} from "@ionic-native/geolocation";
@@ -9,6 +9,8 @@ import {WriteReviewPage} from "../write-review/write-review";
 import {Review} from "../../models/review";
 import {ReviewsPage} from "../reviews/reviews";
 import {User} from "../../models/user";
+import {Retro} from "../../components/googleMapStyle";
+import {LaunchNavigator,LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
 
 declare var google;
 
@@ -28,6 +30,7 @@ export class ProviderPage {
   user: User;
   reviewCount=0;
   reviews = [];
+  retro = Retro;
 
   constructor(public geolocation:Geolocation,
               public platform:Platform,
@@ -35,18 +38,13 @@ export class ProviderPage {
               public mapCluster:GoogleMapsCluster,
               public navParams:NavParams,
               public healMapLib:HealMapLib,
-              public navCtrl:NavController) {
+              public navCtrl:NavController,
+              public launchNavigator: LaunchNavigator) {
 
     this.user = this.healMapLib.user;
 
     console.log(this.navParams);
     if(this.navParams){
-      // this.healMapLib.getProviderProfile(this.navParams.data.user.provider_id).subscribe(response=>{
-      //
-      // },error=>{
-      //   console.log(error);
-      // })
-
       this.healMapLib.getReviews(this.healMapLib.user.provider_id).subscribe(response=>{
         response.json().forEach(element=>{
           let review:Review = new Review();
@@ -58,11 +56,28 @@ export class ProviderPage {
         this.healMapLib.showToast(error2.message,3000,'bottom');
       })
     }
-  }
-  ionViewDidLoad() {
     this.platform.ready().then(()=>{
-      let mapLoaded = this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
-        //this.mapCluster.addCluster(map);
+      this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
+        this.map = map;
+        var position = {
+          lat:Number(this.user.providerProfile.lat),
+          lng:Number(this.user.providerProfile.lng)
+        };
+
+        let mapOptions = {
+          center: position,
+          zoom: 17,
+          streetViewControl:false,
+          mapTypeControl:false,
+          keyboardShortcuts:false,
+          fullScreenControl:false,
+          clickableIcons:false,
+          styles:this.retro,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+        this.map.setOptions(mapOptions);
+        this.createMarker();
       });
     })
   }
@@ -82,6 +97,70 @@ export class ProviderPage {
 
   seeMoreReview(){
     this.navCtrl.push(ReviewsPage,{'reviews':this.reviews,'provider':this.healMapLib.user});
+  }
+
+
+  createMarker(){
+
+    let providerProfession = this.user.providerProfile.profession.name;
+    let providerIcon;
+    if (providerProfession == 'doctor') {
+
+      providerIcon = 'http://healmap.cleverapps.io/img/doctor_icon.png';
+    }
+    else if (providerProfession == 'pharmacy') {
+      providerIcon = 'http://healmap.cleverapps.io/img/pharmacists_icon.png';
+    }
+    else if (providerProfession == 'hospital') {
+
+      providerIcon = 'http://healmap.cleverapps.io/img/hospital_icon.png';
+    }
+    else if (providerProfession == 'veterinary_care') {
+      providerIcon = 'http://healmap.cleverapps.io/img/animal_icon.png';
+    }
+    else if (providerProfession == 'psychotherapist') {
+      providerIcon = 'http://healmap.cleverapps.io/img/psychologist_icon.png';
+    }
+    else if (providerProfession == 'beauty_salon' || providerProfession.toLowerCase() == 'beauty saloon') {
+      providerIcon = 'http://healmap.cleverapps.io/img/beauty_icon.png';
+    }
+    else if (providerProfession == 'dentist') {
+      providerIcon = 'http://healmap.cleverapps.io/img/dentist_icon.png';
+    }
+    else if (providerProfession == 'physiotherapist') {
+      providerIcon = 'http://healmap.cleverapps.io/img/ftr_icon.png';
+    }
+
+    let markerIcon = {
+      url: providerIcon,
+      scaledSize: new google.maps.Size(40, 40),
+      origin: new google.maps.Point(0, 0), // used if icon is a part of sprite, indicates image position in sprite
+      anchor: new google.maps.Point(20, 40) // lets offset the marker image
+    };
+
+    // this code convert string lat,lng variables to number, if it comes from healmap's servers.
+    var position = {
+      lat:Number(this.user.providerProfile.lat),
+      lng:Number(this.user.providerProfile.lng)
+    };
+    console.log(position);
+    //----------------------------
+    let marker = new google.maps.Marker({
+      position: position,
+      icon: markerIcon,
+      map:this.map
+    });
+
+    marker.addListener('click',()=>{
+
+      let destination = [Number(this.user.providerProfile.lat),Number(this.user.providerProfile.lng)];
+
+      this.launchNavigator.navigate(destination)
+        .then(
+          success => console.log('Launched navigator'),
+          error => console.log('Error launching navigator', error)
+        );
+    })
   }
 
 }

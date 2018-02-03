@@ -35,6 +35,7 @@ import {SettingsPage} from "../pages/settings/settings";
 import {ProfileSettingsPage} from "../pages/profile-settings/profile-settings";
 import {SetLocationOnMapPage} from "../pages/set-location-on-map/set-location-on-map";
 import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings";
+import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
 
 @NgModule({
   declarations: [
@@ -102,8 +103,8 @@ import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings
     ConnectivityServiceProvider,
     GoogleMapsCluster,
     GoogleMapsProvider,
-    Camera
-
+    Camera,
+    LaunchNavigator
   ]
 })
 export class AppModule {}

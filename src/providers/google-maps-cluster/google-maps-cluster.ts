@@ -118,7 +118,6 @@ export class GoogleMapsCluster {
       //Creates markers with given provider array.
       createMarker(element){
 
-            let imagePath;
             if(this.checkIfMarkerAlreadyAdded(element.geometry.location)){
               console.log("var aynısı");
               return;
