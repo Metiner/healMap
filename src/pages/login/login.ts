@@ -70,7 +70,7 @@ export class LoginPage {
 
   // Continue As a guest
   onGuest(){
-    this.navCtrl.popToRoot();
+    this.navCtrl.setRoot(MapPage);
   }
 
 
