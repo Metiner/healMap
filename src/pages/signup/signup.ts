@@ -57,7 +57,7 @@ export class SignupPage {
 
           if (data.json() != null && data.json().success) {
 
-            this.healMapLib.token = data.json().user.login_token;
+            this.healMapLib.token = data.json().login_token;
             this.healMapLib.createProviderProfile(form).subscribe(response=>{
               console.log(response);
             });

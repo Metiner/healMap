@@ -5,6 +5,7 @@ import {GoogleMapsCluster} from "../../providers/google-maps-cluster/google-maps
 import {HealMapLib} from "../../services/healMapLib";
 import {Geolocation} from "@ionic-native/geolocation";
 import {MapObject} from "../../models/mapObject";
+import {ProviderPage} from "../provider/provider";
 
 declare var google;
 
@@ -32,6 +33,7 @@ export class MapPage {
   providerIcon;
   currentLocationMarker;
   userCurrentLocation;
+  selectedProviderProfile;
   showProviderDetails = false;
   selectedProviderToShowInDetails = {};
   selectedProviders = [];
@@ -46,6 +48,10 @@ export class MapPage {
               public geolocation:Geolocation,
               private eventCtrl:Events,
               private changeDetector:ChangeDetectorRef) {
+
+
+
+
 
     this.platform.ready().then(()=>{
 
@@ -63,6 +69,7 @@ export class MapPage {
 
     this.eventCtrl.subscribe('providerDetailOnClick',(provider,showProviderDetails,providerIcon)=>{
 
+      this.selectedProviderProfile = provider.profile;
       this.selectedProviderToShowInDetails = provider;
       this.providerIcon = providerIcon;
       this.showProviderDetails = showProviderDetails;
@@ -204,7 +211,7 @@ export class MapPage {
           providerObject.icon = element.user.avatar_url;
           providerObject.geometry = {location:{lat:element.lat,lng:element.lng}};
           providerObject.types = [element.profession.name.toLowerCase()];
-
+          providerObject.profile = element;
           this.providersFromGoogle.push(providerObject);
         })
       },error2 => {
@@ -305,5 +312,11 @@ export class MapPage {
   //finds providers from the observable area.
   find(){
     this.initializeFind();
+  }
+
+  // If user tap, "profile" button it routes to selected provider's profile.
+  goToProviderProfile(){
+    console.log(this.selectedProviderProfile);
+    this.navCtrl.push(ProviderPage,this.selectedProviderProfile);
   }
 }

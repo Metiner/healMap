@@ -14,8 +14,38 @@ page-provider {
     height: 150px;
     margin: 0;
   }
+
   .providerInfo{
+
     background-color: #FFFFFF;
+    animation: toExpand .8s forwards;
+  }
+
+  .providerInfoExpanded {
+
+    background-color: #FFFFFF;
+    animation: fromExpanded .8s forwards;
+  }
+
+  @keyframes toExpand {
+
+    0%{
+      margin-top: -100px;
+    }
+    100%{
+      margin-top: -500px;
+    }
+
+  }
+
+  @keyframes fromExpanded {
+
+    0%{
+      margin-top: -500px;
+    }
+    100%{
+      margin-top: -100px;
+    }
   }
 
 

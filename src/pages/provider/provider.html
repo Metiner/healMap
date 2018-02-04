@@ -10,12 +10,10 @@
   </div>
    <div #map_canvas id="map_canvas"></div>
 
-    <ion-grid style="position: relative">
-      <ion-row [@mapExpandAnimation] ="expanded ? 'expanded' : 'notExpanded'"
-               class="providerInfo"
-               [ngStyle]="{'marginTop.px':marginTop}">
+    <ion-grid style="position: relative;">
+      <ion-row  class="providerInfo" [ngClass]="expand ? 'providerInfoExpanded' : 'providerInfo'">
         <ion-col col-27 offset-12 style="margin-top: -50px;border-radius: 50%;max-height: max-content;border:5px solid white">
-          <img style="height: 100%;width: 100%;border-radius: 50%" src="{{user.avatar_url}}">
+          <img style="height: 100%;width: 100%;border-radius: 50%" src="{{provider.user.avatar_url}}">
         </ion-col>
         <ion-col  style="max-height: max-content">
           <ion-row style="margin-top: 10px;color:#9f9e9e">
@@ -28,7 +26,7 @@
           </ion-row>
           <ion-row>
             <ion-col style="font-size: large;font-weight: bolder">
-              <span>{{user.name}} {{user.surname}}</span>
+              <span>{{provider.user.name}} {{provider.user.surname}}</span>
             </ion-col>
           </ion-row>
         </ion-col>
@@ -40,7 +38,7 @@
           </button>
         </ion-col>
         <ion-col col-100 offset-38 style="font-size: x-small;padding:5px 0 10px 0">
-            <span>{{user.providerProfile.profession.professionName}}
+            <span>{{provider.profession.name}}
               <ion-icon name="star" style="color:#44a6b8"></ion-icon> 4.3 out of 256 reviews</span>
         </ion-col>
         <ion-col col-100 offset-39 style="font-size: x-small;font-weight: bolder;padding:0 0 20px 0">
@@ -62,7 +60,7 @@
           ><span style="color:#252525;font-weight: bolder">Chat</span></button>
         </ion-col>
         <ion-col col-100 offset-10 class="multiline-ellipsis">
-          <span>{{user.providerProfile.description}}</span>
+          <span>{{provider.description}}</span>
         </ion-col>
       </ion-row>
       <ion-row class="providerExperts">
@@ -144,11 +142,11 @@
           >Write a review</button>
         </ion-col>
         <ion-col offset-10 style="margin-top: 4px">
-          <span style="font-weight: bold;">{{user.providerProfile.comment_count}} Recommendations</span>
+          <span style="font-weight: bold;">{{provider.comment_count}} Recommendations</span>
         </ion-col>
       </ion-row>
       <ion-row style="background-color: #FFFFFF">
-        <div *ngFor="let review of user.providerProfile.comments; let i = index">
+        <div *ngFor="let review of provider.comments; let i = index">
           <ion-item *ngIf="i<3" style="margin:10px 0 10px 13px">
             <ion-avatar item-start>
               <img src="{{review.user.avatar_url}}">
@@ -193,7 +191,7 @@
             <p>{{review.body}}</p>
           </ion-item>
         </div>
-        <ion-col col-100 offset-10 *ngIf="user.providerProfile.comment_count > 3">
+        <ion-col col-100 offset-10 *ngIf="provider.comment_count > 3">
           <button ion-button
                   block
                   outline

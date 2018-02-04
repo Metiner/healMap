@@ -110,4 +110,8 @@ export class LoginPage {
       this.itemeleven=! this.itemeleven;
     },1000)
   }
+
+  onForgotPassword(){
+    this.itemone = !this.itemone;
+  }
 }

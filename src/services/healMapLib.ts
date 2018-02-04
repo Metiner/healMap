@@ -264,6 +264,12 @@ export class HealMapLib{
   }
 
 
+  sendThreadRequest(receiver_id){
+    let opt = this.setHeader();
+    this.http.post(this.api_address + '/threads/request',{receiver_id:receiver_id});
+  }
+
+
 
   get user() {
     return this._user;

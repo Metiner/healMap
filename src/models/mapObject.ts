@@ -4,7 +4,16 @@ export class MapObject{
   private _icon:string;
   private _name:string;
   private _types = [];
+  private _profile;
 
+
+  get profile() {
+    return this._profile;
+  }
+
+  set profile(value) {
+    this._profile = value;
+  }
 
   get geometry(): {} {
     return this._geometry;
