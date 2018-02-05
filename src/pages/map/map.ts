@@ -49,10 +49,12 @@ export class MapPage {
               private eventCtrl:Events,
               private changeDetector:ChangeDetectorRef) {
 
+  }
 
+  ionViewWillEnter(){
 
-
-
+    this.showProviderDetails = false;
+    this.setCenter();
     this.platform.ready().then(()=>{
 
 
@@ -77,12 +79,6 @@ export class MapPage {
 
 
     })
-
-
-  }
-
-  ionViewWillEnter(){
-    this.setCenter();
   }
 
   setCenter(){

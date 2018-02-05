@@ -2,18 +2,17 @@
 import {Http, RequestOptions,Headers} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {AlertController, Events, LoadingController, ToastController} from "ionic-angular";
-import {User} from "../models/user";
 import {Storage} from "@ionic/storage";
 import {Provider} from "../models/provider";
-import {toBase64String} from "@angular/compiler/src/output/source_map";
 
 
 @Injectable()
 export class HealMapLib{
   api_address = 'https://healmap.cleverapps.io';
   googleMapsApiAdress = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
-  _user:User;
-  _token:string ="";
+  private _provider:Provider;
+  private _token:string ="";
+
   constructor(private http:Http,
               private alertCtrl:AlertController,
               private toastCtrl:ToastController,
@@ -24,7 +23,7 @@ export class HealMapLib{
 
   public async login(email,password):Promise<boolean> {
 
-    let u: User = new User();
+    this.provider = new Provider();
     let flag = false;
     await this.http.post(this.api_address + '/users/sign_in.json', {
       "user": {
@@ -34,7 +33,7 @@ export class HealMapLib{
     }).toPromise()
       .then(success => {
         this.token = success.json().token;
-        Object.assign(u, success.json().user);
+        this.provider.user = success.json().user;
         flag = true;
       }).catch(error => {
         this.showToast("Please check credentials.", 3000, "bottom");
@@ -45,12 +44,10 @@ export class HealMapLib{
       });
 
     //If user has provider profile, provider profile must set on user object like below.
-    if (u.provider_id != undefined) {
-      await this.getProviderProfile(u.provider_id)
+    if (this.provider.user.provider_id != undefined) {
+      await this.getProviderProfile(this.provider.user.provider_id)
         .then(success => {
-          let provider: Provider = new Provider();
-          Object.assign(provider, success.json());
-          u.providerProfile = provider;
+          this.provider = success.json();
           flag = true;
         })
         .catch(error => {
@@ -66,7 +63,7 @@ export class HealMapLib{
       const loading = this.loadingCtrl.create({
 
       })
-      this.setTokenAndUserAfterSuccessLogin(u,this.token);
+      this.setTokenAndProviderAfterSuccessLogin(this.provider,this.token);
       return new Promise<boolean>((resolve) => {
         resolve(true);
       });
@@ -89,7 +86,6 @@ export class HealMapLib{
 
   public checkLogin(){
     let opt = this.setHeader();
-    console.log(opt);
     return this.http.get(this.api_address + '/users/login_check',opt);
   }
 
@@ -189,14 +185,6 @@ export class HealMapLib{
     toast.present();
   }
 
-
-  // sets user object to user static variable which locates in this class after login.
-  public setUserInfoAfterLogin(user:User){
-    let u:User=new User();
-    Object.assign(u,user);
-    this.user = u;
-  }
-
   //It removes all of users from device local storage.
   public logOutFromStorageAndAuth(){
     this.storageCtrl.clear().then(
@@ -256,27 +244,32 @@ export class HealMapLib{
 
 
   //sets the user info to user variable and stores token
-  setTokenAndUserAfterSuccessLogin(user,token){
-    this.user = user;
+  setTokenAndProviderAfterSuccessLogin(provider,token){
+    this.provider = provider;
     this.token = token;
     this.eventCtrl.publish('user.login',' ');
     this.showToast("Logged in.",1500,"bottom");
   }
 
 
+  //sends thread request for chat.
   sendThreadRequest(receiver_id){
     let opt = this.setHeader();
-    this.http.post(this.api_address + '/threads/request',{receiver_id:receiver_id});
+    return this.http.post(this.api_address + '/threads/request',{receiver_id:receiver_id},opt).toPromise();
   }
 
-
-
-  get user() {
-    return this._user;
+  //gets chat threads
+  getThread(){
+    let opt = this.setHeader();
+    return this.http.get(this.api_address + '/threads',opt).toPromise();
   }
 
-  set user(value) {
-    this._user = value;
+  get provider(): Provider {
+    return this._provider;
+  }
+
+  set provider(value: Provider) {
+    this._provider = value;
   }
 
   get token(): string {
@@ -286,4 +279,8 @@ export class HealMapLib{
   set token(value: string) {
     this._token = value;
   }
+
+
+
+
 }

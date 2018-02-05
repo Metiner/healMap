@@ -49,14 +49,17 @@
           <button color="light"
                   ion-button
                   outline
+                  *ngIf="!ownProfile"
                   block
           ><span style="color:#252525;font-weight: bolder">Follow</span></button>
         </ion-col>
         <ion-col col-50 offset-1>
           <button color="light"
                   ion-button
+                  *ngIf="!ownProfile"
                   block
                   outline
+                  (click)="onChat()"
           ><span style="color:#252525;font-weight: bolder">Chat</span></button>
         </ion-col>
         <ion-col col-100 offset-10 class="multiline-ellipsis">
@@ -138,6 +141,7 @@
           <button ion-button
                   color="redButton"
                   block
+                  *ngIf="!ownProfile"
                   (click)="writeReview()"
           >Write a review</button>
         </ion-col>

@@ -19,15 +19,6 @@ import {MapPage} from "../pages/map/map";
           </ion-col>
           <ion-col col-10 offset-30 style="display: inline-flex;align-items: center;">
             <button
-              ion-button
-              icon-only
-              clear
-              small
-              right
-              menuToggle>
-              <ion-icon style="color:lightgray" name="notifications"></ion-icon>
-            </button>
-            <button
               right
               ion-button
               icon-only

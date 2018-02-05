@@ -14,6 +14,8 @@ import {SettingsPage} from "../pages/settings/settings";
 import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings";
 import {SetLocationOnMapPage} from "../pages/set-location-on-map/set-location-on-map";
 import {HomePage} from "../pages/home/home";
+import {Provider} from "../models/provider";
+import {NotificationsPage} from "../pages/notifications/notifications";
 @Component({
   templateUrl: 'app.html'
 })
@@ -21,7 +23,7 @@ export class MyApp {
   rootPage:any = LoginPage;
   @ViewChild('nav') nav: NavController;
   isAuthenticated = false;
-  currentUser:User;
+  currentUser:Provider;
   constructor(platform: Platform,
               statusBar: StatusBar,
               splashScreen: SplashScreen,
@@ -30,7 +32,7 @@ export class MyApp {
               private healMapLib:HealMapLib) {
     this.eventCtrl.subscribe("user.login", () => {
       this.isAuthenticated = true
-      this.currentUser = this.healMapLib.user;
+      this.currentUser = this.healMapLib.provider;
 
     });
     platform.ready().then(() => {
@@ -42,7 +44,7 @@ export class MyApp {
   }
 
   ionViewWillEnter(){
-    this.currentUser = this.healMapLib.user;
+    this.currentUser = this.healMapLib.provider;
   }
 
 
@@ -86,12 +88,17 @@ export class MyApp {
   }
   onProfile(){
 
-        if(this.healMapLib.user.provider_id != undefined){
-          this.nav.push(ProviderPage,this.healMapLib.user);
+        if(this.healMapLib.provider.user.provider_id!= undefined){
+          this.nav.push(ProviderPage,this.healMapLib.provider);
         }else{
-          this.nav.push(ProfilePage,this.healMapLib.user);
+          this.nav.push(ProfilePage,this.healMapLib.provider);
         }
 
+    this.menuCtrl.close();
+  }
+
+  onNotifications(){
+    this.nav.push(NotificationsPage);
     this.menuCtrl.close();
   }
 }

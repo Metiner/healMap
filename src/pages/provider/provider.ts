@@ -7,6 +7,8 @@ import {WriteReviewPage} from "../write-review/write-review";
 import {ReviewsPage} from "../reviews/reviews";
 import {Retro} from "../../components/googleMapStyle";
 import {LaunchNavigator} from "@ionic-native/launch-navigator";
+import {ChatPage} from "../chat/chat";
+import {Provider} from "../../models/provider";
 
 declare var google;
 
@@ -21,8 +23,9 @@ export class ProviderPage {
   @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
   map: any;
   expand=false;
-  provider: any;
+  provider: Provider;
   retro = Retro;
+  ownProfile = false;
 
   constructor(public geolocation:Geolocation,
               public platform:Platform,
@@ -33,10 +36,12 @@ export class ProviderPage {
               public launchNavigator: LaunchNavigator,
               public changeDetector:ChangeDetectorRef) {
 
-
-      if(this.navParams.data){
-          this.provider = this.navParams.data;
-      }
+    if(this.navParams.data){
+        this.provider = this.navParams.data;
+        if(this.provider.id == this.healMapLib.provider.id){
+          this.ownProfile = true;
+        }
+    }
 
     this.platform.ready().then(()=>{
       this.maps.init(this.mapRef.nativeElement, this.pleaseConnect.nativeElement).then((map) => {
@@ -140,4 +145,12 @@ export class ProviderPage {
     })
   }
 
+  async onChat(){
+    await this.healMapLib.sendThreadRequest(this.provider.user.id).then(success=>{
+      console.log(success.json());
+      this.healMapLib.showAlert("Great !","Request has been sent. \nNotification will send after provider's acceptation.",["Ok"]);
+    }).catch(error=>{
+      this.healMapLib.showToast("Something happened :(",3000,"bottom");
+    })
+  }
 }

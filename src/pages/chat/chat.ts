@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Provider} from "../../models/provider";
 
 /**
  * Generated class for the ChatPage page.
@@ -15,11 +16,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ChatPage {
 
+  provider:Provider;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+      if(this.navParams.data){
+        this.provider = this.navParams.data;
+      }
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatPage');
-  }
 
 }

@@ -58,7 +58,7 @@ export class LoginPage {
       }
     }).catch(error=>{
       console.log(error);
-
+      loading.dismiss();
       }
     )
   }

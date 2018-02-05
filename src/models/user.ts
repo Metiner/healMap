@@ -1,27 +1,18 @@
-import {Provider} from "./provider";
 
 export class User{
 
-  public _id: number;
-  public _email: String;
-  public _name: String;
-  public _surname: String;
-  public _phone_no: number;
-  public _provider_id:number;
-  public _providerProfile:Provider;
-  public _avatar_url: String
+  private _id:number;
+  private _avatar_url:string;
+  private _email:string;
+  private _name:string;
+  private _phone_no:number;
+  private _provider_id:number;
+  private _surname:string;
 
 
   constructor() {
   }
 
-  get avatar_url(): String {
-    return this._avatar_url;
-  }
-
-  set avatar_url(value: String) {
-    this._avatar_url = value;
-  }
 
   get id(): number {
     return this._id;
@@ -31,28 +22,28 @@ export class User{
     this._id = value;
   }
 
-  get email(): String {
+  get avatar_url(): string {
+    return this._avatar_url;
+  }
+
+  set avatar_url(value: string) {
+    this._avatar_url = value;
+  }
+
+  get email(): string {
     return this._email;
   }
 
-  set email(value: String) {
+  set email(value: string) {
     this._email = value;
   }
 
-  get name(): String {
+  get name(): string {
     return this._name;
   }
 
-  set name(value: String) {
+  set name(value: string) {
     this._name = value;
-  }
-
-  get surname(): String {
-    return this._surname;
-  }
-
-  set surname(value: String) {
-    this._surname = value;
   }
 
   get phone_no(): number {
@@ -63,20 +54,19 @@ export class User{
     this._phone_no = value;
   }
 
-
-  get providerProfile(): Provider {
-    return this._providerProfile;
-  }
-
-  set providerProfile(value: Provider) {
-    this._providerProfile = value;
-  }
-
   get provider_id(): number {
     return this._provider_id;
   }
 
   set provider_id(value: number) {
     this._provider_id = value;
+  }
+
+  get surname(): string {
+    return this._surname;
+  }
+
+  set surname(value: string) {
+    this._surname = value;
   }
 }

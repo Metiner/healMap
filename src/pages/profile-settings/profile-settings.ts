@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Camera} from '@ionic-native/camera';
 import {HealMapLib} from "../../services/healMapLib";
 import {User} from "../../models/user";
+import {Provider} from "../../models/provider";
 @IonicPage()
 @Component({
   selector: 'page-profile-settings',
@@ -13,13 +14,13 @@ export class ProfileSettingsPage {
   photoTaken = false;
   base64Image = "";
   base64ImageToUpload = "";
-  profile:User;
+  profile:Provider;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public camera:Camera,
               public healMapLib:HealMapLib) {
-    this.profile = this.healMapLib.user;
+    this.profile = this.healMapLib.provider;
   }
 
   async onProfileChange(form) {
@@ -37,7 +38,7 @@ export class ProfileSettingsPage {
 
           await this.healMapLib.updateUserInfo(form,this.base64ImageToUpload).then(success=>{
 
-            this.healMapLib.user = success.json().user;
+            this.healMapLib.provider.user = success.json().user;
           })
             .catch(error=>{
               flag = false;

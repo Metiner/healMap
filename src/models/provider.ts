@@ -1,31 +1,26 @@
 import {User} from "./user";
-import {Profession} from "./profession";
 
-export class Provider extends User{
+export class Provider{
 
-  private _professionId: String;
-  private _profession:Profession;
+  private _id:number;
   private _comment_count:number;
-  private _comments:string[];
-  private _description: String;
-  private _lat:String;
-  private _lng:String;
+  private _comments:any[];
+  private _description:string;
+  private _lat:string;
+  private _lng:string;
+  private _profession:any;
+  private _user:User;
 
-
-  get professionId(): String {
-    return this._professionId;
+  constructor() {
   }
 
-  set professionId(value: String) {
-    this._professionId = value;
+
+  get id(): number {
+    return this._id;
   }
 
-  get profession(): Profession {
-    return this._profession;
-  }
-
-  set profession(value: Profession) {
-    this._profession = value;
+  set id(value: number) {
+    this._id = value;
   }
 
   get comment_count(): number {
@@ -36,35 +31,51 @@ export class Provider extends User{
     this._comment_count = value;
   }
 
-  get comments(): string[] {
+  get comments(): any[] {
     return this._comments;
   }
 
-  set comments(value: string[]) {
+  set comments(value: any[]) {
     this._comments = value;
   }
 
-  get description(): String {
+  get description(): string {
     return this._description;
   }
 
-  set description(value: String) {
+  set description(value: string) {
     this._description = value;
   }
 
-  get lat(): String {
+  get lat(): string {
     return this._lat;
   }
 
-  set lat(value: String) {
+  set lat(value: string) {
     this._lat = value;
   }
 
-  get lng(): String {
+  get lng(): string {
     return this._lng;
   }
 
-  set lng(value: String) {
+  set lng(value: string) {
     this._lng = value;
+  }
+
+  get profession(): any {
+    return this._profession;
+  }
+
+  set profession(value: any) {
+    this._profession = value;
+  }
+
+  get user(): User {
+    return this._user;
+  }
+
+  set user(value: User) {
+    this._user = value;
   }
 }

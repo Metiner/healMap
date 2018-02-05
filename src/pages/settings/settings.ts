@@ -17,7 +17,7 @@ export class SettingsPage {
   }
 
   toProfileSettings(){
-      if(this.healMapLib.user.provider_id != undefined){
+      if(this.healMapLib.provider.id != undefined){
         this.navCtrl.push(ProviderSettingsPage);
       }else{
         this.navCtrl.push(ProfileSettingsPage);

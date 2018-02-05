@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {Camera} from '@ionic-native/camera';
 import {HealMapLib} from "../../services/healMapLib";
 import {SetLocationOnMapPage} from "../set-location-on-map/set-location-on-map";
 import {ProviderPage} from "../provider/provider";
 import {User} from "../../models/user";
+import {Provider} from "../../models/provider";
 @IonicPage()
 @Component({
   selector: 'page-provider-settings',
@@ -16,7 +17,7 @@ export class ProviderSettingsPage {
   base64Image = "";
   base64ImageToUpload = "";
   selectedLocation:any={};
-  user:User;
+  provider:Provider;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -24,7 +25,7 @@ export class ProviderSettingsPage {
               public popover:PopoverController,
               public healMapLib:HealMapLib) {
 
-    this.user = this.healMapLib.user;
+    this.provider = this.healMapLib.provider;
   }
 
 
@@ -42,8 +43,8 @@ export class ProviderSettingsPage {
         if(this.selectedLocation.hasOwnProperty('lat')){
           await this.healMapLib.updateLocation(this.selectedLocation.lat,this.selectedLocation.lng).then(success=>{
             if(this.selectedLocation.lat != success.json().lat || this.selectedLocation.lat != success.json().lng){
-              this.healMapLib.user.providerProfile.lat = success.json().lat;
-              this.healMapLib.user.providerProfile.lng = success.json().lng;
+              this.healMapLib.provider.lat = success.json().lat;
+              this.healMapLib.provider.lng = success.json().lng;
             }
           }).catch(error=>{
             flag = false;
@@ -54,8 +55,8 @@ export class ProviderSettingsPage {
           await this.healMapLib.updateUserInfo(form,this.base64ImageToUpload).then(success=>{
 
 
-            this.healMapLib.user.name = success.json().user.name;
-            this.healMapLib.user.surname = success.json().user.name;
+            this.healMapLib.provider.user.name = success.json().user.name;
+            this.healMapLib.provider.user.surname= success.json().user.surname;
 
           })
             .catch(error=>{
@@ -64,11 +65,9 @@ export class ProviderSettingsPage {
           }
         if(form.value.description != ""){
 
-          await this.healMapLib.updateProviderInfo(form.value.description,this.healMapLib.user.provider_id).then(success=>{
-            this.healMapLib.user.providerProfile.description= success.json().description;
-            console.log(this.healMapLib.user);
-            // ProviderPage.description(response.json().user);
-          }).catch(error=>{
+          await this.healMapLib.updateProviderInfo(form.value.description,this.healMapLib.provider.id).then(success=>{
+            this.healMapLib.provider.description= success.json().description;
+            }).catch(error=>{
             flag = false;
           })
         }

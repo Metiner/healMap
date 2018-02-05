@@ -8,12 +8,12 @@
   <ion-grid>
     <ion-row style="padding-top:20px;background-color: #FFFFFF">
       <ion-col col-27 offset-12 style="border-radius: 50%;max-height: max-content">
-        <img style="border-radius: 50%;max-height: max-content;border:1px solid black;" src="{{patient.avatar_url}}">
+        <img style="border-radius: 50%;max-height: max-content;border:1px solid black;" src="{{patient.user.avatar_url}}">
 
       </ion-col>
       <ion-col offset-4>
         <ion-row>
-          <span style="font-weight: bolder;font-size: medium">{{patient.name}} {{patient.surname}}</span>
+          <span style="font-weight: bolder;font-size: medium">{{patient.user.name}} {{patient.user.surname}}</span>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -29,7 +29,7 @@
     <ion-row style="margin-top: 10px;">
       <ion-item>
         <ion-icon style="margin-left: 15px;color:#A0051C" name="mail"></ion-icon>
-        <span style="font-size: small;margin-left: 32px">{{patient.email}}</span>
+        <span style="font-size: small;margin-left: 32px">{{patient.user.email}}</span>
       </ion-item>
     </ion-row>
   </ion-grid>

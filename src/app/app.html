@@ -38,6 +38,16 @@
       </button>
     </ion-item>
     <ion-item class="menuItem" *ngIf="isAuthenticated">
+      <button
+        ion-button
+        clear
+        (click)="onNotifications()"
+        icon-left>
+        <ion-icon class="menuSpan" name="notifications"></ion-icon>
+        <span class="menuSpan">Notifications</span>
+      </button>
+    </ion-item>
+    <ion-item class="menuItem" *ngIf="isAuthenticated">
       <button ion-button
               clear
               (click)="onEmergencyNumbers()"
