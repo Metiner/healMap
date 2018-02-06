@@ -264,6 +264,15 @@ export class HealMapLib{
     return this.http.get(this.api_address + '/threads',opt).toPromise();
   }
 
+  acceptThreadRequest(thread_id){
+    let opt = this.setHeader();
+    return this.http.post(this.api_address + '/threads/' + thread_id + '/accept',{},opt).toPromise();
+  }
+  rejectThreadRequest(thread_id){
+    let opt = this.setHeader();
+    return this.http.post(this.api_address + '/threads/' + thread_id + '/accept',{},opt).toPromise();
+  }
+
   get provider(): Provider {
     return this._provider;
   }

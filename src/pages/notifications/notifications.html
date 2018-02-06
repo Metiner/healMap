@@ -33,18 +33,18 @@
       <!--</ion-row>-->
     <!--</ion-grid>-->
   <!--</ion-item>-->
-  <ion-item *ngFor="let notification of threads">
+  <ion-item *ngFor="let notification of notifications">
     <ion-grid>
       <ion-row>
         <ion-col col-18>
           <ion-avatar item-start>
-            <img src="{{notification.avatar_url}}">
+            <img src="{{notification.sender_id.avatar_url}}">
           </ion-avatar>
         </ion-col>
         <ion-col>
           <ion-row>
             <ion-col>
-              <h2>{{notification.name}} {{notification.surname}}</h2>
+              <h2>{{notification.sender_id.name}} {{notification.sender_id.surname}}</h2>
             </ion-col>
             <ion-col offset-30>
               <span style="font-size: x-small;color: #bfbfbf">12 min
@@ -56,12 +56,14 @@
             <ion-col>
               <button ion-button
                       small
+                      (click)="onAcceptNotification(notification)"
                       color="secondary"
               >Accept Chat Request</button>
             </ion-col>
             <ion-col offset-1>
               <button ion-button
                       small
+                      (click)="onRejectNotification(notification)"
                       color="danger">Reject</button>
             </ion-col>
           </ion-row>
