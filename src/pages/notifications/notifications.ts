@@ -29,7 +29,8 @@ export class NotificationsPage {
       temp = success.json();
 
       for(var i=0;i<temp.length;i++){
-        if(temp[i].state == 0)
+        //if(temp[i].state == 0 && temp[i].sender_id.id != this.healMapLib.provider.user.id)
+        if(this.healMapLib.provider.user.id)
           this.notifications.push(temp[i]);
       }
 
@@ -40,8 +41,7 @@ export class NotificationsPage {
 
   async onAcceptNotification(notification){
     await this.healMapLib.acceptThreadRequest(notification.id).then(success=>{
-      console.log(success.json());
-      //this.navCtrl.push(ChatPage);
+      this.navCtrl.push(ChatPage,notification);
     }).catch(error=>{
       console.log(error);
       this.healMapLib.showToast("Oops:( Something happened.",3000,"bottom");

@@ -270,7 +270,11 @@ export class HealMapLib{
   }
   rejectThreadRequest(thread_id){
     let opt = this.setHeader();
-    return this.http.post(this.api_address + '/threads/' + thread_id + '/accept',{},opt).toPromise();
+    return this.http.post(this.api_address + '/threads/' + thread_id + '/reject',{},opt).toPromise();
+  }
+  sendMessage(thread_id,messageBody){
+    let opt = this.setHeader();
+    return this.http.post(this.api_address + '/threads/' + thread_id + '/message',{message_text : messageBody},opt).toPromise();
   }
 
   get provider(): Provider {

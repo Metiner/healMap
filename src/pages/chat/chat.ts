@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Provider} from "../../models/provider";
+import {HealMapLib} from "../../services/healMapLib";
 
 /**
  * Generated class for the ChatPage page.
@@ -16,13 +17,32 @@ import {Provider} from "../../models/provider";
 })
 export class ChatPage {
 
-  provider:Provider;
+  sender:Provider;
+  receiver:Provider;
+  thread:any;
+  messages:any[]=[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-      if(this.navParams.data){
-        this.provider = this.navParams.data;
-      }
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public healMapLib: HealMapLib) {
+
+      this.thread = this.navParams.data;
+      this.sender = this.thread.sender_id;
+      this.receiver = this.healMapLib.provider;
+
   }
+
+  async sendMessage(form){
+
+    await this.healMapLib.sendMessage(this.thread.id,form.value.messageBody).then(success=>{
+      this.messages = success.json().json_body.messages;
+    }).catch(error=>{
+      console.log(error);
+    });
+
+  }
+
+
 
 
 }
