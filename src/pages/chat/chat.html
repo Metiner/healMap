@@ -10,7 +10,7 @@
 
 <ion-content>
 <ion-grid>
-  <ion-row>
+  <ion-row *ngIf="showLoadOldMessagesButton">
     <ion-col col-70 offset-25 style="text-align: center;margin-top: 10px">
       <button ion-button
               small

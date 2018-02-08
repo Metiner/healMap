@@ -20,22 +20,39 @@ export class ChatPage {
   sender:Provider;
   receiver:Provider;
   thread:any;
-  messages:any[]=[];
+  showLoadOldMessagesButton = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public healMapLib: HealMapLib) {
 
       this.thread = this.navParams.data;
-      this.sender = this.thread.sender_id;
-      this.receiver = this.healMapLib.provider;
 
+      if(this.thread.sender_id.id == this.healMapLib.provider.user.id){
+        this.sender = this.thread.receiver_id;
+        this.receiver = this.healMapLib.provider;
+      }else{
+        this.sender = this.thread.sender_id;
+        this.receiver = this.thread.receiver_id;
+      }
+
+
+
+      for(let i=0;i<this.thread.messages.length;i++){
+        if(this.thread.messages[i].user_id == this.healMapLib.provider.user.id){
+          this.thread.messages[i].isMessageFromCurrentUser = true;
+        }
+        else{
+          this.thread.messages[i].isMessageFromCurrentUser = false;
+        }
+
+      }
   }
 
   async sendMessage(form){
 
     await this.healMapLib.sendMessage(this.thread.id,form.value.messageBody).then(success=>{
-      this.messages = success.json().json_body.messages;
+      this.thread.messages = success.json().json_body.messages;
     }).catch(error=>{
       console.log(error);
     });
