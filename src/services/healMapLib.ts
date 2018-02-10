@@ -4,6 +4,7 @@ import {Injectable} from "@angular/core";
 import {AlertController, Events, LoadingController, ToastController} from "ionic-angular";
 import {Storage} from "@ionic/storage";
 import {Provider} from "../models/provider";
+import {HTTP} from "@ionic-native/http";
 
 
 @Injectable()
@@ -18,7 +19,8 @@ export class HealMapLib{
               private toastCtrl:ToastController,
               private storageCtrl:Storage,
               public loadingCtrl:LoadingController,
-              public eventCtrl:Events){}
+              public eventCtrl:Events,
+              private HTTP:HTTP){}
 
 
   public async login(email,password):Promise<boolean> {
@@ -103,18 +105,6 @@ export class HealMapLib{
 
     return opt;
   }
-  public setCorsHeader():RequestOptions{
-    let opt:RequestOptions;
-    let myHeaders: Headers = new Headers;
-
-    myHeaders.set('Access-Control-Allow-Origin',"*");
-
-    opt = new RequestOptions({
-      headers:myHeaders
-    });
-
-    return opt;
-  }
 
   updateLocationPrecise(lat,long){
     let opt = this.setHeader();
@@ -150,8 +140,6 @@ export class HealMapLib{
   // For getting providers from googleMap servers due to given lat,long radius parameters.
   getVenueFromGoogleMaps(lat,long,radius,types,name,distance){
 
-    let opt = this.setCorsHeader();
-    console.log(opt.headers.toJSON());
     let typesString="";
     if(types.length > 0){
       types.forEach(element=>{
@@ -163,7 +151,8 @@ export class HealMapLib{
       })
     }
 
-    return this.http.post(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo',opt).toPromise();
+    this.HTTP.setHeader("Allow-Access-Control-Origin","*");
+    return this.HTTP.post(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo',{},{});
 
   }
   // For getting providers from healMap servers due to given lang, lng parameters.

@@ -174,7 +174,10 @@ export class MapPage {
     try{
 
       await this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).then(response=>{
-        var objects = response.json().results;
+
+        let jsonObject = JSON.parse(response.data);
+
+        var objects = jsonObject.results;
         objects.forEach(element =>{
 
             this.providersFromGoogle.push(element);
