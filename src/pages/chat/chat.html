@@ -18,25 +18,19 @@
               color="white"><span style="color: #1A1A1A;font-weight: bolder;font-size: 10px">LOAD OLD MESSAGES</span></button>
     </ion-col>
   </ion-row>
-  <ion-row style="margin-top: 5px">
-    <ion-col col-15 offset-2>
-      <ion-avatar>
-        <img src="assets/imgs/pp.png">
-      </ion-avatar>
-    </ion-col>
-    <ion-col col-85 offset-2>
+
+  <ion-row *ngFor="let message of thread.json_body.messages" style="margin-top: 5px;margin-bottom: 5px">
+    <ion-col *ngIf="!message.isMessageFromCurrentUser" col-85 offset-2 >
       <div class="chatBubbleFrom">
-        <span>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        <span style="word-wrap: break-word">
+          {{message.message_text}}
         </span>
       </div>
     </ion-col>
-  </ion-row>
-  <ion-row style="margin-top: 5px">
-    <ion-col col-85 offset-30>
+    <ion-col *ngIf="message.isMessageFromCurrentUser" col-85 offset-40>
       <div class="chatBubbleTo">
-        <span>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        <span style="word-wrap: break-word">
+          {{message.message_text}}
         </span>
       </div>
     </ion-col>
