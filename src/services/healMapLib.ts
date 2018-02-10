@@ -151,6 +151,7 @@ export class HealMapLib{
   getVenueFromGoogleMaps(lat,long,radius,types,name,distance){
 
     let opt = this.setCorsHeader();
+    console.log(opt.headers.toJSON());
     let typesString="";
     if(types.length > 0){
       types.forEach(element=>{
@@ -162,7 +163,7 @@ export class HealMapLib{
       })
     }
 
-    return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo',opt).toPromise();
+    return this.http.post(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo',opt).toPromise();
 
   }
   // For getting providers from healMap servers due to given lang, lng parameters.
