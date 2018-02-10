@@ -103,6 +103,18 @@ export class HealMapLib{
 
     return opt;
   }
+  public setCorsHeader():RequestOptions{
+    let opt:RequestOptions;
+    let myHeaders: Headers = new Headers;
+
+    myHeaders.set('Access-Control-Allow-Origin',"*");
+
+    opt = new RequestOptions({
+      headers:myHeaders
+    });
+
+    return opt;
+  }
 
   updateLocationPrecise(lat,long){
     let opt = this.setHeader();
@@ -138,6 +150,7 @@ export class HealMapLib{
   // For getting providers from googleMap servers due to given lat,long radius parameters.
   getVenueFromGoogleMaps(lat,long,radius,types,name,distance){
 
+    let opt = this.setCorsHeader();
     let typesString="";
     if(types.length > 0){
       types.forEach(element=>{
@@ -149,7 +162,7 @@ export class HealMapLib{
       })
     }
 
-    return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo').toPromise();
+    return this.http.get(this.googleMapsApiAdress+'location='+lat+','+long+'&radius='+radius+'&types='+typesString+'&name='+name+'&key=AIzaSyBcO1IqeLhU6f45OGXay4eqyW5n2KalyUo',opt).toPromise();
 
   }
   // For getting providers from healMap servers due to given lang, lng parameters.
