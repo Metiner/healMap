@@ -71,11 +71,11 @@ export class MapPage {
 
     this.eventCtrl.subscribe('providerDetailOnClick',(provider,showProviderDetails,providerIcon)=>{
 
+      this.changeDetector.detectChanges();
       this.selectedProviderProfile = provider.profile;
       this.selectedProviderToShowInDetails = provider;
       this.providerIcon = providerIcon;
       this.showProviderDetails = showProviderDetails;
-      this.changeDetector.detectChanges();
 
 
     })

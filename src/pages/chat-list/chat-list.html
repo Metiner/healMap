@@ -3,23 +3,34 @@
 </ion-header>
 
 <ion-content>
-  <div *ngFor="let chat of chats" >
-    <ion-item *ngIf="chat.isCurrentUserSender" (click)="onChatPage(chat)">
-      <ion-avatar item-start>
-        <img src="{{chat.receiver_id.avatar_url}}">
-      </ion-avatar>
-      <h2>{{chat.receiver_id.name}} {{chat.receiver_id.surname}}</h2>
-      <p>{{chat.lastMessage}}</p>
-      <span style="font-size: x-small;color: #bfbfbf">Two hour ago</span>
-    </ion-item>
-    <ion-item *ngIf="!chat.isCurrentUserSender" (click)="onChatPage(chat)">
-      <ion-avatar item-start>
-        <img src="{{chat.sender_id.avatar_url}}">
-      </ion-avatar>
-      <h2>{{chat.sender_id.name}} {{chat.sender_id.surname}}</h2>
-      <p>{{chat.lastMessage}}</p>
-      <span style="font-size: x-small;color: #bfbfbf">Two hour ago</span>
-    </ion-item>
-  </div>
+  <ion-list>
+    <ion-label *ngIf="thereIsNoChatMessage">You have not any messages.</ion-label>
+    <div *ngFor="let chat of chats">
+      <ion-item-sliding>
+        <ion-item *ngIf="chat.isCurrentUserSender" (click)="onChatPage(chat)">
+          <ion-avatar item-start>
+            <img src="{{chat.receiver_id.avatar_url}}">
+          </ion-avatar>
+          <h2>{{chat.receiver_id.name}} {{chat.receiver_id.surname}}</h2>
+          <p>{{chat.lastMessage}}</p>
+          <span style="font-size: x-small;color: #bfbfbf">{{timeCalculation(chat)}}</span>
+        </ion-item>
+        <ion-item *ngIf="!chat.isCurrentUserSender" (click)="onChatPage(chat)">
+          <ion-avatar item-start>
+            <img src="{{chat.sender_id.avatar_url}}">
+          </ion-avatar>
+          <h2>{{chat.sender_id.name}} {{chat.sender_id.surname}}</h2>
+          <p>{{chat.lastMessage}}</p>
+          <span style="font-size: x-small;color: #bfbfbf">{{timeCalculation(chat)}}</span>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="danger" (click)="deleteChat(chat)">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </div>
+  </ion-list>
 
 </ion-content>

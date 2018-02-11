@@ -18,6 +18,7 @@ import {ChatPage} from "../chat/chat";
 export class ChatListPage {
 
   chats=[];
+  thereIsNoChatMessage = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -25,6 +26,14 @@ export class ChatListPage {
 
     this.healMapLib.getThread().then(success=>{
       this.chats = success.json();
+      console.log(this.chats)
+
+      if(success.json().length < 1){
+        this.thereIsNoChatMessage = true;
+      }
+      else{
+        this.thereIsNoChatMessage = false;
+      }
 
       for(let i=0;i<this.chats.length;i++){
         if(this.chats[i].json_body.hasOwnProperty("messages") && this.chats[i].state == 1){
@@ -53,4 +62,33 @@ export class ChatListPage {
     this.navCtrl.push(ChatPage,chat);
   }
 
+  deleteChat(chat){
+    this.chats.splice(this.chats.indexOf(chat),1);
+    console.log(this.chats);
+  }
+
+  timeCalculation(chat){
+      return this.timeConversion(Date.now()-Date.parse(chat.created_at));
+  }
+
+  timeConversion(millisec) {
+
+    let seconds = Number((millisec / 1000).toFixed());
+
+    let minutes = Number((millisec / (1000 * 60)).toFixed());
+
+    let hours = Number((millisec / (1000 * 60 * 60)).toFixed());
+
+    let days = Number((millisec / (1000 * 60 * 60 * 24)).toFixed());
+
+    if (seconds < 60) {
+      return seconds + " Seconds ago";
+    } else if (minutes < 60) {
+      return minutes + " Mins ago";
+    } else if (hours < 24) {
+      return hours + " Hours ago";
+    } else {
+      return days + " Days ago"
+    }
+  }
 }

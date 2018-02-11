@@ -25,11 +25,13 @@ export class ChatPage {
   receiver:Provider;
   thread:any;
   showLoadOldMessagesButton = false;
+  interval;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public healMapLib: HealMapLib,
               public platform:Platform) {
+
 
 
 
@@ -39,15 +41,19 @@ export class ChatPage {
 
         this.setSenderAndReceiver();
         this.initializeMessagesQueue().then(()=>{
-          this.scrollToEndOfChat();
+          this.scrollToEndOfChat(0);
+          this.intervallyGetThread();
         })
       })
 
   }
 
+  ionViewWillLeave(){
+    clearInterval(this.interval);
+  }
+
   setSenderAndReceiver(){
 
-    console.log("1");
     if(this.thread.sender_id.id == this.healMapLib.provider.user.id){
       this.sender = this.thread.receiver_id;
       this.receiver = this.healMapLib.provider;
@@ -60,13 +66,15 @@ export class ChatPage {
   initializeMessagesQueue():Promise<boolean>{
 
 
-    for(let i=0;i<this.thread.json_body.messages.length;i++){
+    if(this.thread.json_body.hasOwnProperty("messages")){
+      for(let i=0;i<this.thread.json_body.messages.length;i++){
 
-      if(this.thread.json_body.messages[i].user_id == this.healMapLib.provider.user.id){
-        this.thread.json_body.messages[i].isMessageFromCurrentUser = true;
-      }
-      else{
-        this.thread.json_body.messages[i].isMessageFromCurrentUser = false;
+        if(this.thread.json_body.messages[i].user_id == this.healMapLib.provider.user.id){
+          this.thread.json_body.messages[i].isMessageFromCurrentUser = true;
+        }
+        else{
+          this.thread.json_body.messages[i].isMessageFromCurrentUser = false;
+        }
       }
     }
     return new Promise(resolve => {
@@ -75,10 +83,9 @@ export class ChatPage {
     })
   }
 
-  scrollToEndOfChat(){
-    console.log("4");
+  scrollToEndOfChat(duration){
     setTimeout(()=>{
-      this.content.scrollToBottom(1000);
+      this.content.scrollToBottom(duration);
     },500)
   }
 
@@ -91,14 +98,24 @@ export class ChatPage {
       });
     await this.initializeMessagesQueue().then(success=>{
 
-      this.scrollToEndOfChat();
+      this.scrollToEndOfChat(1000);
     });
 
     form.resetForm();
 
   }
 
+  intervallyGetThread(){
 
+     this.interval = setInterval(()=>{
+     this.healMapLib.getThreadById(this.thread.id).then(success=>{
 
-
+       this.thread = success.json();
+       this.setSenderAndReceiver();
+       this.initializeMessagesQueue().then(()=>{
+         this.scrollToEndOfChat(0);
+       })
+     })
+   },3000);
+  }
 }

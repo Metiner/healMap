@@ -33,6 +33,7 @@
       <!--</ion-row>-->
     <!--</ion-grid>-->
   <!--</ion-item>-->
+  <ion-label *ngIf="thereIsNoNotifications">You have not any notifications.</ion-label>
   <ion-item *ngFor="let notification of notifications">
     <ion-grid>
       <ion-row>

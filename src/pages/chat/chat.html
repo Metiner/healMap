@@ -19,7 +19,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-row *ngFor="let message of thread.json_body.messages" style="margin-top: 5px;margin-bottom: 5px">
+  <ion-row *ngFor="let message of (thread.json_body.messages | slice:thread.json_body.messages.length - 6)" style="margin-top: 5px;margin-bottom: 5px">
     <ion-col *ngIf="!message.isMessageFromCurrentUser" col-85 offset-2 >
       <div class="chatBubbleFrom">
         <span style="word-wrap: break-word">

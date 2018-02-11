@@ -19,19 +19,37 @@ export class NotificationsPage {
 
 
   notifications = [];
+  thereIsNoNotifications = false;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public healMapLib: HealMapLib) {
 
+  }
+
+  ionViewWillEnter(){
+    this.initialize();
+  }
+
+  initialize(){
+    this.notifications=[];
     this.healMapLib.getThread().then(success =>{
+
+
+      if(success.json().length < 1){
+        this.thereIsNoNotifications = true;
+      }else{
+        this.thereIsNoNotifications = false;
+      }
+
 
       let temp =[];
       temp = success.json();
 
       for(var i=0;i<temp.length;i++){
-        //if(temp[i].state == 0 && temp[i].sender_id.id != this.healMapLib.provider.user.id)
-        if(this.healMapLib.provider.user.id)
+        if(temp[i].state == 0 && temp[i].sender_id.id != this.healMapLib.provider.user.id){
           this.notifications.push(temp[i]);
+        }
+        //if(this.healMapLib.provider.user.id)
       }
 
     }).catch(error=>{
@@ -46,10 +64,11 @@ export class NotificationsPage {
       console.log(error);
       this.healMapLib.showToast("Oops:( Something happened.",3000,"bottom");
     });
+
   }
   async onRejectNotification(notification){
     await this.healMapLib.rejectThreadRequest(notification.id).then(success=>{
-      console.log(success.json());
+      this.initialize();
       //this.navCtrl.push(ChatPage);
     }).catch(error=>{
       console.log(error);
