@@ -25,6 +25,7 @@ export class ChatPage {
   receiver:Provider;
   thread:any;
   showLoadOldMessagesButton = false;
+  threadHasMessages = false;
   interval;
 
   constructor(public navCtrl: NavController,
@@ -32,23 +33,22 @@ export class ChatPage {
               public healMapLib: HealMapLib,
               public platform:Platform) {
 
+    this.thread = this.navParams.data;
 
+    this.platform.ready().then(()=>{
 
-
-      this.thread = this.navParams.data;
-
-      this.platform.ready().then(()=>{
-
-        this.setSenderAndReceiver();
-        this.initializeMessagesQueue().then(()=>{
-          this.scrollToEndOfChat(0);
-          this.intervallyGetThread();
-        })
+      this.setSenderAndReceiver();
+      this.initializeMessagesQueue().then(()=>{
+        this.scrollToEndOfChat(0);
+        this.intervallyGetThread();
       })
+    })
 
   }
 
+
   ionViewWillLeave(){
+    console.log(this.interval);
     clearInterval(this.interval);
   }
 
@@ -65,8 +65,8 @@ export class ChatPage {
 
   initializeMessagesQueue():Promise<boolean>{
 
-
     if(this.thread.json_body.hasOwnProperty("messages")){
+      this.threadHasMessages = true;
       for(let i=0;i<this.thread.json_body.messages.length;i++){
 
         if(this.thread.json_body.messages[i].user_id == this.healMapLib.provider.user.id){
@@ -78,7 +78,6 @@ export class ChatPage {
       }
     }
     return new Promise(resolve => {
-
       resolve(true);
     })
   }

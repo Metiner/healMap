@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from "ionic-angular";
 import {MapPage} from "../pages/map/map";
+import {SearchPage} from "../pages/search/search";
 @Component({
   selector:'header-component',
   template:`
@@ -24,7 +25,7 @@ import {MapPage} from "../pages/map/map";
               icon-only
               clear
               small
-              menuToggle>
+              (click)="onSearchPage()">
               <ion-icon style="color:lightgray" name="search"></ion-icon>
             </button>
           </ion-col>
@@ -39,6 +40,10 @@ export class HeaderComponent{
   }
 
   goToMap(){
-   this.navCtrl.popToRoot();
+   this.navCtrl.setRoot(MapPage);
+  }
+
+  onSearchPage(){
+    this.navCtrl.push(SearchPage);
   }
 }

@@ -19,22 +19,24 @@
     </ion-col>
   </ion-row>
 
-  <ion-row *ngFor="let message of (thread.json_body.messages | slice:thread.json_body.messages.length - 6)" style="margin-top: 5px;margin-bottom: 5px">
-    <ion-col *ngIf="!message.isMessageFromCurrentUser" col-85 offset-2 >
-      <div class="chatBubbleFrom">
-        <span style="word-wrap: break-word">
-          {{message.message_text}}
-        </span>
-      </div>
-    </ion-col>
-    <ion-col *ngIf="message.isMessageFromCurrentUser" col-85 offset-40>
-      <div class="chatBubbleTo">
-        <span style="word-wrap: break-word">
-          {{message.message_text}}
-        </span>
-      </div>
-    </ion-col>
-  </ion-row>
+  <div *ngIf="threadHasMessages">
+    <ion-row *ngFor="let message of (thread.json_body.messages | slice:thread.json_body.messages.length - 6)" style="margin-top: 5px;margin-bottom: 5px">
+      <ion-col *ngIf="!message.isMessageFromCurrentUser" col-85 offset-2 >
+        <div class="chatBubbleFrom">
+          <span style="word-wrap: break-word">
+            {{message.message_text}}
+          </span>
+        </div>
+      </ion-col>
+      <ion-col *ngIf="message.isMessageFromCurrentUser" col-85 offset-40>
+        <div class="chatBubbleTo">
+          <span style="word-wrap: break-word">
+            {{message.message_text}}
+          </span>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-grid>
 
 </ion-content>

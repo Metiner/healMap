@@ -37,6 +37,7 @@ import {SetLocationOnMapPage} from "../pages/set-location-on-map/set-location-on
 import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings";
 import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
 import {HTTP} from "@ionic-native/http";
+import {SearchPage} from "../pages/search/search";
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {HTTP} from "@ionic-native/http";
     ProfileSettingsPage,
     SetLocationOnMapPage,
     ProviderSettingsPage,
-    WriteReviewPage
+    WriteReviewPage,
+    SearchPage
   ],
   imports: [
     BrowserModule,
@@ -92,7 +94,8 @@ import {HTTP} from "@ionic-native/http";
     ProfileSettingsPage,
     ProviderSettingsPage,
     SetLocationOnMapPage,
-    WriteReviewPage
+    WriteReviewPage,
+    SearchPage
   ],
   providers: [
     StatusBar,

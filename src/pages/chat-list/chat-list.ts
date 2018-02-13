@@ -24,6 +24,12 @@ export class ChatListPage {
               public navParams: NavParams,
               public healMapLib:HealMapLib) {
 
+    }
+
+  ionViewWillEnter(){
+    this.initialize();
+  }
+  initialize(){
     this.healMapLib.getThread().then(success=>{
       this.chats = success.json();
       console.log(this.chats)
@@ -49,7 +55,6 @@ export class ChatListPage {
         }
       }
     })
-
   }
 
   getLastMessage(messages){

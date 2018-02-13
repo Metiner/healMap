@@ -59,7 +59,7 @@ export class NotificationsPage {
 
   async onAcceptNotification(notification){
     await this.healMapLib.acceptThreadRequest(notification.id).then(success=>{
-      this.navCtrl.push(ChatPage,notification);
+      this.navCtrl.setRoot(ChatPage,notification);
     }).catch(error=>{
       console.log(error);
       this.healMapLib.showToast("Oops:( Something happened.",3000,"bottom");

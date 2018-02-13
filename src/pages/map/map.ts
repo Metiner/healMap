@@ -49,6 +49,8 @@ export class MapPage {
               private eventCtrl:Events,
               private changeDetector:ChangeDetectorRef) {
 
+    console.log(this.navCtrl.length());
+
   }
 
   ionViewWillEnter(){
@@ -113,16 +115,16 @@ export class MapPage {
             this.dragEndPosition = center;
             this.center = center;
 
-            this.radar = new google.maps.Circle({
-              strokeColor: '#FF0000',
-              strokeOpacity: 0.2,
-              strokeWeight: 5,
-              fillColor: '#FF0000',
-              fillOpacity: 0.1,
-              map: this.map,
-              center: this.center,
-              radius: 400
-            });
+            // this.radar = new google.maps.Circle({
+            //   strokeColor: '#FF0000',
+            //   strokeOpacity: 0.2,
+            //   strokeWeight: 5,
+            //   fillColor: '#FF0000',
+            //   fillOpacity: 0.1,
+            //   map: this.map,
+            //   center: this.center,
+            //   radius: 400
+            // });
 
             this.getProvidersFromGoogle(center).then(providersFromGoogle => {
 
@@ -173,21 +175,21 @@ export class MapPage {
 
     try{
 
-      await this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).then(response=>{
-
-        let jsonObject = JSON.parse(response.data);
-
-        var objects = jsonObject.results;
-        objects.forEach(element =>{
-
-            this.providersFromGoogle.push(element);
-            this.providerIds.push(element.id);
-          }
-        )
-
-      }).catch(error=>{
-        console.log(error);
-      });
+      // await this.healmapLib.getVenueFromGoogleMaps(center.lat(),center.lng(),300,this.selectedProviders,'',calculatedDistance).then(response=>{
+      //
+      //   let jsonObject = JSON.parse(response.data);
+      //
+      //   var objects = jsonObject.results;
+      //   objects.forEach(element =>{
+      //
+      //       this.providersFromGoogle.push(element);
+      //       this.providerIds.push(element.id);
+      //     }
+      //   )
+      //
+      // }).catch(error=>{
+      //   console.log(error);
+      // });
 
       //for getting profession_id corresponding with it's name.
       let selectedProviderIds = [];

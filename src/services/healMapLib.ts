@@ -167,6 +167,13 @@ export class HealMapLib{
 
   //######################################################################################################
 
+  //Search
+
+  public search(name){
+    return this.http.get(this.api_address+'/query?search='+name).toPromise();
+  }
+
+
   // it obvious :d
   public showAlert(title:string,subTitle:string,buttons:any[]) {
     let alert = this.alertCtrl.create({
