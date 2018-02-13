@@ -38,6 +38,7 @@ import {ProviderSettingsPage} from "../pages/provider-settings/provider-settings
 import {LaunchNavigator, LaunchNavigatorOptions} from "@ionic-native/launch-navigator";
 import {HTTP} from "@ionic-native/http";
 import {SearchPage} from "../pages/search/search";
+import {OneSignal} from "@ionic-native/onesignal";
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import {SearchPage} from "../pages/search/search";
     GoogleMapsProvider,
     Camera,
     LaunchNavigator,
-    HTTP
+    HTTP,
+    OneSignal
   ]
 })
 export class AppModule {}

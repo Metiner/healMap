@@ -42,6 +42,7 @@ export class NotificationsPage {
       }
 
 
+
       let temp =[];
       temp = success.json();
 

@@ -1,4 +1,4 @@
-<ion-menu [content]="nav">
+<ion-menu [content]="nav" (ionOpen)="menuOpened()">
   <ion-header>
     <ion-toolbar>
       <ion-title>Menü</ion-title>
@@ -40,6 +40,7 @@
         (click)="onNotifications()"
         icon-left>
         <ion-icon class="menuSpan" name="notifications"></ion-icon>
+        <ion-icon *ngIf="thereIsNewNotification" name="alert"></ion-icon>
         <span class="menuSpan">Notifications</span>
       </button>
     </ion-item>

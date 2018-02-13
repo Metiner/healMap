@@ -16,6 +16,7 @@ import {SetLocationOnMapPage} from "../pages/set-location-on-map/set-location-on
 import {HomePage} from "../pages/home/home";
 import {Provider} from "../models/provider";
 import {NotificationsPage} from "../pages/notifications/notifications";
+import {OneSignal} from "@ionic-native/onesignal";
 @Component({
   templateUrl: 'app.html'
 })
@@ -24,29 +25,52 @@ export class MyApp {
   @ViewChild('nav') nav: NavController;
   isAuthenticated = false;
   currentUser:Provider;
+  thereIsNewNotification = false;
   constructor(platform: Platform,
               statusBar: StatusBar,
               splashScreen: SplashScreen,
               private menuCtrl:MenuController,
               private eventCtrl:Events,
-              private healMapLib:HealMapLib) {
+              private healMapLib:HealMapLib,
+              private oneSignal:OneSignal) {
+
+
     this.eventCtrl.subscribe("user.login", () => {
       this.isAuthenticated = true
       this.currentUser = this.healMapLib.provider;
+      this.checkNotification();
 
     });
+
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+
+      this.oneSignal.startInit('5fda7a9c-8d9f-4db7-aee0-7d39f419b199', '678868701206');
+
+      this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+
+      this.oneSignal.handleNotificationReceived().subscribe(() => {
+        // do something when notification is received
+      });
+
+      this.oneSignal.handleNotificationOpened().subscribe(() => {
+        // do something when a notification is opened
+      });
+
+      this.oneSignal.endInit();
+
+
     });
+
+
   }
 
   ionViewWillEnter(){
     this.currentUser = this.healMapLib.provider;
   }
-
 
   onSignin(){
     this.nav.push(LoginPage);
@@ -100,6 +124,22 @@ export class MyApp {
   onNotifications(){
     this.nav.push(NotificationsPage);
     this.menuCtrl.close();
+  }
+
+  menuOpened(){
+   this.checkNotification();
+  }
+  checkNotification(){
+    this.healMapLib.getThread().then(response=>{
+      console.log(response.json());
+      for(let i=0;i<response.json().length;i++){
+        if(response.json()[i].sender_id.id != this.healMapLib.provider.user.id)
+        {
+          this.thereIsNewNotification = true;
+        }
+        break;
+      }
+    })
   }
 }
 
