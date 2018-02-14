@@ -48,19 +48,19 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      this.oneSignal.startInit('5fda7a9c-8d9f-4db7-aee0-7d39f419b199', '678868701206');
-
-      this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
-
-      this.oneSignal.handleNotificationReceived().subscribe(() => {
-        // do something when notification is received
-      });
-
-      this.oneSignal.handleNotificationOpened().subscribe(() => {
-        // do something when a notification is opened
-      });
-
-      this.oneSignal.endInit();
+      // this.oneSignal.startInit('5fda7a9c-8d9f-4db7-aee0-7d39f419b199', '678868701206');
+      //
+      // this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+      //
+      // this.oneSignal.handleNotificationReceived().subscribe(() => {
+      //   // do something when notification is received
+      // });
+      //
+      // this.oneSignal.handleNotificationOpened().subscribe(() => {
+      //   // do something when a notification is opened
+      // });
+      //
+      // this.oneSignal.endInit();
 
 
     });

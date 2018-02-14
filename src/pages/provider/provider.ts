@@ -153,4 +153,8 @@ export class ProviderPage {
       this.healMapLib.showToast("Something happened :(",3000,"bottom");
     })
   }
+
+  goBack(){
+    this.navCtrl.pop();
+  }
 }

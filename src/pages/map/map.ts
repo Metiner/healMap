@@ -317,7 +317,6 @@ export class MapPage {
 
   // If user tap, "profile" button it routes to selected provider's profile.
   goToProviderProfile(){
-    console.log(this.selectedProviderProfile);
     this.navCtrl.push(ProviderPage,this.selectedProviderProfile);
   }
 }

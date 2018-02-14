@@ -24,4 +24,8 @@ export class ProfilePage {
         this.patient = this.navParams.data;
     }
   }
+
+  goBack(){
+    this.navCtrl.pop();
+  }
 }
